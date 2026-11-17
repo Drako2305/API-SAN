@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="SAN: busca, compara y puntúa programas universitarios en Colombia con un puntaje que puedes explicar." />
+    <title>SAN · Sistema Académico de Navegación</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      // Aplica el tema guardado antes de pintar para evitar parpadeo.
+      try {
+        var t = localStorage.getItem('san.tema');
+        if (t === 'light' || t === 'dark') {
+          document.querySelector('meta[name="color-scheme"]').setAttribute('content', t);
+          document.documentElement.dataset.tema = t;
+        }
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

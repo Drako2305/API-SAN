@@ -12,9 +12,9 @@ Audience/job: bachilleres, adultos que vuelven a estudiar y orientadores; acció
 
 ## Direction contract
 
-THESIS: Claro y sereno: tipografía grande sobre fondo casi blanco y fotos de campus como único color fuerte. Rechaza el hero oscuro con acento fosforescente de la versión anterior.
+THESIS: Claro y sereno: tipografía grande sobre fondo casi blanco, fotos de campus y el rojo carmesí de marca como únicos colores fuertes. Rechaza el hero oscuro con acento fosforescente de la versión anterior.
 
-OWN-WORLD: Fondo tintado hacia añil, superficies blancas, acento añil oklch(0.5 0.19 268) (oscuro: oklch(0.73 0.13 268)), panel de marca oscuro oklch(0.2 0.045 268) solo en auth. Bricolage Grotesque para titulares y cifras, Instrument Sans para texto. Radios 6/10/14/20px; sombras suaves con desplazamiento.
+OWN-WORLD: Fondo cálido casi blanco (matiz 20), superficies blancas, acento rojo oklch(0.46 0.168 25) = #a11b22 (oscuro: oklch(0.7 0.16 24)), panel de marca carmesí #a11b22 con esquirlas angulares #b0272f (CSS, sin imagen) en auth y en el cierre de la portada, con el logotipo "APi-SAN" en Londrina Solid blanco. Error en frambuesa (matiz 350) con ícono, nunca el rojo de marca. Bricolage Grotesque para titulares y cifras, Instrument Sans para texto. Radios 6/10/14/20px; sombras suaves con desplazamiento. Tarjetas del mismo tamaño (tiras de ancho fijo, grillas `auto-fill` con filas iguales, título a 2 líneas, pie anclado) y espaciado 4/8 (ver `frontend/DISENO-GRILLA.md`).
 
 STORY: Se entiende en segundos que SAN compara programas con un puntaje explicable; el modal de registro se siente ligero (correo, luego perfil).
 

@@ -31,6 +31,8 @@ Cargar datos en un componente: `useCarga(() => catalogo.carreras(), [deps])` dev
 
 ## Convenciones de UI
 
+- Marca roja (#a11b22), escala de espaciado, grillas de tarjetas uniformes y reglas de lectura: ver [`DISENO-GRILLA.md`](./DISENO-GRILLA.md). Utilidades en `index.css`: `rejilla-tarjetas`, `pista-tarjetas`, `pagina-ancho`, `seccion-ritmo`, `esquirlas`/`fondo-esquirlas`, `logotipo`.
+
 - Colores solo con tokens (`bg-superficie`, `text-texto-2`, `bg-acento`, `border-borde`...); nunca hex sueltos. Tema claro/oscuro automático.
 - Texto de interfaz con tildes. Ciudades y nombres de la API con `ciudadLegible` / `nombreLegible`; precios con `formatoCop`.
 - Todo puntaje se muestra con su desglose (`PuntajeBarra`). Ninguna cifra se inventa: sale de la API.

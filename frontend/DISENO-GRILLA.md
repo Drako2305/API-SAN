@@ -1,0 +1,26 @@
+# Diseño de grilla, espaciado y lectura
+
+Reglas que aplica el frontend para que las tarjetas se alineen y la mirada tenga un recorrido claro. Los tokens viven en `src/index.css`.
+
+## Qué dice la investigación
+
+- **Patrón en F, capas y puntos.** NN/g encontró que, sin señales fuertes, la gente lee en F (barra horizontal arriba, otra más corta debajo y un recorrido vertical por el borde izquierdo); también describe el patrón de "capas" (se leen solo títulos y subtítulos) y el "de puntos" (se salta bloques en busca de una cifra, enlace o palabra concreta). Un buen diseño evita que el F sea lo único que se lee. Fuente: [F-Shaped Pattern of Reading on the Web (NN/g)](https://www.nngroup.com/articles/f-shaped-pattern-reading-web-content/).
+- **Diagrama de Gutenberg y patrón en Z.** Son heurísticas para páginas con información homogénea (Gutenberg) o escasa y visual (Z, p. ej. portadas), y la jerarquía visual puede anularlas. Fuentes: [Compositional Flow and Rhythm (Smashing Magazine)](https://www.smashingmagazine.com/2015/04/design-principles-compositional-flow-and-rhythm) y [Z pattern (Webiano)](https://webiano.digital/knowledge-base/design/layout-grids/z-pattern/). Son fuentes secundarias: se usan como guía, no como ley.
+- **Proximidad y región común.** "Items close together are likely to be perceived as part of the same group"; los elementos lejanos "can be easily overlooked", y los grupos pueden cambiar al apilarse en pantallas pequeñas. Un contenedor (borde o fondo) agrupa aun más que la cercanía. Fuentes: [Proximity Principle (NN/g)](https://www.nngroup.com/articles/gestalt-proximity/) y [Common Region (NN/g)](https://www.nngroup.com/videos/common-region-gestalt/).
+- **Cuadrícula de 8 pt.** Múltiplos de 8 para dimensiones, relleno y márgenes; 4 pt dentro de componentes pequeños (íconos, texto); 8 pt entre componentes; las columnas de una grilla pueden no ser múltiplos de 8. Fuentes: [UCLA Design System, spacing](https://designsystem.brand.ucla.edu/build/v2.6.0/docs/layout/spacing.html), [8-point grid, guía práctica (Breakdance)](https://breakdance.com/the-8-point-grid-system-a-practical-guide/) y [reglas de espaciado (Cieden)](https://cieden.com/book/sub-atomic/spacing/spacing-best-practices), esta última con la regla "interno ≤ externo".
+- **Medida del texto.** 45 a 75 caracteres por línea (Bringhurst; 66 como objetivo habitual) y, como tope de accesibilidad, 80 (WCAG 1.4.8). Fuentes: [Optimal line length (UXPin)](https://www.uxpin.com/studio/blog/optimal-line-length-for-readability/) y [TypeTalk (CreativePro)](https://creativepro.com/?p=122949). Son fuentes de divulgación, no normas.
+- **Tarjetas con alturas iguales.** Guía de modern-web-guidance (`card`, `css-layout`): regiones en orden de código, `repeat(auto-…, minmax())`, `gap` en vez de márgenes y `subgrid` solo si hay que alinear regiones internas. Ver `GUIDANCE.md`.
+
+## Reglas adoptadas
+
+1. **Escala de espaciado 4/8.** Tokens `--e-1…--e-20` (4, 8, 12, 16, 24, 32, 48, 64, 80 px); Tailwind usa la misma base de 4 px. Dentro de una tarjeta: 4 a 16 px; entre tarjetas: `--gap-grilla`; entre secciones: 48 px o más.
+2. **Ritmo de secciones.** `--ritmo-seccion` (64 px móvil y tablet, 80 px en escritorio) en la portada (`seccion-ritmo`); en la app, `mt-12` (48 px) entre bloques y 16 px bajo cada encabezado. Más espacio encima del título que debajo, para que cada título se pegue a su contenido (proximidad).
+3. **Ancho y márgenes de página.** App: `--ancho-pagina` 72 rem; portada: `--ancho-portada` 80 rem. Margen lateral `--gutter`: 16 px en móvil, 24 px desde 640 px y 32 px desde 1024 px (`pagina-ancho`).
+4. **Grilla de tarjetas.** `rejilla-tarjetas`: `repeat(auto-fill, minmax(min(100%, var(--min-tarjeta, 16rem)), 1fr))`, `align-items: stretch` y el mismo `--gap-grilla` en ambos ejes (16, 20 y 24 px). `auto-fill` evita que la última fila estire las tarjetas.
+5. **Tiras horizontales.** `pista-tarjetas` con ancho de tarjeta fijo (marquesina 18 rem, carreras populares 10 rem, galería 20 rem) y altura fija o proporción fija.
+6. **Estructura de la tarjeta.** Columna flex con foto de proporción fija arriba, título `line-clamp-2` con `min-height` de dos líneas, metadatos de una línea con `truncate` y el pie o acción anclado con `mt-auto`. Todo alineado a la izquierda y la etiqueta junto a su valor.
+7. **Marcador de posición.** Si falta la foto, `FotoConFallback` dibuja en la misma caja las esquirlas de marca (tinte suave) y el ícono del área o la universidad, de modo que con o sin foto la tarjeta mide igual.
+8. **Recorrido de la mirada.** Título y dato clave en el borde izquierdo de cada bloque (F y capas), cifras y acciones destacadas con peso y tamaño propios para el patrón de puntos, y en la portada una sola jerarquía clara arriba a la izquierda hacia la acción principal (Z).
+9. **Medida.** Texto corrido con `--medida` (65ch); los títulos balanceados con `text-wrap: balance`.
+10. **Agrupar con región común.** Las unidades (tarjeta, fila de lista, panel) llevan borde o fondo; lo que no se relaciona se separa con más espacio, no con más líneas.
+11. **Mismo hueco que la grilla en móvil.** Desde 360 px sin desplazamiento horizontal; los filtros en chips se desplazan dentro de su propia banda.

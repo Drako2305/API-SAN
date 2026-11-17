@@ -1,9 +1,11 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
   type Relation,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Carrera } from './carrera.entity';
 import { Universidad } from './universidad.entity';
@@ -45,4 +47,10 @@ export class OfertaAcademica {
     onDelete: 'CASCADE',
   })
   carrera: Relation<Carrera>;
+
+  @CreateDateColumn({ type: 'timestamptz' })
+  fechaRegistro: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz' })
+  fechaActualizacion: Date;
 }

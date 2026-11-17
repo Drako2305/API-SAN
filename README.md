@@ -25,7 +25,7 @@ npm install
 cp .env.example .env
 ```
 
-El `.env` contiene `PORT`, `CORS_ORIGIN`, las variables JWT (`JWT_SECRET`, `JWT_REFRESH_SECRET`, `JWT_EXPIRES_IN`, `JWT_REFRESH_EXPIRES_IN`), las variables `POSTGRES_*` y las de pgAdmin (`PGADMIN_EMAIL`, `PGADMIN_PASSWORD`, `PGADMIN_PORT`). La app no arranca si falta alguna variable de PostgreSQL o JWT, porque se leen con `getOrThrow`. El `.env` no se commitea.
+El `.env` contiene `PORT`, `CORS_ORIGIN` (origen del frontend, `http://localhost:5173`), `FRONTEND_PORT`, las variables JWT (`JWT_SECRET`, `JWT_REFRESH_SECRET`, `JWT_EXPIRES_IN`, `JWT_REFRESH_EXPIRES_IN`), las variables `POSTGRES_*` y las de pgAdmin (`PGADMIN_EMAIL`, `PGADMIN_PASSWORD`, `PGADMIN_PORT`). La app no arranca si falta alguna variable de PostgreSQL o JWT, porque se leen con `getOrThrow`. El `.env` no se commitea.
 
 ## Base de datos
 
@@ -61,7 +61,7 @@ Queda en http://localhost:3000 (o el valor de `PORT`) con recarga automatica. Re
 docker compose up -d --build
 ```
 
-Levanta PostgreSQL y la API. La API queda en http://localhost:3000 (o `PORT`). El contenedor de la API no ejecuta el seed: si la base esta vacia, correr `npm run seed` desde el host (con `POSTGRES_HOST=localhost` en `.env`).
+Levanta todos los servicios: PostgreSQL, la API (http://localhost:3000, o `PORT`), el frontend (http://localhost:5173, o `FRONTEND_PORT`) y pgAdmin. El contenedor de la API no ejecuta el seed: si la base esta vacia, correr `npm run seed` desde el host (con `POSTGRES_HOST=localhost` en `.env`).
 
 Para detener todo: `docker compose down`. Agregar `-v` solo si se quiere borrar el volumen `postgres_data` (se pierden los datos).
 
@@ -112,6 +112,79 @@ docker compose up -d pgadmin
 
 Abrir http://localhost:5050 e ingresar con `PGADMIN_EMAIL` y `PGADMIN_PASSWORD` del `.env` (por defecto `admin@apisan.com` / `admin`). El servidor "API SAN" (host `postgres`, puerto 5432, base `api_san`) se precarga desde `docker/pgadmin/servers.json` la primera vez que se crea el volumen `pgadmin_data`. La contrasena de la base se pide al conectar (`POSTGRES_PASSWORD`, por defecto `postgres`).
 
+## Frontend
+
+SPA en React que consume esta API para buscar ofertas, consultar carreras y universidades, comparar ofertas y administrar el catalogo. Vive en `frontend/`.
+
+### Stack
+
+- React 19 con TypeScript.
+- Vite como servidor de desarrollo y bundler.
+- Tailwind CSS v4.
+- React Router para las rutas.
+- framer-motion para las animaciones.
+- Componentes morphing adaptados de [amicro](https://amicro.dev/morphing) (licencia MIT, ver `frontend/src/morphing/LICENSE-amicro.md`), en `frontend/src/morphing`.
+
+### Ejecutar en local
+
+Requiere la API y PostgreSQL arriba (ver [Base de datos](#base-de-datos) y [Ejecutar la API](#ejecutar-la-api)).
+
+```bash
+cd frontend
+cp .env.example .env
+npm install
+npm run dev
+```
+
+Queda en http://localhost:5173. En `frontend/.env`, `VITE_API_URL` apunta a la API (por defecto http://localhost:3000). La API solo acepta peticiones del origen indicado en `CORS_ORIGIN` del `.env` de la raiz, que debe ser `http://localhost:5173`. Si se cambia el puerto del frontend, cambiar tambien `CORS_ORIGIN`.
+
+| Comando | Descripcion |
+|---|---|
+| `npm run dev` | Servidor de desarrollo en http://localhost:5173 |
+| `npm run lint` | Chequeo de tipos con `tsc` |
+| `npm run build` | Compila la SPA a `dist/` |
+| `npm test` | Pruebas unitarias con Vitest y Testing Library |
+
+### Docker
+
+```bash
+docker compose up -d --build
+```
+
+El servicio `frontend` queda en http://localhost:5173 (o `FRONTEND_PORT`). La imagen compila la SPA con `VITE_API_URL=http://localhost:${PORT:-3000}` y la sirve con nginx, que devuelve `index.html` para las rutas de React Router. `VITE_API_URL` se fija al compilar: si cambia `PORT`, volver a correr `docker compose up -d --build`.
+
+### Rutas
+
+| Ruta | Acceso |
+|---|---|
+| `/` | Publico |
+| `/ingresar` | Publico |
+| `/registro` | Publico |
+| `/inicio` | Usuario autenticado |
+| `/buscar` | Publico |
+| `/busquedas/:id` | Publico |
+| `/carreras` | Publico |
+| `/universidades` | Publico |
+| `/universidades/:id` | Publico |
+| `/ofertas/:id` | Publico |
+| `/comparar` | Publico |
+| `/perfil` | Usuario autenticado |
+| `/admin` | Solo admin |
+
+Cualquier otra ruta muestra la pagina de no encontrado.
+
+### Credenciales demo
+
+Salen del seed (`npm run seed`, ver [Base de datos](#base-de-datos)):
+
+- Estudiante: `nicolas@correo.com` / `12345678`
+- Admin: `admin@correo.com` / `admin12345`
+
+### Documentacion del frontend
+
+- [frontend/ARQUITECTURA.md](frontend/ARQUITECTURA.md): estructura de carpetas, cliente de API, sesion y convenciones de UI.
+- [frontend/GUIDANCE.md](frontend/GUIDANCE.md): guia aplicada al catalogo, busqueda, comparacion, perfil y administracion.
+
 ## Comandos
 
 | Comando | Descripcion |
@@ -154,6 +227,7 @@ api-san/
 ├── docker/pgadmin/servers.json # servidor precargado en pgAdmin
 ├── docs/api.md                 # referencia de endpoints
 ├── docs/postman/              # coleccion de Postman
+├── frontend/                   # SPA en React (Vite), ver seccion Frontend
 ├── .editorconfig
 ├── docker-compose.yml
 ├── Dockerfile

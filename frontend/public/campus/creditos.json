@@ -1,0 +1,37 @@
+{
+  "nacional": {
+    "autor": "Carlos25i",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Universidad_nacional_de_Colombia_-_Edificio_Facultad_de_Ingenier%C3%ADa_401.jpg"
+  },
+  "andes": {
+    "autor": "JS Rolón",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Uniandes_Campus.jpg"
+  },
+  "javeriana": {
+    "autor": "Felipe Restrepo Acosta",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Bog_Universidad_Javeriana.JPG"
+  },
+  "antioquia": {
+    "autor": "Kamilokardona",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Edificio_de_la_Biblioteca_Central_de_la_Universidad_de_Antioquia._Panor%C3%A1mica._con_monumento_de_Rodrigo_Arenas.JPG"
+  },
+  "eafit": {
+    "autor": "ElUsuarioDesconocido",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Centro_cultural_Biblioteca_%22Luis_Echavarr%C3%ADa_Villegas%22.jpg"
+  },
+  "valle": {
+    "autor": "jandresb",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Edificio01_-_Univalle.JPG"
+  },
+  "norte": {
+    "autor": "Andrzlopes",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Casa_estudio_Uninorte.jpg"
+  }
+}

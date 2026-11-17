@@ -1,0 +1,262 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/bricolage-grotesque/index.css';
+@import '@fontsource-variable/instrument-sans/index.css';
+
+/*
+ * Sistema de diseño SAN. Fuente única de tokens (colores, tipografía, radios, sombras, movimiento).
+ * Claro/oscuro con light-dark(); `data-tema` en <html> fija el esquema, sin él se sigue al sistema.
+ * Acento "añil" (azul tinta, hue 268). Neutros con un matiz mínimo hacia el mismo hue.
+ */
+:root {
+  color-scheme: light dark;
+
+  /* Superficies */
+  --c-fondo: light-dark(oklch(0.982 0.004 268), oklch(0.165 0.014 268));
+  --c-superficie: light-dark(oklch(1 0 0), oklch(0.21 0.016 268));
+  --c-superficie-2: light-dark(oklch(0.962 0.006 268), oklch(0.255 0.018 268));
+  --c-superficie-3: light-dark(oklch(0.935 0.008 268), oklch(0.3 0.02 268));
+  --c-borde: light-dark(oklch(0.912 0.007 268), oklch(0.315 0.018 268));
+  --c-borde-fuerte: light-dark(oklch(0.82 0.01 268), oklch(0.43 0.02 268));
+
+  /* Texto (contraste >= 4.5:1 sobre superficie y fondo) */
+  --c-texto: light-dark(oklch(0.2 0.025 268), oklch(0.96 0.006 268));
+  --c-texto-2: light-dark(oklch(0.42 0.022 268), oklch(0.8 0.012 268));
+  --c-texto-3: light-dark(oklch(0.5 0.02 268), oklch(0.72 0.014 268));
+
+  /* Acento */
+  --c-acento: light-dark(oklch(0.5 0.19 268), oklch(0.73 0.13 268));
+  --c-acento-hover: light-dark(oklch(0.44 0.19 268), oklch(0.79 0.12 268));
+  --c-acento-suave: light-dark(oklch(0.95 0.025 268), oklch(0.29 0.07 268));
+  --c-acento-borde: light-dark(oklch(0.86 0.06 268), oklch(0.42 0.1 268));
+  --c-sobre-acento: light-dark(oklch(1 0 0), oklch(0.17 0.03 268));
+  --c-acento-texto: light-dark(oklch(0.46 0.19 268), oklch(0.8 0.11 268));
+
+  /* Estados semánticos */
+  --c-ok: light-dark(oklch(0.5 0.12 155), oklch(0.78 0.14 155));
+  --c-ok-suave: light-dark(oklch(0.95 0.04 155), oklch(0.28 0.05 155));
+  --c-aviso: light-dark(oklch(0.52 0.12 70), oklch(0.82 0.14 80));
+  --c-aviso-suave: light-dark(oklch(0.96 0.06 90), oklch(0.3 0.06 75));
+  --c-peligro: light-dark(oklch(0.52 0.2 27), oklch(0.74 0.15 25));
+  --c-peligro-suave: light-dark(oklch(0.96 0.03 25), oklch(0.29 0.07 25));
+
+  /* Panel oscuro de marca (auth, hero): oscuro en ambos temas */
+  --c-panel: oklch(0.2 0.045 268);
+  --c-sobre-panel: oklch(0.97 0.01 268);
+  --c-sobre-panel-2: oklch(0.82 0.03 268);
+
+  /* Tipografía */
+  --f-display: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+  --f-texto: 'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif;
+
+  /* Radios */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+
+  /* Sombras: con desplazamiento y desenfoque suave */
+  --sombra-1: light-dark(0 1px 2px oklch(0.25 0.04 268 / 0.06), 0 1px 2px oklch(0 0 0 / 0.4));
+  --sombra-2: light-dark(0 2px 4px oklch(0.25 0.04 268 / 0.05), 0 2px 6px oklch(0 0 0 / 0.4)),
+    light-dark(0 8px 24px oklch(0.25 0.04 268 / 0.07), 0 8px 24px oklch(0 0 0 / 0.35));
+  --sombra-3: 0 12px 32px oklch(0.2 0.05 268 / 0.18), 0 2px 6px oklch(0.2 0.05 268 / 0.1);
+
+  /* Movimiento */
+  --ease-salida: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-rapida: 140ms;
+  --dur-media: 220ms;
+
+  /* Layout */
+  --riel: 4.25rem;
+  --barra: 3.5rem;
+  --nav-movil: 3.75rem;
+}
+
+:root[data-tema='light'] {
+  color-scheme: light;
+}
+:root[data-tema='dark'] {
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-fondo: var(--c-fondo);
+  --color-superficie: var(--c-superficie);
+  --color-superficie-2: var(--c-superficie-2);
+  --color-superficie-3: var(--c-superficie-3);
+  --color-borde: var(--c-borde);
+  --color-borde-fuerte: var(--c-borde-fuerte);
+  --color-texto: var(--c-texto);
+  --color-texto-2: var(--c-texto-2);
+  --color-texto-3: var(--c-texto-3);
+  --color-acento: var(--c-acento);
+  --color-acento-hover: var(--c-acento-hover);
+  --color-acento-suave: var(--c-acento-suave);
+  --color-acento-borde: var(--c-acento-borde);
+  --color-sobre-acento: var(--c-sobre-acento);
+  --color-acento-texto: var(--c-acento-texto);
+  --color-ok: var(--c-ok);
+  --color-ok-suave: var(--c-ok-suave);
+  --color-aviso: var(--c-aviso);
+  --color-aviso-suave: var(--c-aviso-suave);
+  --color-peligro: var(--c-peligro);
+  --color-peligro-suave: var(--c-peligro-suave);
+  --color-panel: var(--c-panel);
+  --color-sobre-panel: var(--c-sobre-panel);
+  --color-sobre-panel-2: var(--c-sobre-panel-2);
+
+  --font-display: var(--f-display);
+  --font-sans: var(--f-texto);
+
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: var(--r-xl);
+
+  --shadow-1: var(--sombra-1);
+  --shadow-2: var(--sombra-2);
+  --shadow-3: var(--sombra-3);
+}
+
+@layer base {
+  html {
+    font-family: var(--f-texto);
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    accent-color: var(--c-acento);
+    scrollbar-color: var(--c-borde-fuerte) transparent;
+    scrollbar-width: thin;
+  }
+  body {
+    margin: 0;
+    background: var(--c-fondo);
+    color: var(--c-texto);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    font-feature-settings: 'tnum' 0;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--f-display);
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    text-wrap: balance;
+    margin: 0;
+  }
+  p { margin: 0; text-wrap: pretty; }
+  ::selection {
+    background: var(--c-acento);
+    color: var(--c-sobre-acento);
+  }
+  :focus-visible {
+    outline: 2px solid var(--c-acento);
+    outline-offset: 2px;
+    border-radius: var(--r-sm);
+  }
+  input, textarea, select, button { font: inherit; color: inherit; }
+  input, textarea { caret-color: var(--c-acento); }
+  a { color: var(--c-acento-texto); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+  img { max-width: 100%; }
+}
+
+@utility numeros {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+@utility titulo-display {
+  font-family: var(--f-display);
+  letter-spacing: -0.03em;
+}
+
+/* ---------- Validación tras la interacción (:user-invalid) ---------- */
+.campo-control:user-invalid {
+  border-color: var(--c-peligro);
+  box-shadow: 0 0 0 1px var(--c-peligro);
+}
+.campo-error { display: none; }
+.campo:has(.campo-control:user-invalid) .campo-error,
+.campo-error[data-visible='true'] { display: flex; }
+
+/* ---------- Dialog nativo ---------- */
+dialog.san-dialog {
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--c-borde);
+  border-radius: var(--r-xl);
+  background: var(--c-superficie);
+  color: var(--c-texto);
+  box-shadow: var(--sombra-3);
+  width: min(32rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  /* No fijar `display`: sobrescribiría el estado cerrado. */
+}
+dialog.san-dialog:modal {
+  overscroll-behavior: contain;
+}
+dialog.san-dialog::backdrop {
+  background: oklch(0.15 0.04 268 / 0.5);
+  backdrop-filter: blur(3px);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+@media (prefers-reduced-motion: no-preference) {
+  dialog.san-dialog,
+  dialog.san-dialog::backdrop {
+    transition:
+      opacity var(--dur-media) var(--ease-salida),
+      transform var(--dur-media) var(--ease-salida),
+      background-color var(--dur-media) var(--ease-salida),
+      display var(--dur-media) allow-discrete,
+      overlay var(--dur-media) allow-discrete;
+  }
+  dialog.san-dialog { opacity: 0; transform: translateY(8px) scale(0.98); }
+  dialog.san-dialog[open] {
+    opacity: 1;
+    transform: none;
+    @starting-style { opacity: 0; transform: translateY(8px) scale(0.98); }
+  }
+  dialog.san-dialog::backdrop { background-color: oklch(0.15 0.04 268 / 0); }
+  dialog.san-dialog[open]::backdrop {
+    background-color: oklch(0.15 0.04 268 / 0.5);
+    @starting-style { background-color: oklch(0.15 0.04 268 / 0); }
+  }
+}
+
+/* ---------- Slider (range nativo con marca) ---------- */
+input[type='range'].san-slider { accent-color: var(--c-acento); }
+
+/* ---------- Skeleton ---------- */
+@keyframes san-brillo { to { background-position: -200% 0; } }
+.san-skeleton {
+  background: linear-gradient(100deg, var(--c-superficie-2) 30%, var(--c-superficie-3) 50%, var(--c-superficie-2) 70%) 0 0 / 200% 100%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .san-skeleton { animation: san-brillo 1.6s linear infinite; }
+}
+
+/* ---------- Transición entre vistas (same-document) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 160ms;
+    animation-timing-function: var(--ease-salida);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* ---------- Colores forzados (Windows alto contraste) ---------- */
+@media (forced-colors: active) {
+  .san-skeleton { background: Canvas; border: 1px solid CanvasText; }
+}

@@ -12,7 +12,7 @@ Constraints: copy en español con tildes, datos solo de la API, AA, 360px+, tema
 
 ## Direction contract
 
-THESIS: Un producto operativo tranquilo: superficies blancas, bordes finos, un acento añil y jerarquía clara. Rechaza la cartelera negra/lima y los controles Material.
+THESIS: Un producto operativo tranquilo: superficies blancas, bordes finos, un acento rojo de marca (#a11b22), tarjetas uniformes en grilla y jerarquía clara. Rechaza la cartelera negra/lima y los controles Material.
 
 OWN-WORLD: Mismos tokens que la portada (`frontend/src/index.css`). Riel de iconos de 68px a la izquierda, barra superior de 56px con búsqueda, tema y cuenta; barra inferior en móvil. Cards planas con borde (sin anidar), filas de lista densas con avatar, puntaje y acciones; badges para modalidad, jornada y acreditación; verde/ámbar/rojo solo para estados ("mejor oferta" en ámbar).
 

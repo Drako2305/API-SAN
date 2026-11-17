@@ -35,12 +35,12 @@ export default function Comparar() {
           titulo={sel.total === 0 ? 'Aún no elegiste ofertas' : 'Elige una oferta más'}
           texto={
             sel.total === 0
-              ? 'Marca "Comparar" en los resultados de una búsqueda. Puedes poner de 2 a 4 ofertas lado a lado.'
+              ? 'Marca "Comparar" en las ofertas de una carrera o en los resultados de una búsqueda. Puedes poner de 2 a 4 lado a lado.'
               : 'Necesitas al menos 2 ofertas para compararlas. Vuelve a los resultados y marca otra.'
           }
           accion={
-            <LinkButton to="/buscar" icono={<Search className="size-4" aria-hidden />}>
-              Buscar una carrera
+            <LinkButton to="/carreras" icono={<Search className="size-4" aria-hidden />}>
+              Explorar carreras
             </LinkButton>
           }
         />

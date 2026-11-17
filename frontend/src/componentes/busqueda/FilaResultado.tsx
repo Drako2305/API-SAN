@@ -1,8 +1,9 @@
 import { Link, useLocation } from 'react-router';
 import { Heart } from 'lucide-react';
-import { Avatar, Badge, PuntajeBarra } from '@/componentes';
+import { Badge, PuntajeBarra } from '@/componentes';
+import { FotoConFallback } from '@/componentes/catalogo';
 import { ciudadLegible, etiquetaJornada, etiquetaModalidad, formatoCop, nombreLegible } from '@/lib/formato';
-import { fotoDeUniversidad } from '@/lib/campus';
+import { fotoCarrera } from '@/lib/fotos';
 import type { Pesos, ResultadoBusqueda } from '@/lib/modelos';
 import { HeartMorph, MorphingRing } from '@/morphing';
 
@@ -22,12 +23,19 @@ export function FilaResultado({ resultado, pesos, favorito, onFavorito, seleccio
   const { oferta, puntaje, desglose } = resultado;
   const ubicacion = useLocation();
   const carrera = nombreLegible(oferta.carrera);
-  const foto = oferta.imagenUrl ?? fotoDeUniversidad(oferta.universidad)?.sm;
+  const foto = fotoCarrera({ nombre: oferta.carrera, imagenUrl: oferta.carreraImagenUrl });
 
   return (
     <li className="grid gap-x-5 gap-y-4 p-4 sm:p-5 md:grid-cols-[minmax(0,1fr)_17rem]">
       <div className="flex min-w-0 gap-3.5">
-        <Avatar nombre={oferta.universidad} src={foto} tamano="lg" />
+        <FotoConFallback
+          src={foto.src}
+          sm={foto.sm}
+          sizes="80px"
+          width={160}
+          height={160}
+          className="size-16 shrink-0 self-start rounded-lg sm:size-20"
+        />
         <div className="min-w-0 flex-1">
           <h3 className="font-display text-lg leading-snug">
             <Link to={`/ofertas/${oferta.id}`} className="text-texto no-underline hover:text-acento-texto hover:underline">

@@ -17,7 +17,7 @@ export class Perfil {
   @Column({ length: 100 })
   ciudad: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'text', nullable: true })
   avatar: string | null;
 
   @CreateDateColumn()

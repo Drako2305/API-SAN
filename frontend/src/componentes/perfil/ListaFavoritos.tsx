@@ -47,8 +47,8 @@ export function ListaFavoritos({ usuarioId, ids, onQuitado }: Props) {
         titulo="Aún no guardas favoritos"
         texto="Guarda las ofertas que te interesen desde sus fichas para tener tu lista corta a la mano."
         accion={
-          <Link to="/buscar" className="font-medium">
-            Buscar una carrera
+          <Link to="/carreras" className="font-medium">
+            Explorar carreras
           </Link>
         }
       />

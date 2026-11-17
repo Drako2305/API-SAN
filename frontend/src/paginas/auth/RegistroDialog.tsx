@@ -19,7 +19,7 @@ export function RegistroDialog({ abierto, onCerrar }: { abierto: boolean; onCerr
       // En el paso 2 hay datos sin enviar: solo Esc o el botón cierran.
       cerrarAlClicFuera={paso === 1}
     >
-      <FormularioRegistro paso={paso} onPaso={setPaso} onListo={() => navegar('/inicio')} />
+      <FormularioRegistro paso={paso} onPaso={setPaso} onListo={() => navegar('/inicio', { viewTransition: true })} />
     </Dialog>
   );
 }

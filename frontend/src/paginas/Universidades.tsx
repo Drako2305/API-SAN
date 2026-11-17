@@ -67,21 +67,21 @@ export default function Universidades() {
       ) : datos.length === 0 ? (
         <EmptyState icono={<Building2 />} titulo="No hay universidades en esa ciudad" texto="Prueba con otra ciudad o mira todo el catálogo." accion={<button type="button" className="font-medium text-acento-texto" onClick={() => elegir('')}>Ver todas</button>} />
       ) : (
-        <ul aria-busy={lista.cargando} className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <ul aria-busy={lista.cargando} className="rejilla-tarjetas">
           {datos.map((u) => {
             const n = ofertas.datos ? (conteo.get(u.id) ?? 0) : null;
             return (
               <li key={u.id}>
-                <Link to={`/universidades/${u.id}`} viewTransition className="group block overflow-hidden rounded-lg border border-borde bg-superficie text-texto no-underline transition-[box-shadow,border-color] duration-[var(--dur-rapida)] hover:border-borde-fuerte hover:shadow-2">
+                <Link to={`/universidades/${u.id}`} viewTransition className="group flex h-full flex-col overflow-hidden rounded-lg border border-borde bg-superficie text-texto no-underline transition-[box-shadow,border-color] duration-[var(--dur-rapida)] hover:border-borde-fuerte hover:shadow-2">
                   <FotoUniversidad nombre={u.nombre} imagenUrl={u.imagenUrl} sizes="(min-width: 1280px) 22rem, (min-width: 640px) 45vw, 100vw" />
-                  <div className="p-4">
+                  <div className="flex flex-1 flex-col gap-2 p-4">
                     <h2 className="line-clamp-2 min-h-[2.75rem] text-base font-semibold">{u.nombre}</h2>
-                    <p className="mt-1 flex items-center justify-between gap-2 text-sm text-texto-3">
-                      <span className="inline-flex items-center gap-1">
+                    <p className="mt-auto flex items-center justify-between gap-2 text-sm text-texto-3">
+                      <span className="inline-flex min-w-0 items-center gap-1">
                         <MapPin className="size-3.5" aria-hidden />
-                        {ciudadLegible(u.ciudad)}
+                        <span className="truncate">{ciudadLegible(u.ciudad)}</span>
                       </span>
-                      <span className="numeros">{n === null ? '' : `${n} ${n === 1 ? 'oferta' : 'ofertas'}`}</span>
+                      <span className="numeros shrink-0">{n === null ? '' : `${n} ${n === 1 ? 'oferta' : 'ofertas'}`}</span>
                     </p>
                   </div>
                 </Link>

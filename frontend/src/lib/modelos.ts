@@ -15,6 +15,9 @@ export interface Respuesta<T> {
 export interface Carrera {
   id: string;
   nombre: string;
+  /** Ruta relativa de la foto (`/carreras/<slug>.webp`), resuelta contra el origen del frontend. */
+  imagenUrl?: string | null;
+  area?: string | null;
 }
 
 export interface Universidad {
@@ -31,6 +34,7 @@ export interface OfertaAcademica {
   universidadId?: string;
   carreraId?: string;
   imagenUrl?: string | null;
+  carreraImagenUrl?: string | null;
   ciudad: string;
   costo: number;
   modalidad: Modalidad;
@@ -106,6 +110,8 @@ export interface UsuarioSesion {
   nombre: string;
   correo: string;
   rol: Rol;
+  /** Foto del perfil (enlace o data URL). `undefined` = aún no se ha consultado; `null` = no tiene. */
+  avatar?: string | null;
 }
 
 export interface AuthData {
@@ -134,7 +140,7 @@ export interface RegistroRequest {
   nombre: string;
   correo: string;
   clave: string;
-  perfil: { apellido: string; ciudad: string; avatar?: string };
+  perfil: { apellido: string; ciudad: string; avatar?: string | null };
 }
 
 export interface ActualizarUsuarioRequest {

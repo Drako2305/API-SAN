@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { Avatar, Badge, Card, EmptyState, EncabezadoPagina, Skeleton, Tabs } from '@/componentes';
 import { FormularioDatos } from '@/componentes/perfil/FormularioDatos';
+import { FotoPerfil } from '@/componentes/perfil/FotoPerfil';
 import { ListaFavoritos } from '@/componentes/perfil/ListaFavoritos';
 import { PanelLateral } from '@/componentes/perfil/PanelLateral';
 import { PanelPreferencias } from '@/componentes/perfil/PanelPreferencias';
@@ -56,9 +57,9 @@ export default function Perfil() {
             <Skeleton className="size-14 rounded-full" />
             <Skeleton className="h-10 w-56" />
           </div>
-          <p className="mt-3 text-sm text-texto-2">
+          <div className="mt-3 text-sm text-texto-2">
             <TextMorph palabras={['Cargando tu perfil', 'Un momento']} />
-          </p>
+          </div>
         </Card>
       );
     }
@@ -68,7 +69,11 @@ export default function Perfil() {
       <Card relleno="lg">
         <div className="flex flex-wrap items-center gap-x-8 gap-y-5">
           <div className="flex min-w-0 items-center gap-4">
-            <Avatar nombre={nombreCompleto} src={detalle?.perfil?.avatar} tamano="lg" />
+            {detalle ? (
+              <FotoPerfil variante="compacta" detalle={detalle} nombre={nombreCompleto} onGuardado={setCambiado} />
+            ) : (
+              <Avatar nombre={nombreCompleto} tamano="lg" />
+            )}
             <div className="min-w-0">
               <p className="truncate font-display text-xl font-semibold">{nombreCompleto}</p>
               <p className="mt-0.5 flex flex-wrap items-center gap-2 text-sm text-texto-2">

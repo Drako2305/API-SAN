@@ -3,19 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="light" />
     <meta name="description" content="SAN: busca, compara y puntúa programas universitarios en Colombia con un puntaje que puedes explicar." />
     <title>SAN · Sistema Académico de Navegación</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script>
-      // Aplica el tema guardado antes de pintar para evitar parpadeo.
+      // Aplica el tema antes de pintar para evitar parpadeo. Por defecto, claro.
+      var t = 'light';
       try {
-        var t = localStorage.getItem('san.tema');
-        if (t === 'light' || t === 'dark') {
-          document.querySelector('meta[name="color-scheme"]').setAttribute('content', t);
-          document.documentElement.dataset.tema = t;
-        }
+        var g = localStorage.getItem('san.tema');
+        if (g === 'dark' || g === 'system') t = g;
       } catch (e) {}
+      document.querySelector('meta[name="color-scheme"]').setAttribute('content', t === 'system' ? 'light dark' : t);
+      document.documentElement.dataset.tema = t;
     </script>
   </head>
   <body>

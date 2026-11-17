@@ -25,7 +25,7 @@ export default function Registro() {
         onPaso={setPaso}
         onListo={() => {
           setListo(true);
-          navegar(destino, { replace: true });
+          navegar(destino, { replace: true, viewTransition: true });
         }}
       />
       <p className="mt-6 text-sm text-texto-2">

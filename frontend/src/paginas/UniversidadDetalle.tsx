@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { Building2, GitCompareArrows, MapPin, Search } from 'lucide-react';
-import { Badge, Card, EmptyState, LinkButton, Tabs, Button, claseBoton } from '@/componentes';
+import { Badge, Card, EmptyState, Tabs, Button, claseBoton } from '@/componentes';
 import { Cargando, FotoUniversidad, OfertaFila } from '@/componentes/catalogo';
 import { reemplazarSeleccion } from '@/lib/seleccionComparar';
 import { ApiError, catalogo } from '@/lib/api';
@@ -22,6 +22,11 @@ function Cifra({ valor, titulo }: { valor: string; titulo: string }) {
 export default function UniversidadDetalle() {
   const { id = '' } = useParams();
   const navegar = useNavigate();
+  const [pestana, setPestana] = useState('resumen');
+  const verOfertas = () => {
+    setPestana('ofertas');
+    requestAnimationFrame(() => document.getElementById('pestanas-universidad')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  };
   const { datos: u, cargando, error, recargar } = useCarga(
     () => catalogo.universidad(id).catch((e: unknown) => (noEncontrado(e) ? null : Promise.reject(e))),
     [id],
@@ -131,9 +136,9 @@ export default function UniversidadDetalle() {
               <div className="col-span-2"><Cifra valor={rango} titulo="Rango de costo por periodo" /></div>
             </dl>
             <div className="mt-5 grid gap-2">
-              <LinkButton to={`/buscar?ciudad=${encodeURIComponent(u.ciudad)}`} icono={<Search className="size-4" aria-hidden />}>
-                Buscar en esta universidad
-              </LinkButton>
+              <Button icono={<Search className="size-4" aria-hidden />} onClick={verOfertas} disabled={u.ofertas.length === 0}>
+                Ver sus ofertas
+              </Button>
               <Button variante="secundario" icono={<GitCompareArrows className="size-4" aria-hidden />} onClick={comparar} disabled={u.ofertas.length < 2}>
                 Comparar sus ofertas
               </Button>
@@ -147,7 +152,10 @@ export default function UniversidadDetalle() {
           </div>
         </Card>
 
+        <div id="pestanas-universidad" className="min-w-0 scroll-mt-[calc(var(--barra)+1rem)]">
         <Tabs
+          valor={pestana}
+          onCambio={setPestana}
           nombre="Secciones de la universidad"
           className="min-w-0"
           tabs={[
@@ -155,6 +163,7 @@ export default function UniversidadDetalle() {
             { id: 'ofertas', etiqueta: `Ofertas (${resumen.n})`, contenido: ofertasTab },
           ]}
         />
+        </div>
       </div>
     </>
   );

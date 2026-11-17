@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { ArrowLeft, Mail } from 'lucide-react';
-import { Button, Input, Select } from '@/componentes';
+import { AvisoError, Button, Input, Select } from '@/componentes';
 import { ApiError, mensajeError } from '@/lib/api';
 import { ciudadLegible } from '@/lib/formato';
 import { useSesion } from '@/lib/sesion';
@@ -112,9 +112,7 @@ export function FormularioRegistro({ paso, onPaso, onListo }: Props) {
         <Input etiqueta="Ciudad" name="ciudad" autoComplete="address-level2" required maxLength={100} value={ciudad} onChange={(e) => setCiudad(e.target.value)} />
       )}
       {error && (
-        <p role="alert" className="rounded-md bg-peligro-suave px-3 py-2 text-sm font-medium text-peligro">
-          {error}
-        </p>
+        <AvisoError>{error}</AvisoError>
       )}
       <div className="flex items-center gap-2">
         <Button variante="fantasma" tamano="lg" onClick={() => onPaso(1)} icono={<ArrowLeft className="size-4" aria-hidden />} disabled={enviando}>

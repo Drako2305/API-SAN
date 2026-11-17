@@ -3,7 +3,7 @@ import { Link, type LinkProps } from 'react-router';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/cn';
 
-export type VarianteBoton = 'primario' | 'secundario' | 'fantasma' | 'peligro';
+export type VarianteBoton = 'primario' | 'secundario' | 'fantasma' | 'peligro' | 'sobrePanel' | 'contornoPanel';
 export type TamanoBoton = 'sm' | 'md' | 'lg';
 
 const BASE =
@@ -17,6 +17,9 @@ const VARIANTES: Record<VarianteBoton, string> = {
   secundario: 'bg-superficie text-texto border border-borde-fuerte hover:bg-superficie-2',
   fantasma: 'bg-transparent text-texto-2 border border-transparent hover:bg-superficie-2 hover:text-texto',
   peligro: 'bg-peligro text-sobre-acento border border-transparent hover:brightness-110',
+  /* Sobre el panel carmesí de marca: el acento rojo no se distinguiría del fondo. */
+  sobrePanel: 'bg-sobre-panel text-panel border border-transparent hover:bg-sobre-panel-2',
+  contornoPanel: 'bg-transparent text-sobre-panel border border-sobre-panel/60 hover:bg-sobre-panel/10',
 };
 
 const TAMANOS: Record<TamanoBoton, string> = {

@@ -1,52 +1,56 @@
 @import 'tailwindcss';
 @import '@fontsource-variable/bricolage-grotesque/index.css';
 @import '@fontsource-variable/instrument-sans/index.css';
+@import '@fontsource/londrina-solid/latin-900.css';
 
 /*
  * Sistema de diseño SAN. Fuente única de tokens (colores, tipografía, radios, sombras, movimiento).
- * Claro/oscuro con light-dark(); `data-tema` en <html> fija el esquema, sin él se sigue al sistema.
- * Acento "añil" (azul tinta, hue 268). Neutros con un matiz mínimo hacia el mismo hue.
+ * Claro/oscuro con light-dark(). El claro es el predeterminado; `data-tema` en <html> elige oscuro o el del sistema.
+ * Acento rojo de marca (hue ~25, #a11b22). Neutros cálidos con un matiz mínimo hacia el mismo rojo (hue 20).
  */
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
-  /* Superficies */
-  --c-fondo: light-dark(oklch(0.982 0.004 268), oklch(0.165 0.014 268));
-  --c-superficie: light-dark(oklch(1 0 0), oklch(0.21 0.016 268));
-  --c-superficie-2: light-dark(oklch(0.962 0.006 268), oklch(0.255 0.018 268));
-  --c-superficie-3: light-dark(oklch(0.935 0.008 268), oklch(0.3 0.02 268));
-  --c-borde: light-dark(oklch(0.912 0.007 268), oklch(0.315 0.018 268));
-  --c-borde-fuerte: light-dark(oklch(0.82 0.01 268), oklch(0.43 0.02 268));
+  /* Superficies (neutros cálidos: matiz 20, croma mínimo hacia el rojo de marca) */
+  --c-fondo: light-dark(oklch(0.982 0.004 20), oklch(0.165 0.012 20));
+  --c-superficie: light-dark(oklch(1 0 0), oklch(0.21 0.014 20));
+  --c-superficie-2: light-dark(oklch(0.964 0.006 20), oklch(0.255 0.016 20));
+  --c-superficie-3: light-dark(oklch(0.937 0.008 20), oklch(0.3 0.02 20));
+  --c-borde: light-dark(oklch(0.912 0.007 20), oklch(0.315 0.016 20));
+  --c-borde-fuerte: light-dark(oklch(0.82 0.01 20), oklch(0.43 0.02 20));
 
   /* Texto (contraste >= 4.5:1 sobre superficie y fondo) */
-  --c-texto: light-dark(oklch(0.2 0.025 268), oklch(0.96 0.006 268));
-  --c-texto-2: light-dark(oklch(0.42 0.022 268), oklch(0.8 0.012 268));
-  --c-texto-3: light-dark(oklch(0.5 0.02 268), oklch(0.72 0.014 268));
+  --c-texto: light-dark(oklch(0.2 0.02 20), oklch(0.96 0.006 20));
+  --c-texto-2: light-dark(oklch(0.42 0.02 20), oklch(0.8 0.012 20));
+  --c-texto-3: light-dark(oklch(0.5 0.02 20), oklch(0.72 0.014 20));
 
-  /* Acento */
-  --c-acento: light-dark(oklch(0.5 0.19 268), oklch(0.73 0.13 268));
-  --c-acento-hover: light-dark(oklch(0.44 0.19 268), oklch(0.79 0.12 268));
-  --c-acento-suave: light-dark(oklch(0.95 0.025 268), oklch(0.29 0.07 268));
-  --c-acento-borde: light-dark(oklch(0.86 0.06 268), oklch(0.42 0.1 268));
-  --c-sobre-acento: light-dark(oklch(1 0 0), oklch(0.17 0.03 268));
-  --c-acento-texto: light-dark(oklch(0.46 0.19 268), oklch(0.8 0.11 268));
+  /* Acento = rojo de marca. Claro: #a11b22 (blanco encima 7.8:1). Oscuro: rojo más vivo (6.2:1 sobre la superficie). */
+  --c-acento: light-dark(oklch(0.46 0.168 25), oklch(0.7 0.16 24));
+  --c-acento-hover: light-dark(oklch(0.41 0.15 25), oklch(0.76 0.15 24));
+  --c-acento-suave: light-dark(oklch(0.958 0.022 22), oklch(0.29 0.07 22));
+  --c-acento-borde: light-dark(oklch(0.86 0.06 22), oklch(0.44 0.1 22));
+  --c-sobre-acento: light-dark(oklch(1 0 0), oklch(0.17 0.03 24));
+  --c-acento-texto: light-dark(oklch(0.44 0.168 25), oklch(0.8 0.12 22));
 
-  /* Estados semánticos */
+  /* Estados semánticos. El error NO usa el rojo de marca: es frambuesa (matiz 350) y siempre lleva ícono y texto. */
   --c-ok: light-dark(oklch(0.5 0.12 155), oklch(0.78 0.14 155));
   --c-ok-suave: light-dark(oklch(0.95 0.04 155), oklch(0.28 0.05 155));
   --c-aviso: light-dark(oklch(0.52 0.12 70), oklch(0.82 0.14 80));
   --c-aviso-suave: light-dark(oklch(0.96 0.06 90), oklch(0.3 0.06 75));
-  --c-peligro: light-dark(oklch(0.52 0.2 27), oklch(0.74 0.15 25));
-  --c-peligro-suave: light-dark(oklch(0.96 0.03 25), oklch(0.29 0.07 25));
+  --c-peligro: light-dark(oklch(0.5 0.2 350), oklch(0.75 0.15 350));
+  --c-peligro-suave: light-dark(oklch(0.96 0.03 350), oklch(0.29 0.07 350));
 
-  /* Panel oscuro de marca (auth, hero): oscuro en ambos temas */
-  --c-panel: oklch(0.2 0.045 268);
-  --c-sobre-panel: oklch(0.97 0.01 268);
-  --c-sobre-panel-2: oklch(0.82 0.03 268);
+  /* Panel de marca (auth, cierre de la portada): carmesí #a11b22 con esquirlas #b0272f, igual en ambos temas */
+  --c-panel: oklch(0.46 0.168 25);
+  --c-panel-2: oklch(0.5 0.173 23.4);
+  --c-sobre-panel: oklch(1 0 0);
+  --c-sobre-panel-2: oklch(0.93 0.03 20);
 
   /* Tipografía */
   --f-display: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
   --f-texto: 'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  /* Solo para el logotipo "APi-SAN" y acentos de marca: nunca en cuerpo ni titulares de interfaz. */
+  --f-marca: 'Londrina Solid', 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
 
   /* Radios */
   --r-sm: 6px;
@@ -55,20 +59,35 @@
   --r-xl: 20px;
 
   /* Sombras: con desplazamiento y desenfoque suave */
-  --sombra-1: light-dark(0 1px 2px oklch(0.25 0.04 268 / 0.06), 0 1px 2px oklch(0 0 0 / 0.4));
-  --sombra-2: light-dark(0 2px 4px oklch(0.25 0.04 268 / 0.05), 0 2px 6px oklch(0 0 0 / 0.4)),
-    light-dark(0 8px 24px oklch(0.25 0.04 268 / 0.07), 0 8px 24px oklch(0 0 0 / 0.35));
-  --sombra-3: 0 12px 32px oklch(0.2 0.05 268 / 0.18), 0 2px 6px oklch(0.2 0.05 268 / 0.1);
+  --sombra-1: light-dark(0 1px 2px oklch(0.25 0.04 20 / 0.06), 0 1px 2px oklch(0 0 0 / 0.4));
+  --sombra-2: light-dark(0 2px 4px oklch(0.25 0.04 20 / 0.05), 0 2px 6px oklch(0 0 0 / 0.4)),
+    light-dark(0 8px 24px oklch(0.25 0.04 20 / 0.07), 0 8px 24px oklch(0 0 0 / 0.35));
+  --sombra-3: 0 12px 32px oklch(0.2 0.05 20 / 0.18), 0 2px 6px oklch(0.2 0.05 20 / 0.1);
 
   /* Movimiento */
   --ease-salida: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-rapida: 140ms;
   --dur-media: 220ms;
 
+  /* Espaciado: escala de 4/8 px (Tailwind: 1 = 4 px). Ver DISENO-GRILLA.md */
+  --e-1: 0.25rem; /* 4 */
+  --e-2: 0.5rem; /* 8 */
+  --e-3: 0.75rem; /* 12 */
+  --e-4: 1rem; /* 16 */
+  --e-6: 1.5rem; /* 24 */
+  --e-8: 2rem; /* 32 */
+  --e-12: 3rem; /* 48 */
+  --e-16: 4rem; /* 64 */
+  --e-20: 5rem; /* 80 */
+  --gutter: 1rem; /* margen lateral de página: 16 móvil, 24 tablet, 32 escritorio */
+  --gap-grilla: 1rem;
+  --ritmo-seccion: 2.5rem; /* relleno vertical de cada sección de la portada: 40 móvil, 48, 56 (entre dos secciones: 80, 96, 112) */
+  --ancho-pagina: 80rem; /* app: igual que la portada, para que el logo no se mueva */
+  --ancho-portada: 80rem; /* portada */
+  --medida: 65ch; /* ancho máximo de texto corrido */
+
   /* Layout */
-  --riel: 4.25rem;
   --barra: 3.5rem;
-  --nav-movil: 3.75rem;
 }
 
 :root[data-tema='light'] {
@@ -76,6 +95,9 @@
 }
 :root[data-tema='dark'] {
   color-scheme: dark;
+}
+:root[data-tema='system'] {
+  color-scheme: light dark;
 }
 
 @theme inline {
@@ -101,11 +123,13 @@
   --color-peligro: var(--c-peligro);
   --color-peligro-suave: var(--c-peligro-suave);
   --color-panel: var(--c-panel);
+  --color-panel-2: var(--c-panel-2);
   --color-sobre-panel: var(--c-sobre-panel);
   --color-sobre-panel-2: var(--c-sobre-panel-2);
 
   --font-display: var(--f-display);
   --font-sans: var(--f-texto);
+  --font-marca: var(--f-marca);
 
   --radius-sm: var(--r-sm);
   --radius-md: var(--r-md);
@@ -125,6 +149,8 @@
     accent-color: var(--c-acento);
     scrollbar-color: var(--c-borde-fuerte) transparent;
     scrollbar-width: thin;
+    /* Anclas y foco por teclado quedan bajo la cabecera fija. */
+    scroll-padding-top: calc(var(--barra) + 1rem);
   }
   body {
     margin: 0;
@@ -169,6 +195,65 @@
   letter-spacing: -0.03em;
 }
 
+/* ---------- Espaciado y grillas (ver DISENO-GRILLA.md) ---------- */
+@media (min-width: 40rem) {
+  :root { --gutter: 1.5rem; --gap-grilla: 1.25rem; --ritmo-seccion: 3rem; }
+}
+@media (min-width: 64rem) {
+  :root { --gutter: 2rem; --gap-grilla: 1.5rem; --ritmo-seccion: 3.5rem; }
+}
+@utility pagina-ancho {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--ancho-portada);
+  padding-inline: var(--gutter);
+}
+@utility seccion-ritmo {
+  padding-block: var(--ritmo-seccion);
+}
+/* Grilla de tarjetas: columnas automáticas de ancho mínimo fijo, mismo hueco en ambos ejes, filas de igual altura. */
+@utility rejilla-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--min-tarjeta, 16rem)), 1fr));
+  gap: var(--gap-grilla);
+  align-items: stretch;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* Tira horizontal: todas las tarjetas del mismo ancho (se fija con --ancho-tarjeta). */
+@utility pista-tarjetas {
+  display: flex;
+  gap: var(--gap-grilla);
+  align-items: stretch;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+@utility texto-medida {
+  max-width: var(--medida);
+}
+
+/* ---------- Marca: carmesí con esquirlas angulares (CSS puro, sin imagen) ---------- */
+.esquirlas { position: relative; isolation: isolate; overflow: hidden; }
+.esquirlas::before,
+.esquirlas::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--esquirla, var(--c-panel-2));
+}
+.esquirlas::before { inset: 0; clip-path: polygon(64% 0, 100% 0, 100% 48%, 86% 24%); }
+.esquirlas::after { inset: 0; clip-path: polygon(0 58%, 34% 100%, 0 100%); }
+.fondo-esquirlas { background-color: var(--c-panel); color: var(--c-sobre-panel); }
+/* Versión suave para marcadores de posición (fotos que faltan): tinte de marca sobre superficie. */
+.fondo-esquirlas-suave {
+  --esquirla: color-mix(in oklab, var(--c-acento) 9%, transparent);
+  background-color: color-mix(in oklab, var(--c-acento) 6%, var(--c-superficie-2));
+}
+.logotipo { font-family: var(--f-marca); font-weight: 900; letter-spacing: 0.01em; line-height: 1; }
+
 /* ---------- Validación tras la interacción (:user-invalid) ---------- */
 .campo-control:user-invalid {
   border-color: var(--c-peligro);
@@ -196,7 +281,7 @@ dialog.san-dialog:modal {
   overscroll-behavior: contain;
 }
 dialog.san-dialog::backdrop {
-  background: oklch(0.15 0.04 268 / 0.5);
+  background: oklch(0.15 0.04 20 / 0.5);
   backdrop-filter: blur(3px);
   overflow: hidden;
   overscroll-behavior: contain;
@@ -217,15 +302,86 @@ dialog.san-dialog::backdrop {
     transform: none;
     @starting-style { opacity: 0; transform: translateY(8px) scale(0.98); }
   }
-  dialog.san-dialog::backdrop { background-color: oklch(0.15 0.04 268 / 0); }
+  dialog.san-dialog::backdrop { background-color: oklch(0.15 0.04 20 / 0); }
   dialog.san-dialog[open]::backdrop {
-    background-color: oklch(0.15 0.04 268 / 0.5);
-    @starting-style { background-color: oklch(0.15 0.04 268 / 0); }
+    background-color: oklch(0.15 0.04 20 / 0.5);
+    @starting-style { background-color: oklch(0.15 0.04 20 / 0); }
   }
 }
 
 /* ---------- Slider (range nativo con marca) ---------- */
 input[type='range'].san-slider { accent-color: var(--c-acento); }
+
+/* ---------- Navegación superior: panel desplegable en pantallas angostas ---------- */
+.panel-nav[popover] {
+  position: fixed;
+  inset: auto;
+  /* Respaldo para navegadores sin anchor(): bajo la primera fila de la barra. */
+  inset-block-start: 3.75rem;
+  inset-block-start: anchor(--boton-menu bottom);
+  inset-inline-start: 1rem;
+  margin: 0;
+  margin-block-start: 0.5rem;
+  inline-size: min(20rem, calc(100dvw - 2rem));
+  max-block-size: calc(100dvh - 6rem);
+  overflow: auto;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .panel-nav[popover] {
+    transition: opacity var(--dur-media) var(--ease-salida), translate var(--dur-media) var(--ease-salida), display var(--dur-media), overlay var(--dur-media);
+    transition-behavior: allow-discrete;
+    opacity: 0;
+    translate: 0 -0.5rem;
+  }
+  .panel-nav[popover]:popover-open { opacity: 1; translate: 0; }
+  @starting-style { .panel-nav[popover]:popover-open { opacity: 0; translate: 0 -0.5rem; } }
+}
+
+/* Menú de la cuenta: anclado al avatar (borde derecho alineado con él). Sin anchor(), alineado al borde de la columna de la página. */
+.menu-cuenta[popover] {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  inset-block-start: calc(var(--barra) - 0.25rem);
+  inset-inline-end: max(var(--gutter), calc((100vw - var(--ancho-pagina)) / 2 + var(--gutter)));
+}
+@supports (top: anchor(bottom)) {
+  .menu-cuenta[popover] {
+    position-anchor: --avatar-cuenta;
+    inset-block-start: calc(anchor(bottom) + 0.5rem);
+    inset-inline-end: anchor(right);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-cuenta[popover] {
+    transition: opacity var(--dur-rapida) var(--ease-salida), translate var(--dur-rapida) var(--ease-salida), display var(--dur-rapida), overlay var(--dur-rapida);
+    transition-behavior: allow-discrete;
+    opacity: 0;
+    translate: 0 -0.25rem;
+  }
+  .menu-cuenta[popover]:popover-open { opacity: 1; translate: 0; }
+  @starting-style { .menu-cuenta[popover]:popover-open { opacity: 0; translate: 0 -0.25rem; } }
+}
+
+/* Panel del Selector en la capa superior: posición fija calculada desde el botón (ver usePanelSuperior). */
+.selector-panel {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  z-index: 60;
+}
+
+/* ---------- Preguntas frecuentes (details nativo) ---------- */
+.faq-item::details-content { block-size: 0; overflow: hidden; }
+.faq-item[open]::details-content { block-size: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .faq-item { interpolate-size: allow-keywords; }
+  .faq-item::details-content {
+    transition: block-size var(--dur-media) var(--ease-salida), content-visibility var(--dur-media) allow-discrete;
+  }
+}
+.faq-item summary { list-style: none; }
+.faq-item summary::-webkit-details-marker { display: none; }
 
 /* ---------- Skeleton ---------- */
 @keyframes san-brillo { to { background-position: -200% 0; } }
@@ -237,12 +393,17 @@ input[type='range'].san-slider { accent-color: var(--c-acento); }
 }
 
 /* ---------- Transición entre vistas (same-document) ---------- */
+/* La cabecera tiene nombre propio: queda fuera del fundido de la página y no parpadea al cambiar de ruta. */
+.cabecera-san { view-transition-name: cabecera; }
 @media (prefers-reduced-motion: no-preference) {
   ::view-transition-old(root),
   ::view-transition-new(root) {
-    animation-duration: 160ms;
+    animation-duration: 220ms;
     animation-timing-function: var(--ease-salida);
   }
+  ::view-transition-group(cabecera) { animation-duration: 0s; }
+  ::view-transition-old(cabecera) { display: none; }
+  ::view-transition-new(cabecera) { animation: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),

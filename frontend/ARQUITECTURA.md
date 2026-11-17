@@ -6,7 +6,7 @@ SPA React 19 + TypeScript estricto + Vite + Tailwind v4. Código y UI en españo
 
 - `lib/` lógica sin UI: `api.ts` (cliente), `almacenSesion.ts` + `sesion.tsx` (sesión), `tema.tsx`, `modelos.ts`, `formato.ts`, `campus.ts` (fotos y créditos), `recientes.ts`, `useCarga.ts`, `useCatalogoConteos.ts`.
 - `componentes/` primitivas del sistema de diseño (Button, Campo/Input/Select/Textarea, Card, Badge, Tabs, Dialog, Slider, Avatar, EmptyState, Skeleton, Toast, PuntajeBarra, Logo, EncabezadoPagina). Se importan de `@/componentes`.
-- `layout/` `Shell` (riel + barra superior + nav móvil), `LayoutPublico`, `RutaPrivada`, `MenuUsuario`, `navegacion.ts`.
+- `layout/` `Marco` (cabecera única `NavSuperior` con `variante` portada/app + `<Outlet />`), `Shell` (contenido de la app), `LayoutPublico` (contenido de la portada), `RutaPrivada`, `MenuUsuario`, `navegacion.ts`. `App.tsx` usa un router de datos para que `viewTransition` funcione.
 - `paginas/` una pantalla por archivo con `export default`, cargada con `lazy` desde `rutas.tsx`. `paginas/auth/` contiene ingreso y registro.
 - `morphing/` componentes portados de amicro (importan de `framer-motion`).
 - `index.css` es el único lugar de tokens (colores `light-dark()`, tipografía, radios, sombras, movimiento).
@@ -30,6 +30,8 @@ Cargar datos en un componente: `useCarga(() => catalogo.carreras(), [deps])` dev
 `useSesion()` da `usuario`, `autenticado`, `esAdmin`, `login`, `registro`, `logout`, `actualizarSesion`. Tokens en `localStorage` (`san.accessToken`, `san.refreshToken`, `san.usuario`). El cliente agrega el `Bearer`, ante un 401 llama a `/auth/refresh` una vez (compartido entre peticiones simultáneas) y reintenta; si falla, cierra sesión y `RutaPrivada` redirige a `/ingresar?returnUrl=...`. Las búsquedas recientes se guardan con `registrarBusquedaReciente(id)` (`lib/recientes.ts`); llámalo al crear una búsqueda.
 
 ## Convenciones de UI
+
+- Marca roja (#a11b22), escala de espaciado, grillas de tarjetas uniformes y reglas de lectura: ver [`DISENO-GRILLA.md`](./DISENO-GRILLA.md). Utilidades en `index.css`: `rejilla-tarjetas`, `pista-tarjetas`, `pagina-ancho`, `seccion-ritmo`, `esquirlas`/`fondo-esquirlas`, `logotipo`.
 
 - Colores solo con tokens (`bg-superficie`, `text-texto-2`, `bg-acento`, `border-borde`...); nunca hex sueltos. Tema claro/oscuro automático.
 - Texto de interfaz con tildes. Ciudades y nombres de la API con `ciudadLegible` / `nombreLegible`; precios con `formatoCop`.

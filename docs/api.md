@@ -546,6 +546,7 @@ Si la suma de los pesos es 0, el puntaje es 0.
           "universidad": "Universidad Nacional de Colombia",
           "carrera": "Ingenieria de Sistemas",
           "imagenUrl": "/campus/nacional.webp",
+          "carreraImagenUrl": "/carreras/ingenieria-de-sistemas.webp",
           "ciudad": "Bogota",
           "costo": 4500000,
           "modalidad": "presencial",
@@ -565,6 +566,7 @@ Si la suma de los pesos es 0, el puntaje es 0.
           "universidad": "Universidad de los Andes",
           "carrera": "Ingenieria de Sistemas",
           "imagenUrl": "/campus/andes.webp",
+          "carreraImagenUrl": "/carreras/ingenieria-de-sistemas.webp",
           "ciudad": "Bogota",
           "costo": 22000000,
           "modalidad": "presencial",
@@ -584,6 +586,7 @@ Si la suma de los pesos es 0, el puntaje es 0.
           "universidad": "Universidad EAFIT",
           "carrera": "Ingenieria de Sistemas",
           "imagenUrl": "/campus/eafit.webp",
+          "carreraImagenUrl": "/carreras/ingenieria-de-sistemas.webp",
           "ciudad": "Medellin",
           "costo": 18000000,
           "modalidad": "virtual",
@@ -801,12 +804,18 @@ Lista las carreras ordenadas por nombre.
 | Parametro | Tipo | Reglas |
 |---|---|---|
 | `nombre` | string | Opcional, no vacio. Devuelve las carreras cuyo nombre **contiene** el texto, sin distinguir mayusculas |
+| `area` | string | Opcional, no vacio. Devuelve las carreras de esa area (coincidencia exacta, sin distinguir mayusculas), por ejemplo `?area=Salud`. Areas de la semilla: Ingenieria, Salud, Ciencias Sociales, Negocios, Artes y Diseno, Educacion, Ciencias |
 
 **Respuesta 200** (`?nombre=ing`)
 
 ```json
 [
-  { "id": "00000000-0000-4000-8000-000000000011", "nombre": "Ingenieria de Sistemas" }
+  {
+    "id": "00000000-0000-4000-8000-000000000011",
+    "nombre": "Ingenieria de Sistemas",
+    "imagenUrl": "/carreras/ingenieria-de-sistemas.webp",
+    "area": "Ingenieria"
+  }
 ]
 ```
 
@@ -814,7 +823,7 @@ Lista las carreras ordenadas por nombre.
 
 | Codigo | Motivo |
 |---|---|
-| 400 | `?nombre=` vacio o parametro no declarado (por ejemplo `?foo=1`) |
+| 400 | `?nombre=` o `?area=` vacios o parametro no declarado (por ejemplo `?foo=1`) |
 
 **Ejemplo**
 
@@ -827,7 +836,12 @@ curl "http://localhost:3000/carreras?nombre=ing"
 **Respuesta 200**
 
 ```json
-{ "id": "00000000-0000-4000-8000-000000000012", "nombre": "Derecho" }
+{
+  "id": "00000000-0000-4000-8000-000000000012",
+  "nombre": "Derecho",
+  "imagenUrl": "/carreras/derecho.webp",
+  "area": "Ciencias Sociales"
+}
 ```
 
 **Errores**
@@ -892,6 +906,7 @@ curl "http://localhost:3000/universidades?ciudad=Medellin"
       "universidad": "Universidad Nacional de Colombia",
       "carrera": "Ingenieria de Sistemas",
       "imagenUrl": "/campus/nacional.webp",
+      "carreraImagenUrl": "/carreras/ingenieria-de-sistemas.webp",
       "ciudad": "Bogota",
       "costo": 4500000,
       "modalidad": "presencial",
@@ -929,6 +944,7 @@ curl http://localhost:3000/universidades/00000000-0000-4000-8000-000000000021
   "universidad": "Universidad EAFIT",
   "carrera": "Ingenieria de Sistemas",
   "imagenUrl": "/campus/eafit.webp",
+  "carreraImagenUrl": "/carreras/ingenieria-de-sistemas.webp",
   "ciudad": "Medellin",
   "costo": 18000000,
   "modalidad": "virtual",
@@ -983,13 +999,15 @@ curl "http://localhost:3000/ofertas?carreraId=00000000-0000-4000-8000-0000000000
 | Campo | Tipo | Reglas |
 |---|---|---|
 | `nombre` | string | Obligatorio, no vacio, maximo 150 caracteres, unico |
+| `imagenUrl` | string | Opcional, maximo 255 caracteres. Ruta relativa (`/carreras/fisica.webp`) o URL `https://...` |
+| `area` | string | Opcional, no vacio, maximo 100 caracteres (por ejemplo `Ciencias`) |
 
 **Respuesta 201**
 
 ```json
 {
   "message": "Carrera creada correctamente",
-  "data": { "id": "6f1d2c3e-1a2b-4c5d-8e9f-0a1b2c3d4e5f", "nombre": "Fisica" }
+  "data": { "id": "6f1d2c3e-1a2b-4c5d-8e9f-0a1b2c3d4e5f", "nombre": "Fisica", "imagenUrl": "/carreras/fisica.webp", "area": "Ciencias" }
 }
 ```
 
@@ -1104,6 +1122,7 @@ Elimina la universidad y, en cascada, sus ofertas (tambien de favoritos y compar
     "universidad": "Universidad Nacional de Colombia",
     "carrera": "Derecho",
     "imagenUrl": "/campus/nacional.webp",
+    "carreraImagenUrl": "/carreras/derecho.webp",
     "ciudad": "Bogota",
     "costo": 5000000,
     "modalidad": "presencial",

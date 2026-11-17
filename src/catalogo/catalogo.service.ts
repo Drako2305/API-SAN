@@ -33,9 +33,16 @@ export class CatalogoService {
     private readonly ofertaRepository: Repository<OfertaAcademica>,
   ) {}
 
-  async listarCarreras(nombre?: string): Promise<CarreraDto[]> {
+  async listarCarreras(nombre?: string, area?: string): Promise<CarreraDto[]> {
+    const where: FindOptionsWhere<Carrera> = {};
+    if (nombre) {
+      where.nombre = ILike(`%${this.escaparLike(nombre)}%`);
+    }
+    if (area) {
+      where.area = ILike(this.escaparLike(area));
+    }
     return this.carreraRepository.find({
-      where: nombre ? { nombre: ILike(`%${this.escaparLike(nombre)}%`) } : {},
+      where,
       order: { nombre: 'ASC' },
     });
   }
@@ -272,6 +279,7 @@ export class CatalogoService {
       universidad: oferta.universidad.nombre,
       carrera: oferta.carrera.nombre,
       imagenUrl: oferta.universidad.imagenUrl ?? null,
+      carreraImagenUrl: oferta.carrera.imagenUrl ?? null,
       ciudad: oferta.ciudad,
       costo: oferta.costo,
       modalidad: oferta.modalidad,

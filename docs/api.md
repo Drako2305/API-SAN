@@ -8,7 +8,7 @@ La documentacion interactiva (Swagger UI) esta en http://localhost:3000/docs y e
 
 - **Validacion**: `ValidationPipe` global con `whitelist`, `forbidNonWhitelisted` y `transform`. Un campo del body o de la query que no este declarado en el DTO responde 400. Query y params se convierten a su tipo.
 - **IDs**: los parametros `:id` y `:ofertaId` deben ser UUID. Si no lo son, responde 400 (`ParseUUIDPipe`).
-- **Codigos de estado**: los POST responden 201 (valor por defecto de NestJS). GET, PUT y DELETE responden 200.
+- **Codigos de estado**: los POST responden 201 (valor por defecto de NestJS). GET, PUT, PATCH y DELETE responden 200.
 - **Formato de error** (estandar de NestJS):
 
   ```json
@@ -23,7 +23,7 @@ La documentacion interactiva (Swagger UI) esta en http://localhost:3000/docs y e
 
 - **Forma de la respuesta**: algunos endpoints devuelven `{ "message", "data" }` y otros el recurso directamente. Cada seccion lo indica.
 - **Autenticacion**: JWT con el header `Authorization: Bearer <accessToken>`. Ver la seccion [Autenticacion y roles](#autenticacion-y-roles). Sin token o con token invalido responde 401; sin permiso responde 403.
-- **Escrituras del catalogo**: `POST`, `PUT` y `DELETE` de carreras, universidades y ofertas devuelven `{ "message", "data" }` (el `DELETE` solo `message`). Las lecturas siguen devolviendo el recurso directo.
+- **Escrituras del catalogo**: `POST`, `PUT`, `PATCH` y `DELETE` de carreras, universidades y ofertas devuelven `{ "message", "data" }` (el `DELETE` solo `message`). Las lecturas siguen devolviendo el recurso directo.
 
 ### Endpoints
 
@@ -34,8 +34,10 @@ La documentacion interactiva (Swagger UI) esta en http://localhost:3000/docs y e
 | Auth | POST | `/auth/refresh` | Renueva los tokens con un refresh token |
 | Usuarios | GET | `/usuarios/{id}` | Consulta el usuario con su perfil |
 | Usuarios | PUT | `/usuarios/{id}` | Actualiza datos del usuario y su perfil |
+| Usuarios | PATCH | `/usuarios/{id}` | Actualiza parcialmente el usuario (misma logica que PUT) |
 | Usuarios | GET | `/usuarios/{id}/preferencias` | Consulta las preferencias del usuario |
 | Usuarios | PUT | `/usuarios/{id}/preferencias` | Actualiza las preferencias del usuario |
+| Usuarios | PATCH | `/usuarios/{id}/preferencias` | Igual que PUT (mismo DTO, los 4 campos) |
 | Usuarios | GET | `/usuarios/{id}/favoritos` | Lista los IDs de ofertas favoritas |
 | Usuarios | POST | `/usuarios/{id}/favoritos` | Agrega una oferta a favoritos |
 | Usuarios | DELETE | `/usuarios/{id}/favoritos/{ofertaId}` | Quita una oferta de favoritos |
@@ -49,17 +51,24 @@ La documentacion interactiva (Swagger UI) esta en http://localhost:3000/docs y e
 | Catalogo | GET | `/carreras/{id}` | Consulta una carrera |
 | Catalogo | POST | `/carreras` | Crea una carrera |
 | Catalogo | PUT | `/carreras/{id}` | Actualiza una carrera |
+| Catalogo | PATCH | `/carreras/{id}` | Actualiza parcialmente una carrera |
 | Catalogo | DELETE | `/carreras/{id}` | Elimina una carrera y sus ofertas |
 | Catalogo | GET | `/universidades` | Lista universidades (filtro `?ciudad=`) |
 | Catalogo | GET | `/universidades/{id}` | Consulta una universidad con sus ofertas |
 | Catalogo | POST | `/universidades` | Crea una universidad |
 | Catalogo | PUT | `/universidades/{id}` | Actualiza una universidad |
+| Catalogo | PATCH | `/universidades/{id}` | Actualiza parcialmente una universidad |
 | Catalogo | DELETE | `/universidades/{id}` | Elimina una universidad y sus ofertas |
 | Catalogo | GET | `/ofertas` | Lista ofertas (filtros `?carreraId=`, `?universidadId=`, `?ciudad=`) |
 | Catalogo | GET | `/ofertas/{id}` | Consulta una oferta academica |
 | Catalogo | POST | `/ofertas` | Crea una oferta academica |
 | Catalogo | PUT | `/ofertas/{id}` | Actualiza una oferta academica |
+| Catalogo | PATCH | `/ofertas/{id}` | Actualiza parcialmente una oferta academica |
 | Catalogo | DELETE | `/ofertas/{id}` | Elimina una oferta academica |
+
+### PUT vs PATCH
+
+`PUT` se conserva por compatibilidad y `PATCH` es la forma recomendada de actualizar parcialmente. Ambos usan el mismo DTO (`Actualizar...Dto`, todos los campos opcionales), el mismo metodo del servicio, los mismos guards y las mismas respuestas; solo cambia el verbo. En `/usuarios/{id}/preferencias` ambos exigen los cuatro campos de `PreferenciaDto`.
 
 ### Datos de ejemplo (seed)
 
@@ -96,7 +105,7 @@ Los ejemplos de este documento usan los datos de `npm run seed`. Usuario demo (e
 |---|---|
 | `/auth/*`, `/busquedas*`, `/comparaciones*`, `GET` del catalogo | Publicos |
 | `/usuarios/{id}...` (todos) | Token valido. Solo el propio usuario (`sub === id`) o un `admin`; si no, 403 |
-| `POST`, `PUT`, `DELETE` de `/carreras`, `/universidades` y `/ofertas` | Token valido con rol `admin`; un estudiante recibe 403 |
+| `POST`, `PUT`, `PATCH`, `DELETE` de `/carreras`, `/universidades` y `/ofertas` | Token valido con rol `admin`; un estudiante recibe 403 |
 
 Errores de acceso (formato estandar de NestJS):
 
@@ -324,6 +333,16 @@ curl -X PUT http://localhost:3000/usuarios/00000000-0000-4000-8000-000000000001 
   -d '{"nombre":"Nico","perfil":{"ciudad":"Medellin"}}'
 ```
 
+### PATCH /usuarios/{id}
+
+Actualizacion parcial del usuario y su perfil: mismo body, respuesta y errores que `PUT /usuarios/{id}`.
+
+```bash
+curl -X PATCH http://localhost:3000/usuarios/00000000-0000-4000-8000-000000000001 \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"perfil":{"ciudad":"Medellin"}}'
+```
+
 ### GET /usuarios/{id}/preferencias
 
 Devuelve el objeto de preferencias directamente (sin `message` ni `data`). Los usuarios nuevos arrancan con 3 en cada criterio.
@@ -381,6 +400,16 @@ Reemplaza las preferencias. Los cuatro campos son obligatorios.
 ```bash
 curl -X PUT http://localhost:3000/usuarios/00000000-0000-4000-8000-000000000001/preferencias \
   -H "Content-Type: application/json" \
+  -d '{"costo":4,"modalidad":2,"ubicacion":5,"acreditacion":3}'
+```
+
+### PATCH /usuarios/{id}/preferencias
+
+Igual que `PUT /usuarios/{id}/preferencias` (mismo `PreferenciaDto`, los cuatro campos).
+
+```bash
+curl -X PATCH http://localhost:3000/usuarios/00000000-0000-4000-8000-000000000001/preferencias \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
   -d '{"costo":4,"modalidad":2,"ubicacion":5,"acreditacion":3}'
 ```
 
@@ -761,7 +790,7 @@ curl -X DELETE http://localhost:3000/comparaciones/<id-comparacion>
 
 ## Catalogo
 
-Las lecturas (`GET`) son publicas, devuelven los datos directamente (sin `message` ni `data`) y no hay paginacion. Las escrituras (`POST`, `PUT`, `DELETE`) exigen `Authorization: Bearer <accessToken>` de un usuario con rol `admin` (401 sin token, 403 para un estudiante) y devuelven `{ "message", "data" }`.
+Las lecturas (`GET`) son publicas, devuelven los datos directamente (sin `message` ni `data`) y no hay paginacion. Las escrituras (`POST`, `PUT`, `PATCH`, `DELETE`) exigen `Authorization: Bearer <accessToken>` de un usuario con rol `admin` (401 sin token, 403 para un estudiante) y devuelven `{ "message", "data" }`.
 
 ### GET /carreras
 
@@ -985,6 +1014,15 @@ Body igual al de `POST /carreras`, con todos los campos opcionales (`PartialType
 
 **Errores**: 400 (`id` no UUID o body invalido), 404 (`Carrera con ID <id> no existe`), 409 (nombre ya existe).
 
+### PATCH /carreras/{id}
+
+Actualizacion parcial: mismo body, validaciones, respuesta y errores que `PUT /carreras/{id}`.
+
+```bash
+curl -X PATCH http://localhost:3000/carreras/<id> -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN_ADMIN" -d '{"nombre":"Fisica Aplicada"}'
+```
+
 ### DELETE /carreras/{id}
 
 Elimina la carrera. Sus ofertas se eliminan en cascada, y desaparecen de favoritos y comparaciones. Responde 200 con `{ "message": "Carrera eliminada correctamente" }`.
@@ -1022,6 +1060,15 @@ Elimina la carrera. Sus ofertas se eliminan en cascada, y desaparecen de favorit
 Mismo body con todos los campos opcionales. Responde 200 con `{ "message": "Universidad actualizada correctamente", "data": <universidad> }`.
 
 **Errores**: 400, 404 (`Universidad con ID <id> no existe`), 409 (nombre ya existe).
+
+### PATCH /universidades/{id}
+
+Actualizacion parcial: mismo body, respuesta y errores que `PUT /universidades/{id}`.
+
+```bash
+curl -X PATCH http://localhost:3000/universidades/<id> -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN_ADMIN" -d '{"ciudad":"Cali"}'
+```
 
 ### DELETE /universidades/{id}
 
@@ -1075,6 +1122,15 @@ Elimina la universidad y, en cascada, sus ofertas (tambien de favoritos y compar
 Mismo body con todos los campos opcionales; `universidadId` y `carreraId` se validan solo si se envian. Responde 200 con `{ "message": "Oferta actualizada correctamente", "data": <oferta> }`.
 
 **Errores**: 400, 404 (oferta, universidad o carrera), 409 (SNIES repetido).
+
+### PATCH /ofertas/{id}
+
+Actualizacion parcial: mismo body, respuesta y errores que `PUT /ofertas/{id}`.
+
+```bash
+curl -X PATCH http://localhost:3000/ofertas/<id> -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN_ADMIN" -d '{"costo":5000000}'
+```
 
 ### DELETE /ofertas/{id}
 

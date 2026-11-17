@@ -35,7 +35,7 @@ export class CatalogoController {
 
   @Get('carreras')
   listarCarreras(@Query() filtros: FiltroCarreraDto) {
-    return this.catalogoService.listarCarreras(filtros.nombre);
+    return this.catalogoService.listarCarreras(filtros.nombre, filtros.area);
   }
 
   @Get('carreras/:id')

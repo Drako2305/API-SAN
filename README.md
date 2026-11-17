@@ -43,7 +43,7 @@ El `.env` contiene `PORT`, `CORS_ORIGIN` (origen del frontend, `http://localhost
    npm run seed
    ```
 
-   Carga carreras, universidades, ofertas y un usuario demo (`nicolas@correo.com` / `12345678`, rol estudiante) y un admin demo (`admin@correo.com` / `admin12345`, rol admin). Es idempotente: se puede correr varias veces sin duplicar datos. Las tablas se crean solas porque TypeORM usa `synchronize: true`; todavia no hay migraciones.
+   Carga carreras, universidades, ofertas y un usuario demo (`nicolas@correo.com` / `12345678`, rol estudiante) y un admin demo (`admin@correo.com` / `admin12345`, rol admin). Carga 42 carreras (con area e imagen), 19 universidades y 188 ofertas simuladas. Es idempotente: se puede correr varias veces sin duplicar datos. Las tablas se crean solas porque TypeORM usa `synchronize: true`; todavia no hay migraciones.
 
 ## Ejecutar la API
 
@@ -201,7 +201,8 @@ Salen del seed (`npm run seed`, ver [Base de datos](#base-de-datos)):
 | `npm test -- auth` | Corre solo las pruebas que coinciden con `auth` |
 | `npm run test:watch` | Pruebas unitarias en modo watch |
 | `npm run test:cov` | Pruebas unitarias con cobertura |
-| `npm run test:e2e` | Pruebas e2e (`test/`). Requiere PostgreSQL arriba |
+| `npm run test:e2e` | Pruebas e2e (`test/`). Requiere PostgreSQL arriba. Corren contra una base aparte (`<POSTGRES_DB>_e2e`, o `POSTGRES_DB_E2E`) que se crea sola, asi la de desarrollo no se ensucia |
+| `npm run limpiar:pruebas` | Compila y borra de la base de desarrollo la basura de pruebas e2e antiguas (`Carrera <hex>`, `Universidad <hex>` y usuarios de prueba); no toca los usuarios demo |
 
 Los scripts de prueba ya incluyen `NODE_OPTIONS=--experimental-vm-modules`, porque `@nestjs/common` es ESM puro. No quitarlo ni la configuracion de `jest.config.ts` y `test/jest-e2e.json`.
 

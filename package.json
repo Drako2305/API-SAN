@@ -8,6 +8,7 @@
   "scripts": {
     "build": "nest build",
     "seed": "nest build && node dist/seed",
+    "limpiar:pruebas": "nest build && node dist/limpiar-pruebas",
     "deploy": "nest deploy",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",

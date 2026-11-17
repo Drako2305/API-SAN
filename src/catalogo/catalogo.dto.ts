@@ -8,6 +8,7 @@ import {
   IsString,
   IsUUID,
   MaxLength,
+  Matches,
   Min,
 } from 'class-validator';
 import { JORNADAS, MODALIDADES } from '../common/constantes';
@@ -17,6 +18,20 @@ export class CrearCarreraDto {
   @IsNotEmpty()
   @MaxLength(150)
   nombre: string;
+
+  @IsOptional()
+  @IsString()
+  @Matches(/^(\/|https:\/\/)\S+$/, {
+    message: 'imagenUrl debe ser una ruta relativa (/...) o una URL https',
+  })
+  @MaxLength(255)
+  imagenUrl?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(100)
+  area?: string;
 }
 
 export class ActualizarCarreraDto extends PartialType(CrearCarreraDto) {}
@@ -100,6 +115,11 @@ export class FiltroCarreraDto {
   @IsString()
   @IsNotEmpty()
   nombre?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  area?: string;
 }
 
 export class FiltroUniversidadDto {
@@ -112,6 +132,8 @@ export class FiltroUniversidadDto {
 export class CarreraDto {
   id: string;
   nombre: string;
+  imagenUrl: string | null;
+  area: string | null;
 }
 
 export class UniversidadDto {
@@ -128,6 +150,7 @@ export class OfertaAcademicaDto {
   universidad: string;
   carrera: string;
   imagenUrl: string | null;
+  carreraImagenUrl: string | null;
   ciudad: string;
   costo: number;
   modalidad: string;

@@ -5,6 +5,8 @@
   "testRegex": ".e2e-spec.ts$",
   "testPathIgnorePatterns": ["/node_modules/", "/.claude/", "/frontend/"],
   "maxWorkers": 1,
+  "globalSetup": "<rootDir>/global-setup-e2e.cjs",
+  "setupFiles": ["<rootDir>/setup-e2e.cjs"],
   "extensionsToTreatAsEsm": [".ts"],
   "transform": {
     "^.+\\.(t|j)s$": [

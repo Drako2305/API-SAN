@@ -17,6 +17,12 @@ export class Carrera {
   @Column({ unique: true })
   nombre: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  imagenUrl: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  area: string | null;
+
   @OneToMany(() => OfertaAcademica, (oferta) => oferta.carrera)
   ofertas: Relation<OfertaAcademica[]>;
 

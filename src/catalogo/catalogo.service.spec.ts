@@ -52,6 +52,7 @@ describe('CatalogoService', () => {
     carrera: {
       id: IDS_SEMILLA.carreras.sistemas,
       nombre: 'Ingenieria de Sistemas',
+      imagenUrl: '/carreras/ingenieria-de-sistemas.webp',
     },
   } as OfertaAcademica;
 
@@ -101,6 +102,7 @@ describe('CatalogoService', () => {
         universidad: 'Universidad Nacional de Colombia',
         carrera: 'Ingenieria de Sistemas',
         imagenUrl: '/campus/nacional.webp',
+        carreraImagenUrl: '/carreras/ingenieria-de-sistemas.webp',
         ciudad: 'Bogota',
         costo: 4500000,
         modalidad: 'presencial',
@@ -152,6 +154,17 @@ describe('CatalogoService', () => {
 
     expect(carreraRepository.find).toHaveBeenCalledWith({
       where: { nombre: ILike('%sist%') },
+      order: { nombre: 'ASC' },
+    });
+  });
+
+  it('filtra carreras por area sin distinguir mayusculas', async () => {
+    carreraRepository.find.mockResolvedValue([]);
+
+    await service.listarCarreras(undefined, 'salud');
+
+    expect(carreraRepository.find).toHaveBeenCalledWith({
+      where: { area: ILike('salud') },
       order: { nombre: 'ASC' },
     });
   });

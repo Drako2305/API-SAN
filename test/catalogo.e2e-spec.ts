@@ -3,7 +3,11 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import { App } from 'supertest/types';
-import { DataSource } from 'typeorm';
+import { DataSource, In } from 'typeorm';
+import { Carrera } from './../src/catalogo/carrera.entity';
+import { OfertaAcademica } from './../src/catalogo/oferta-academica.entity';
+import { Universidad } from './../src/catalogo/universidad.entity';
+import { Usuario } from './../src/usuarios/usuario.entity';
 import { AppModule } from './../src/app.module';
 import { IDS_SEMILLA, sembrarBd } from './../src/common/semilla';
 
@@ -11,6 +15,12 @@ describe('Catalogo (e2e)', () => {
   let app: INestApplication<App>;
   let tokenAdmin: string;
   let tokenEstudiante: string;
+  const creados = {
+    carreras: [] as string[],
+    universidades: [] as string[],
+    ofertas: [] as string[],
+    usuarios: [] as string[],
+  };
 
   async function iniciarSesion(correo: string, clave: string) {
     const respuesta = await request(app.getHttpServer())
@@ -49,6 +59,18 @@ describe('Catalogo (e2e)', () => {
         );
         expect(nombres).toContain('Ingenieria de Sistemas');
       });
+  });
+
+  it('GET /carreras?area=salud filtra por area e incluye imagenUrl', async () => {
+    const respuesta = await request(app.getHttpServer())
+      .get('/carreras?area=salud')
+      .expect(200);
+    const nombres = respuesta.body.map((c: { nombre: string }) => c.nombre);
+    expect(nombres).toEqual(expect.arrayContaining(['Medicina', 'Psicologia']));
+    respuesta.body.forEach((c: { area: string; imagenUrl: string }) => {
+      expect(c.area).toBe('Salud');
+      expect(c.imagenUrl).toMatch(/^\/carreras\/.+\.webp$/);
+    });
   });
 
   it('GET /universidades?ciudad=bogota devuelve solo universidades de Bogota', () => {
@@ -107,6 +129,7 @@ describe('Catalogo (e2e)', () => {
         universidadId: IDS_SEMILLA.universidades.nacional,
         carreraId: IDS_SEMILLA.carreras.sistemas,
         imagenUrl: '/campus/nacional.webp',
+        carreraImagenUrl: '/carreras/ingenieria-de-sistemas.webp',
       }),
     );
   });
@@ -125,7 +148,21 @@ describe('Catalogo (e2e)', () => {
         `/ofertas?universidadId=${IDS_SEMILLA.universidades.valle}&ciudad=cali`,
       )
       .expect(200);
-    expect(combinado.body).toHaveLength(2);
+    const idsCombinado = combinado.body.map(
+      (oferta: { id: string }) => oferta.id,
+    );
+    expect(idsCombinado).toEqual(
+      expect.arrayContaining([
+        IDS_SEMILLA.ofertas.valleSistemas,
+        IDS_SEMILLA.ofertas.vallePsicologia,
+      ]),
+    );
+    combinado.body.forEach(
+      (oferta: { universidadId: string; ciudad: string }) => {
+        expect(oferta.universidadId).toBe(IDS_SEMILLA.universidades.valle);
+        expect(oferta.ciudad).toBe('Cali');
+      },
+    );
 
     await request(app.getHttpServer()).get('/ofertas?carreraId=x').expect(400);
   });
@@ -153,6 +190,7 @@ describe('Catalogo (e2e)', () => {
         .post('/carreras')
         .send({ nombre: `Carrera ${unico()}` })
         .expect(201);
+      creados.carreras.push(respuesta.body.data.id);
       return respuesta.body.data as { id: string; nombre: string };
     }
 
@@ -161,6 +199,7 @@ describe('Catalogo (e2e)', () => {
         .post('/universidades')
         .send({ nombre: `Universidad ${unico()}`, ciudad: 'Pasto' })
         .expect(201);
+      creados.universidades.push(respuesta.body.data.id);
       return respuesta.body.data as { id: string; imagenUrl: string | null };
     }
 
@@ -179,6 +218,7 @@ describe('Catalogo (e2e)', () => {
           carreraId,
         })
         .expect(201);
+      creados.ofertas.push(respuesta.body.data.id);
       return respuesta.body.data as { id: string; snies: string };
     }
 
@@ -192,6 +232,7 @@ describe('Catalogo (e2e)', () => {
           perfil: { apellido: 'Gomez', ciudad: 'Bogota' },
         })
         .expect(201);
+      creados.usuarios.push(respuesta.body.data.usuario.id);
       return {
         id: respuesta.body.data.usuario.id as string,
         token: respuesta.body.data.accessToken as string,
@@ -420,6 +461,20 @@ describe('Catalogo (e2e)', () => {
   });
 
   afterAll(async () => {
+    // Limpia lo que las pruebas crearon (los ya borrados por la API no existen).
+    const dataSource = app.get(DataSource);
+    await dataSource
+      .getRepository(OfertaAcademica)
+      .delete({ id: In(creados.ofertas) });
+    await dataSource
+      .getRepository(Universidad)
+      .delete({ id: In(creados.universidades) });
+    await dataSource
+      .getRepository(Carrera)
+      .delete({ id: In(creados.carreras) });
+    await dataSource
+      .getRepository(Usuario)
+      .delete({ id: In(creados.usuarios) });
     await app.close();
   });
 });

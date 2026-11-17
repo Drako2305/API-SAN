@@ -10,7 +10,7 @@ export function BarraComparar({ ofertas, onVaciar }: { ofertas: OfertaSelecciona
     <div
       role="region"
       aria-label="Ofertas elegidas para comparar"
-      className="fixed inset-x-0 bottom-[var(--nav-movil)] z-20 border-t border-borde-fuerte bg-superficie shadow-2 md:bottom-0 md:left-[var(--riel)]"
+      className="fixed inset-x-0 bottom-0 z-20 border-t border-borde-fuerte bg-superficie shadow-2"
     >
       <div className="mx-auto flex max-w-[72rem] items-center gap-3 px-4 py-3 md:px-8">
         <p className="min-w-0 flex-1 text-sm">

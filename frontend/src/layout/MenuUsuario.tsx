@@ -1,12 +1,12 @@
 import { useId, useRef } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { Heart, LogOut, Shield, UserRound } from 'lucide-react';
+import { LogOut, UserRound } from 'lucide-react';
 import { Avatar } from '@/componentes';
 import { useSesion } from '@/lib/sesion';
 
 /** Menú de la cuenta con `popover` nativo (cierra con Esc y clic fuera sin código extra). */
 export function MenuUsuario() {
-  const { usuario, esAdmin, logout } = useSesion();
+  const { usuario, logout } = useSesion();
   const navegar = useNavigate();
   const id = useId();
   const ref = useRef<HTMLDivElement>(null);
@@ -39,14 +39,6 @@ export function MenuUsuario() {
         <Link to="/perfil" className={item} onClick={cerrar}>
           <UserRound className="size-4 text-texto-3" aria-hidden /> Mi perfil
         </Link>
-        <Link to="/perfil?pestana=favoritos" className={item} onClick={cerrar}>
-          <Heart className="size-4 text-texto-3" aria-hidden /> Favoritos
-        </Link>
-        {esAdmin && (
-          <Link to="/admin" className={item} onClick={cerrar}>
-            <Shield className="size-4 text-texto-3" aria-hidden /> Administración
-          </Link>
-        )}
         <hr className="my-1 border-borde" />
         <button
           type="button"

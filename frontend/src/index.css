@@ -66,9 +66,7 @@
   --dur-media: 220ms;
 
   /* Layout */
-  --riel: 4.25rem;
   --barra: 3.5rem;
-  --nav-movil: 3.75rem;
 }
 
 :root[data-tema='light'] {
@@ -226,6 +224,31 @@ dialog.san-dialog::backdrop {
 
 /* ---------- Slider (range nativo con marca) ---------- */
 input[type='range'].san-slider { accent-color: var(--c-acento); }
+
+/* ---------- Navegación superior: panel desplegable en pantallas angostas ---------- */
+.panel-nav[popover] {
+  position: fixed;
+  inset: auto;
+  /* Respaldo para navegadores sin anchor(): bajo la primera fila de la barra. */
+  inset-block-start: 3.75rem;
+  inset-block-start: anchor(--boton-menu bottom);
+  inset-inline-start: 1rem;
+  margin: 0;
+  margin-block-start: 0.5rem;
+  inline-size: min(20rem, calc(100dvw - 2rem));
+  max-block-size: calc(100dvh - 6rem);
+  overflow: auto;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .panel-nav[popover] {
+    transition: opacity var(--dur-media) var(--ease-salida), translate var(--dur-media) var(--ease-salida), display var(--dur-media), overlay var(--dur-media);
+    transition-behavior: allow-discrete;
+    opacity: 0;
+    translate: 0 -0.5rem;
+  }
+  .panel-nav[popover]:popover-open { opacity: 1; translate: 0; }
+  @starting-style { .panel-nav[popover]:popover-open { opacity: 0; translate: 0 -0.5rem; } }
+}
 
 /* ---------- Skeleton ---------- */
 @keyframes san-brillo { to { background-position: -200% 0; } }

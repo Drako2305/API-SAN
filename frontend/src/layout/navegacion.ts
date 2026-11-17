@@ -7,18 +7,15 @@ export interface ItemNav {
   /** Prefijos de ruta que dejan el item activo. */
   activo?: string[];
   soloAdmin?: boolean;
-  /** Visible en la barra inferior móvil (el resto vive en el menú de cuenta). */
-  movil?: boolean;
-  /** Requiere sesión para tener sentido; sin ella se muestra igual y la ruta pide ingresar. */
 }
 
 export const ITEMS_NAV: ItemNav[] = [
-  { a: '/inicio', etiqueta: 'Inicio', icono: Home, movil: true },
-  { a: '/buscar', etiqueta: 'Buscar', icono: Search, activo: ['/buscar', '/busquedas'], movil: true },
-  { a: '/carreras', etiqueta: 'Catálogo', icono: GraduationCap, activo: ['/carreras', '/universidades', '/ofertas'], movil: true },
-  { a: '/comparar', etiqueta: 'Comparar', icono: GitCompareArrows, movil: true },
+  { a: '/inicio', etiqueta: 'Inicio', icono: Home },
+  { a: '/buscar', etiqueta: 'Buscar', icono: Search, activo: ['/buscar', '/busquedas'] },
+  { a: '/carreras', etiqueta: 'Catálogo', icono: GraduationCap, activo: ['/carreras', '/universidades', '/ofertas'] },
+  { a: '/comparar', etiqueta: 'Comparar', icono: GitCompareArrows },
   { a: '/perfil?pestana=favoritos', etiqueta: 'Favoritos', icono: Heart, activo: [] },
-  { a: '/perfil', etiqueta: 'Perfil', icono: UserRound, activo: ['/perfil'], movil: true },
+  { a: '/perfil', etiqueta: 'Perfil', icono: UserRound, activo: ['/perfil'] },
   { a: '/admin', etiqueta: 'Admin', icono: Shield, soloAdmin: true },
 ];
 

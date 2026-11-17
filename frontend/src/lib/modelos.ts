@@ -15,6 +15,9 @@ export interface Respuesta<T> {
 export interface Carrera {
   id: string;
   nombre: string;
+  /** Ruta relativa de la foto (`/carreras/<slug>.webp`), resuelta contra el origen del frontend. */
+  imagenUrl?: string | null;
+  area?: string | null;
 }
 
 export interface Universidad {
@@ -31,6 +34,7 @@ export interface OfertaAcademica {
   universidadId?: string;
   carreraId?: string;
   imagenUrl?: string | null;
+  carreraImagenUrl?: string | null;
   ciudad: string;
   costo: number;
   modalidad: Modalidad;

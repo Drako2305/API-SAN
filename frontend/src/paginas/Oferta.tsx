@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router';
 import { ArrowUpRight, BadgeCheck, Check, GitCompareArrows, Heart, MapPin, SearchX } from 'lucide-react';
 import { Badge, Button, Card, EmptyState, LinkButton, Skeleton, useToast } from '@/componentes';
-import { Cargando, FotoUniversidad, OfertaFila } from '@/componentes/catalogo';
+import { Cargando, FotoConFallback, FotoUniversidad, OfertaFila } from '@/componentes/catalogo';
 import { MAX_COMPARAR, useSeleccion } from '@/lib/seleccionComparar';
 import { ApiError, catalogo, mensajeError, usuarios } from '@/lib/api';
+import { fotoCarrera } from '@/lib/fotos';
 import { ciudadLegible, etiquetaJornada, etiquetaModalidad, formatoCop, nombreLegible } from '@/lib/formato';
 import { useSesion } from '@/lib/sesion';
 import { useCarga } from '@/lib/useCarga';
@@ -95,6 +96,7 @@ export default function Oferta() {
   }
 
   const carrera = nombreLegible(o.carrera);
+  const fotoBanda = fotoCarrera({ nombre: o.carrera, imagenUrl: o.carreraImagenUrl });
   const esFavorito = favoritos.includes(o.id);
   const enSeleccion = seleccion.ofertas.some((s) => s.id === o.id);
 
@@ -119,7 +121,10 @@ export default function Oferta() {
   return (
     <>
       <title>{`${carrera} en ${o.universidad} · SAN`}</title>
-      <header className="rounded-xl bg-panel p-5 text-sobre-panel md:p-8">
+      <header className="relative isolate overflow-hidden rounded-xl bg-panel p-5 text-sobre-panel md:p-8">
+        {/* Foto de la carrera de fondo; si falta, queda el fondo liso del panel. */}
+        <FotoConFallback src={fotoBanda.src} sm={fotoBanda.sm} sizes="(min-width: 1152px) 72rem, 100vw" width={1600} height={600} className="absolute inset-0 -z-20 size-full bg-panel" imgClassName="opacity-60" ocultarSiFalla />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-panel via-panel/80 to-panel/60" />
         <nav aria-label="Ruta" className="text-sm text-sobre-panel-2">
           <Link to="/buscar" className="text-sobre-panel-2">Ofertas</Link>
           <span aria-hidden> / </span>

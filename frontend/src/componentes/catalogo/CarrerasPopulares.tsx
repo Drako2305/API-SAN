@@ -1,0 +1,75 @@
+import { useMemo } from 'react';
+import { Link } from 'react-router';
+import { catalogo } from '@/lib/api';
+import { etiquetaArea } from '@/lib/areas';
+import { fotoCarrera } from '@/lib/fotos';
+import { nombreLegible } from '@/lib/formato';
+import { useCarga } from '@/lib/useCarga';
+import { Skeleton } from '@/componentes';
+import { FotoConFallback } from './FotoConFallback';
+
+/** Las carreras con más ofertas en el catálogo (el conteo sale de la API, no se inventa). */
+export function CarrerasPopulares({ cantidad = 6 }: { cantidad?: number }) {
+  const carreras = useCarga(() => catalogo.carreras(), []);
+  const ofertas = useCarga(() => catalogo.ofertas(), []);
+
+  const top = useMemo(() => {
+    if (!carreras.datos || !ofertas.datos) return null;
+    const conteo = new Map<string, number>();
+    for (const o of ofertas.datos) {
+      const k = o.carreraId ?? o.carrera;
+      conteo.set(k, (conteo.get(k) ?? 0) + 1);
+    }
+    return carreras.datos
+      .map((c) => ({ c, n: conteo.get(c.id) ?? conteo.get(c.nombre) ?? 0 }))
+      .filter((x) => x.n > 0)
+      .sort((a, b) => b.n - a.n || a.c.nombre.localeCompare(b.c.nombre, 'es'))
+      .slice(0, cantidad);
+  }, [carreras.datos, ofertas.datos, cantidad]);
+
+  if (carreras.error || ofertas.error || (top && top.length === 0)) return null;
+
+  return (
+    <section aria-labelledby="populares" className="mt-10">
+      <div className="mb-3 flex items-baseline justify-between gap-3">
+        <h2 id="populares" className="text-lg">
+          Carreras populares
+        </h2>
+        <Link to="/carreras" viewTransition className="text-sm font-medium">
+          Ver el catálogo
+        </Link>
+      </div>
+      {!top ? (
+        <div aria-busy="true" className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+          {Array.from({ length: cantidad }, (_, i) => (
+            <Skeleton key={i} className="aspect-[4/5] rounded-lg" />
+          ))}
+        </div>
+      ) : (
+        <ul className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0 xl:grid-cols-6">
+          {top.map(({ c, n }) => {
+            const foto = fotoCarrera(c);
+            return (
+              <li key={c.id} className="w-40 shrink-0 snap-start md:w-auto">
+                <Link
+                  to={`/buscar?carrera=${encodeURIComponent(c.nombre)}`}
+                  viewTransition
+                  className="group relative block overflow-hidden rounded-lg border border-borde bg-superficie text-texto no-underline transition-[box-shadow,border-color] duration-[var(--dur-rapida)] hover:border-borde-fuerte hover:shadow-2"
+                >
+                  <FotoConFallback src={foto.src} sm={foto.sm} sizes="(min-width: 1280px) 11rem, (min-width: 768px) 30vw, 10rem" width={400} height={300} area={c.area} />
+                  <span className="block p-3">
+                    <span className="line-clamp-2 block min-h-[2.5rem] text-sm font-semibold">{nombreLegible(c.nombre)}</span>
+                    <span className="numeros mt-0.5 block text-xs text-texto-3">
+                      {c.area ? `${etiquetaArea(c.area)} · ` : ''}
+                      {n} {n === 1 ? 'oferta' : 'ofertas'}
+                    </span>
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </section>
+  );
+}

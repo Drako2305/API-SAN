@@ -157,6 +157,11 @@ export const auth = {
 
 // ---------------------------------------------------------------- catálogo
 
+export interface FiltrosCarreras {
+  nombre?: string;
+  area?: string;
+}
+
 export interface FiltrosOfertas {
   carreraId?: string;
   universidadId?: string;
@@ -165,7 +170,7 @@ export interface FiltrosOfertas {
 
 export const catalogo = {
   // Lecturas públicas: recurso directo
-  carreras: (nombre?: string) => peticion<Carrera[]>('/carreras', { query: { nombre } }),
+  carreras: (filtros: FiltrosCarreras = {}) => peticion<Carrera[]>('/carreras', { query: { ...filtros } }),
   carrera: (id: string) => peticion<Carrera>(`/carreras/${id}`),
   universidades: (ciudad?: string) => peticion<Universidad[]>('/universidades', { query: { ciudad } }),
   universidad: (id: string) => peticion<UniversidadDetalle>(`/universidades/${id}`),

@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 import { ArrowUpRight, GitCompareArrows, Heart, Search } from 'lucide-react';
 import { Avatar, Badge, Card, EmptyState, Skeleton } from '@/componentes';
+import { CarrerasPopulares } from '@/componentes/catalogo';
 import { busquedas, usuarios } from '@/lib/api';
 import { ciudadLegible, etiquetaJornada, etiquetaModalidad, formatoCop, nombreLegible } from '@/lib/formato';
 import { busquedasRecientes } from '@/lib/recientes';
@@ -131,6 +132,8 @@ export default function Inicio() {
           </dl>
         </Card>
       </section>
+
+      <CarrerasPopulares />
 
       <section aria-labelledby="recientes" className="mt-10">
         <h2 id="recientes" className="mb-3 text-lg">

@@ -46,7 +46,7 @@ function Columna({ titulo, enlaces }: { titulo: string; enlaces: Enlace[] }) {
 export function PiePortada() {
   const { autenticado } = useSesion();
   const explora: Enlace[] = [
-    { t: 'Buscar carreras', icono: Search, a: '/buscar' },
+    { t: 'Ordenar con tus pesos', icono: Search, a: '/buscar' },
     { t: 'Catálogo', icono: GraduationCap, a: '/carreras' },
     { t: 'Universidades', icono: Building2, a: '/universidades' },
     { t: 'Comparar ofertas', icono: GitCompareArrows, a: '/comparar' },

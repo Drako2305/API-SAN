@@ -96,11 +96,11 @@ export default function Inicio() {
       <BuscadorCarrera className="mt-6 block max-w-[40rem]" />
 
       <div className="mt-8 grid gap-[var(--gap-grilla)] md:grid-cols-3">
-        <Link to="/buscar" viewTransition className={`${TARJETA} border-transparent bg-acento text-sobre-acento`}>
+        <Link to="/carreras" viewTransition className={`${TARJETA} border-transparent bg-acento text-sobre-acento`}>
           <Search className="size-6" aria-hidden />
           <span>
-            <span className="block font-display text-lg font-semibold">Buscar una carrera</span>
-            <span className="mt-1 line-clamp-2 block text-sm">Filtra por ciudad, costo y jornada, y ordena con tus pesos.</span>
+            <span className="block font-display text-lg font-semibold">Explorar carreras</span>
+            <span className="mt-1 line-clamp-2 block text-sm">Elige una y mira sus ofertas por ciudad, costo y modalidad.</span>
           </span>
         </Link>
         <Link to="/comparar" viewTransition className={`${TARJETA} border-borde bg-superficie text-texto hover:border-borde-fuerte`}>

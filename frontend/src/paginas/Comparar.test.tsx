@@ -27,9 +27,9 @@ beforeEach(() => {
 });
 
 describe('Comparar', () => {
-  it('sin selección enlaza a /buscar', () => {
+  it('sin selección enlaza al catálogo de carreras', () => {
     montar();
-    expect(screen.getByRole('link', { name: /Buscar una carrera/ })).toHaveAttribute('href', '/buscar');
+    expect(screen.getByRole('link', { name: /Explorar carreras/ })).toHaveAttribute('href', '/carreras');
   });
 
   it('muestra la tabla con la mejor oferta marcada', async () => {

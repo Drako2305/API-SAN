@@ -90,8 +90,8 @@ export function OfertasDestacadas() {
         </div>
       ) : (
         <div className="flex flex-col gap-8 md:gap-10">
-          {!!economicas?.length && <Riel id="riel-economicas" titulo="Más económicas acreditadas" ofertas={economicas} enlace={{ a: '/buscar', t: 'Buscar ofertas' }} />}
-          {!!virtuales?.length && <Riel id="riel-virtuales" titulo="Virtuales" ofertas={virtuales} enlace={{ a: '/buscar?modalidad=virtual', t: 'Ver virtuales' }} />}
+          {!!economicas?.length && <Riel id="riel-economicas" titulo="Más económicas acreditadas" ofertas={economicas} enlace={{ a: '/carreras', t: 'Ver carreras' }} />}
+          {!!virtuales?.length && <Riel id="riel-virtuales" titulo="Virtuales" ofertas={virtuales} enlace={{ a: '/carreras', t: 'Ver carreras' }} />}
         </div>
       )}
     </section>

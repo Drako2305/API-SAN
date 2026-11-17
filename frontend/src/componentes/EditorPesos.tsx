@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import { BadgeCheck, MapPin, MonitorSmartphone, Wallet, type LucideIcon } from 'lucide-react';
+import { BadgeCheck, Info, MapPin, MonitorSmartphone, Wallet, type LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { CRITERIO_ETIQUETA } from '@/lib/formato';
 import { CRITERIOS, type Criterio, type Pesos } from '@/lib/modelos';
@@ -41,7 +41,7 @@ const TINTE: Record<Criterio, string> = {
   acreditacion: 'color-mix(in oklch, var(--c-acento) 25%, var(--c-superficie))',
 };
 
-function Nivel({ criterio, valor, onCambio, disabled, ayuda }: { criterio: Criterio; valor: number; onCambio: (v: number) => void; disabled?: boolean; ayuda: string }) {
+function Nivel({ criterio, valor, onCambio, disabled, ayuda, sinEfecto }: { criterio: Criterio; valor: number; onCambio: (v: number) => void; disabled?: boolean; ayuda: string; sinEfecto?: string }) {
   const id = useId();
   const Icono = ICONO[criterio];
   return (
@@ -51,7 +51,14 @@ function Nivel({ criterio, valor, onCambio, disabled, ayuda }: { criterio: Crite
       </span>
       <div className="min-w-0">
         <legend className="float-left font-medium">{CRITERIO_ETIQUETA[criterio]}</legend>
-        <p className="clear-left text-xs text-texto-3">{ayuda}</p>
+        {sinEfecto ? (
+          <p className="clear-left flex items-start gap-1 text-xs text-aviso">
+            <Info className="mt-px size-3.5 shrink-0" aria-hidden />
+            <span>{sinEfecto}</span>
+          </p>
+        ) : (
+          <p className="clear-left text-xs text-texto-3">{ayuda}</p>
+        )}
       </div>
       <div className="col-span-2 flex items-center gap-3 sm:col-span-1 sm:col-start-3">
         <div role="presentation" className="flex h-10 items-end gap-1 rounded-lg bg-superficie-2 p-1">
@@ -109,6 +116,11 @@ interface PropsEditor {
   onCambio: (p: Pesos) => void;
   disabled?: boolean;
   ayuda?: Partial<Record<Criterio, string>>;
+  /**
+   * Criterios que hoy no pueden cambiar el orden, con el motivo (p. ej. la ciudad ya filtra los resultados).
+   * Se avisa en su fila y se ocultan los perfiles que solo los subirían a ellos.
+   */
+  sinEfecto?: Partial<Record<Criterio, string>>;
   className?: string;
 }
 
@@ -116,13 +128,13 @@ interface PropsEditor {
  * Editor de pesos 0-5: perfiles de partida, un control escalonado por criterio (radios nativos: flechas para moverse)
  * y el reparto real que resulta (cuánto pesa cada criterio frente a los demás, calculado con `normalizar`).
  */
-export function EditorPesos({ valor, onCambio, disabled, ayuda, className }: PropsEditor) {
+export function EditorPesos({ valor, onCambio, disabled, ayuda, sinEfecto, className }: PropsEditor) {
   const pct = normalizar(valor);
   const suma = CRITERIOS.reduce((s, c) => s + valor[c], 0);
   return (
     <div className={cn('flex flex-col gap-5', className)}>
       <div role="group" aria-label="Perfiles de partida" className="flex flex-wrap gap-2">
-        {PERFILES.map((p) => {
+        {PERFILES.filter((p) => !CRITERIOS.some((c) => p.pesos[c] === 5 && sinEfecto?.[c])).map((p) => {
           const activo = iguales(p.pesos, valor);
           return (
             <button
@@ -150,6 +162,7 @@ export function EditorPesos({ valor, onCambio, disabled, ayuda, className }: Pro
             valor={valor[c]}
             disabled={disabled}
             ayuda={ayuda?.[c] ?? AYUDA_POR_DEFECTO[c]}
+            sinEfecto={sinEfecto?.[c]}
             onCambio={(n) => onCambio({ ...valor, [c]: n })}
           />
         ))}

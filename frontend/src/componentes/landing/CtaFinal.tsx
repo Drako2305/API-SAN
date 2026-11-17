@@ -18,8 +18,8 @@ export function CtaFinal({ onRegistro }: { onRegistro: () => void }) {
         </h2>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           {autenticado ? (
-            <LinkButton to="/buscar" viewTransition tamano="lg" icono={<ArrowRight className="size-4" aria-hidden />}>
-              Buscar una carrera
+            <LinkButton to="/carreras" viewTransition tamano="lg" icono={<ArrowRight className="size-4" aria-hidden />}>
+              Explorar carreras
             </LinkButton>
           ) : (
             <Button tamano="lg" onClick={onRegistro} icono={<ArrowRight className="size-4" aria-hidden />}>

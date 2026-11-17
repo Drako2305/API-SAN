@@ -1,4 +1,4 @@
-import { useId, useMemo, type KeyboardEvent, type ReactNode } from 'react';
+import { useId, useMemo, useRef, type KeyboardEvent, type ReactNode } from 'react';
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react';
 import { ArrowRight } from 'lucide-react';
 import { etiquetaArea } from '@/lib/areas';
@@ -80,9 +80,18 @@ export function ComboCarrera({
     return [...empiezan, ...contienen].slice(0, maximo);
   }, [carreras, texto, maximo]);
 
-  // Escape con el panel cerrado no debe borrar lo escrito (Headless UI lo haría con `value` nulo).
+  // Headless UI resalta la primera sugerencia al escribir. Enter solo elige una sugerencia si la persona llegó a ella con
+  // las flechas; si no, envía el formulario con el texto tal cual (p. ej. "ing" abre el catálogo filtrado).
+  const navego = useRef(false);
   const alTeclear = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Escape' && !e.currentTarget.getAttribute('aria-expanded')?.includes('true')) e.stopPropagation();
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') navego.current = true;
+    else if (e.key === 'Enter' && !navego.current) {
+      e.preventDefault(); // Headless UI omite su manejador cuando el evento ya fue prevenido.
+      e.currentTarget.form?.requestSubmit();
+    } else if (e.key === 'Escape' && !e.currentTarget.getAttribute('aria-expanded')?.includes('true')) {
+      // Escape con el panel cerrado no debe borrar lo escrito.
+      e.stopPropagation();
+    }
   };
 
   return (
@@ -111,7 +120,10 @@ export function ComboCarrera({
             placeholder={placeholder}
             value={texto}
             displayValue={() => texto}
-            onChange={(e) => onTexto(e.target.value)}
+            onChange={(e) => {
+              navego.current = false;
+              onTexto(e.target.value);
+            }}
             onKeyDown={alTeclear}
             className={cn(
               'w-full px-3 text-texto placeholder:text-texto-3 disabled:cursor-not-allowed',

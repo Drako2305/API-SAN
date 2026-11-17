@@ -90,7 +90,7 @@ export default function Oferta() {
       <>
         <title>Oferta no encontrada · SAN</title>
         <h1 className="sr-only">Oferta no encontrada</h1>
-        <EmptyState icono={<SearchX />} titulo="No encontramos esa oferta" texto="Puede que el enlace esté mal o que la oferta ya no exista." accion={<Link to="/buscar" className="font-medium">Buscar ofertas</Link>} />
+        <EmptyState icono={<SearchX />} titulo="No encontramos esa oferta" texto="Puede que el enlace esté mal o que la oferta ya no exista." accion={<Link to="/carreras" className="font-medium">Ver carreras</Link>} />
       </>
     );
   }

@@ -43,7 +43,16 @@ export function PanelPreferencias({ usuarioId, inicial, onGuardado }: Props) {
         Son los pesos con los que parten tus búsquedas. De 0 (no cuenta) a 5 (lo más importante); abajo ves cuánto pesa cada criterio
         frente a los demás.
       </p>
-      <EditorPesos className="mt-5" valor={pesos} onCambio={setPesos} />
+      <EditorPesos
+        className="mt-5"
+        valor={pesos}
+        onCambio={setPesos}
+        sinEfecto={{
+          modalidad: 'Hoy la modalidad funciona como filtro de la búsqueda, así que este peso todavía no cambia el orden.',
+          ubicacion: 'Hoy la ciudad funciona como filtro de la búsqueda, así que este peso todavía no cambia el orden.',
+        }}
+        ayuda={{ costo: 'Cuenta cuando pones un costo máximo: suma más cuanto más por debajo esté la oferta.' }}
+      />
       {error && (
         <AvisoError className="mt-4">{error}</AvisoError>
       )}

@@ -160,10 +160,11 @@ export default function Buscar() {
             <EditorPesos
               valor={pesos}
               onCambio={cambiarPesos}
-              ayuda={{
-                costo: Number(costoMax) > 0 ? 'Suma más cuanto más por debajo de tu costo máximo esté la oferta.' : 'Sin costo máximo todas suman igual aquí: escribe uno para que cuente.',
-                modalidad: modalidad ? `Suma si es ${etiquetaModalidad(modalidad).toLowerCase()}.` : 'Sin modalidad elegida todas suman igual aquí.',
-                ubicacion: ciudad ? `Suma si está en ${ciudadLegible(ciudad)}.` : 'Sin ciudad elegida todas suman igual aquí.',
+              ayuda={{ costo: 'Suma más cuanto más por debajo de tu costo máximo esté la oferta.' }}
+              sinEfecto={{
+                ...(Number(costoMax) > 0 ? {} : { costo: 'Sin costo máximo todas las ofertas suman igual aquí. Escribe uno para que cuente.' }),
+                modalidad: 'La modalidad funciona como filtro: todas las ofertas que verás ya la cumplen, así que este peso no cambia el orden.',
+                ubicacion: 'La ciudad funciona como filtro: todas las ofertas que verás ya están en ella, así que este peso no cambia el orden.',
               }}
             />
           </fieldset>

@@ -1,4 +1,4 @@
-import { useId, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useId, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { Field, Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
 import { AlertCircle, Check, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/cn';
@@ -35,9 +35,52 @@ export interface PropsSelector {
 }
 
 /**
+ * El panel se abre en la capa superior del navegador (`popover="manual"`), así ningún contenedor con `overflow`
+ * (un `<dialog>` con scroll, una tarjeta) lo recorta. Sigue en el DOM del selector, de modo que dentro de un diálogo
+ * modal no queda inerte. Donde no hay `popover` (jsdom, navegadores viejos) queda como panel fijo. Se coloca con `position: fixed` bajo el botón (o encima, si abajo no cabe) y se recoloca
+ * al desplazar o cambiar el tamaño de la ventana.
+ */
+const POPOVER = typeof HTMLElement !== 'undefined' && 'showPopover' in HTMLElement.prototype;
+
+function usePanelSuperior(boton: RefObject<HTMLButtonElement | null>) {
+  const limpiar = useRef<(() => void) | null>(null);
+  return useCallback(
+    (el: HTMLElement | null) => {
+      limpiar.current?.();
+      limpiar.current = null;
+      if (!el) return;
+      const colocar = () => {
+        const b = boton.current?.getBoundingClientRect();
+        if (!b) return;
+        const abajo = window.innerHeight - b.bottom - 12;
+        const arriba = b.top - 12;
+        const haciaArriba = abajo < 200 && arriba > abajo;
+        const alto = Math.min(288, haciaArriba ? arriba : abajo);
+        Object.assign(el.style, {
+          left: `${Math.max(8, Math.min(b.left, window.innerWidth - Math.max(el.offsetWidth, b.width) - 8))}px`,
+          minWidth: `${b.width}px`,
+          maxHeight: `${Math.max(120, alto)}px`,
+          top: haciaArriba ? 'auto' : `${b.bottom + 6}px`,
+          bottom: haciaArriba ? `${window.innerHeight - b.top + 6}px` : 'auto',
+        });
+      };
+      // Se abre en el mismo momento en que se monta, antes de que Headless UI le pase el foco.
+      if (POPOVER && !el.matches(':popover-open')) el.showPopover();
+      colocar();
+      window.addEventListener('scroll', colocar, true);
+      window.addEventListener('resize', colocar);
+      limpiar.current = () => {
+        window.removeEventListener('scroll', colocar, true);
+        window.removeEventListener('resize', colocar);
+      };
+    },
+    [boton],
+  );
+}
+
+/**
  * Selector propio sobre el `Listbox` de Headless UI: teclado completo (flechas, Inicio/Fin, búsqueda por letra, Esc),
- * roles ARIA y retorno del foco. El panel se renderiza en el mismo árbol (sin portal) para funcionar también dentro de
- * `<dialog>` modales, que dejan inerte todo lo que queda fuera de ellos.
+ * roles ARIA y retorno del foco. El panel va en la capa superior sin salir del árbol (ver `usePanelSuperior`).
  * Con `required` valida al enviar el formulario con un campo oculto propio y muestra el error junto al control.
  */
 export function Selector({
@@ -65,6 +108,7 @@ export function Selector({
   const idAyuda = `${id}-ayuda`;
   const idError = `${id}-error`;
   const describedby = [ayuda ? idAyuda : null, mensaje ? idError : null].filter(Boolean).join(' ') || undefined;
+  const panelSuperior = usePanelSuperior(boton);
 
   return (
     <Field disabled={disabled} className={cn('relative flex flex-col gap-1.5', className)}>
@@ -108,10 +152,12 @@ export function Selector({
         <ListboxOptions
           modal={false}
           transition
+          ref={panelSuperior}
+          {...(POPOVER ? { popover: 'manual' } : {})}
           className={cn(
-            'absolute top-full z-50 mt-1.5 max-h-72 min-w-full overflow-auto overscroll-contain rounded-lg border border-borde bg-superficie p-1 text-texto shadow-3 focus:outline-none',
-            'origin-top transition duration-[var(--dur-rapida)] ease-[var(--ease-salida)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 motion-reduce:transition-none',
-            variante === 'plano' ? 'left-0 w-max max-w-[min(20rem,calc(100vw-2rem))]' : 'left-0 w-full',
+            'selector-panel overflow-auto overscroll-contain rounded-lg border border-borde bg-superficie p-1 text-texto shadow-3 focus:outline-none',
+            'transition-[opacity,translate] duration-[var(--dur-rapida)] ease-[var(--ease-salida)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 motion-reduce:transition-none',
+            variante === 'plano' && 'w-max max-w-[min(20rem,calc(100vw-2rem))]',
           )}
         >
           {opciones.map((o) => (

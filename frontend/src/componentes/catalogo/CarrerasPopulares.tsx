@@ -30,8 +30,8 @@ export function CarrerasPopulares({ cantidad = 6 }: { cantidad?: number }) {
   if (carreras.error || ofertas.error || (top && top.length === 0)) return null;
 
   return (
-    <section aria-labelledby="populares" className="mt-10">
-      <div className="mb-3 flex items-baseline justify-between gap-3">
+    <section aria-labelledby="populares" className="mt-12">
+      <div className="mb-4 flex items-baseline justify-between gap-3">
         <h2 id="populares" className="text-lg">
           Carreras populares
         </h2>
@@ -40,26 +40,26 @@ export function CarrerasPopulares({ cantidad = 6 }: { cantidad?: number }) {
         </Link>
       </div>
       {!top ? (
-        <div aria-busy="true" className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+        <div aria-busy="true" className="rejilla-tarjetas [--min-tarjeta:10rem]">
           {Array.from({ length: cantidad }, (_, i) => (
-            <Skeleton key={i} className="aspect-[4/5] rounded-lg" />
+            <Skeleton key={i} className="h-60 rounded-lg" />
           ))}
         </div>
       ) : (
-        <ul className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0 xl:grid-cols-6">
+        <ul className="pista-tarjetas -mx-4 snap-x snap-mandatory overflow-x-auto px-4 pb-2 md:mx-0 md:rejilla-tarjetas md:overflow-visible md:px-0 md:pb-0 md:[--min-tarjeta:10rem]">
           {top.map(({ c, n }) => {
             const foto = fotoCarrera(c);
             return (
-              <li key={c.id} className="w-40 shrink-0 snap-start md:w-auto">
+              <li key={c.id} className="w-40 shrink-0 snap-start md:w-auto md:shrink">
                 <Link
                   to={`/buscar?carrera=${encodeURIComponent(c.nombre)}`}
                   viewTransition
-                  className="group relative block overflow-hidden rounded-lg border border-borde bg-superficie text-texto no-underline transition-[box-shadow,border-color] duration-[var(--dur-rapida)] hover:border-borde-fuerte hover:shadow-2"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-borde bg-superficie text-texto no-underline transition-[box-shadow,border-color] duration-[var(--dur-rapida)] hover:border-borde-fuerte hover:shadow-2"
                 >
                   <FotoConFallback src={foto.src} sm={foto.sm} sizes="(min-width: 1280px) 11rem, (min-width: 768px) 30vw, 10rem" width={400} height={300} area={c.area} />
-                  <span className="block p-3">
-                    <span className="line-clamp-2 block min-h-[2.5rem] text-sm font-semibold">{nombreLegible(c.nombre)}</span>
-                    <span className="numeros mt-0.5 block text-xs text-texto-3">
+                  <span className="flex flex-1 flex-col gap-1 p-3">
+                    <span className="line-clamp-2 block min-h-[2.5rem] text-sm leading-5 font-semibold">{nombreLegible(c.nombre)}</span>
+                    <span className="numeros mt-auto block truncate text-xs text-texto-3">
                       {c.area ? `${etiquetaArea(c.area)} · ` : ''}
                       {n} {n === 1 ? 'oferta' : 'ofertas'}
                     </span>

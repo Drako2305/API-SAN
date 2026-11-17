@@ -85,7 +85,7 @@ export function ComoFunciona() {
 
   return (
     <section ref={raiz} aria-labelledby="titulo-como" className="relative border-y border-borde bg-superficie">
-      <div className="mx-auto grid min-h-[calc(100dvh-4rem)] max-w-[80rem] items-center gap-10 px-4 py-16 md:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:gap-20">
+      <div className="pagina-ancho seccion-ritmo grid min-h-[calc(100dvh-4rem)] items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:gap-20">
         <div>
           <h2 id="titulo-como" className="titulo-display max-w-[18ch] text-[clamp(1.75rem,3.6vw,3rem)] font-semibold">
             Cómo funciona

@@ -16,7 +16,7 @@ function saludo(): string {
 }
 
 const TARJETA =
-  'group flex min-h-36 flex-col justify-between rounded-lg border p-5 no-underline transition-[box-shadow,border-color] duration-[var(--dur-rapida)] hover:shadow-2';
+  'group flex h-full min-h-36 flex-col justify-between gap-4 rounded-lg border p-5 no-underline transition-[box-shadow,border-color] duration-[var(--dur-rapida)] hover:shadow-2';
 
 function descripcionFiltros(f: BusquedaResumen['filtros']): string {
   const partes = [
@@ -93,38 +93,38 @@ export default function Inicio() {
       </h1>
       <p className="mt-2 text-texto-2">¿Qué quieres resolver hoy?</p>
 
-      <div className="mt-7 grid gap-4 md:grid-cols-[1.25fr_1fr_1fr]">
+      <div className="mt-8 grid gap-[var(--gap-grilla)] md:grid-cols-3">
         <Link to="/buscar" viewTransition className={`${TARJETA} border-transparent bg-acento text-sobre-acento`}>
           <Search className="size-6" aria-hidden />
           <span>
-            <span className="block font-display text-xl font-semibold">Buscar una carrera</span>
-            <span className="mt-1 block text-sm opacity-90">Filtra por ciudad, costo y jornada, y ordena con tus pesos.</span>
+            <span className="block font-display text-lg font-semibold">Buscar una carrera</span>
+            <span className="mt-1 line-clamp-2 block text-sm">Filtra por ciudad, costo y jornada, y ordena con tus pesos.</span>
           </span>
         </Link>
         <Link to="/comparar" viewTransition className={`${TARJETA} border-borde bg-superficie text-texto hover:border-borde-fuerte`}>
           <GitCompareArrows className="size-6 text-acento-texto" aria-hidden />
           <span>
             <span className="block font-display text-lg font-semibold">Comparar ofertas</span>
-            <span className="mt-1 block text-sm text-texto-2">De 2 a 4 lado a lado.</span>
+            <span className="mt-1 line-clamp-2 block text-sm text-texto-2">De 2 a 4 lado a lado.</span>
           </span>
         </Link>
         <Link to="/perfil?pestana=favoritos" viewTransition className={`${TARJETA} border-borde bg-superficie text-texto hover:border-borde-fuerte`}>
           <Heart className="size-6 text-acento-texto" aria-hidden />
           <span>
             <span className="block font-display text-lg font-semibold">Mis favoritos</span>
-            <span className="mt-1 block text-sm text-texto-2">
+            <span className="mt-1 line-clamp-2 block text-sm text-texto-2">
               {favoritos.cargando ? 'Cargando…' : `${favoritos.datos?.length ?? 0} guardadas`}
             </span>
           </span>
         </Link>
       </div>
 
-      <section aria-labelledby="resumen" className="mt-10">
-        <h2 id="resumen" className="mb-3 text-lg">
+      <section aria-labelledby="resumen" className="mt-12">
+        <h2 id="resumen" className="mb-4 text-lg">
           Resumen
         </h2>
         <Card relleno="lg">
-          <dl className="grid grid-cols-2 gap-6 md:grid-cols-4">
+          <dl className="grid grid-cols-2 gap-x-[var(--gap-grilla)] gap-y-6 md:grid-cols-4">
             <Cifra n={favoritos.datos?.length} t="Ofertas favoritas" cargando={favoritos.cargando} />
             <Cifra n={conteos.datos?.ofertas} t="Ofertas en el catálogo" cargando={conteos.cargando} />
             <Cifra n={conteos.datos?.universidades} t="Universidades" cargando={conteos.cargando} />
@@ -135,8 +135,8 @@ export default function Inicio() {
 
       <CarrerasPopulares />
 
-      <section aria-labelledby="recientes" className="mt-10">
-        <h2 id="recientes" className="mb-3 text-lg">
+      <section aria-labelledby="recientes" className="mt-12">
+        <h2 id="recientes" className="mb-4 text-lg">
           Búsquedas recientes
         </h2>
         <Recientes />

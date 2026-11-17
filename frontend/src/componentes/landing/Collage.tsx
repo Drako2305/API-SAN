@@ -36,11 +36,11 @@ export function Collage() {
   );
 
   return (
-    <section ref={raiz} aria-labelledby="titulo-collage" className="mx-auto max-w-[80rem] overflow-hidden px-4 py-16 md:px-8">
+    <section ref={raiz} aria-labelledby="titulo-collage" className="pagina-ancho seccion-ritmo overflow-hidden">
       <h2 id="titulo-collage" className="titulo-display mb-10 max-w-[22ch] text-[clamp(1.75rem,3.6vw,3rem)] font-semibold">
         Campus de todo el país, a un clic de distancia.
       </h2>
-      <div className="grid grid-cols-12 gap-3 md:gap-5">
+      <div className="grid grid-cols-12 gap-[var(--gap-grilla)]">
         {fotos.map((f, i) => (
           <figure key={f.slug} data-capa={DISPOSICION[i]!.v * 0.6} className={`relative m-0 ${DISPOSICION[i]!.clase}`}>
             <FotoConFallback

@@ -66,8 +66,8 @@ export function GaleriaCarreras() {
   );
 
   return (
-    <section ref={raiz} aria-labelledby="titulo-galeria" className="overflow-hidden py-16 md:flex md:min-h-[calc(100dvh-4rem)] md:flex-col md:justify-center">
-      <div className="mx-auto mb-8 flex w-full max-w-[80rem] items-end justify-between gap-4 px-4 md:px-8">
+    <section ref={raiz} aria-labelledby="titulo-galeria" className="seccion-ritmo overflow-hidden md:flex md:min-h-[calc(100dvh-4rem)] md:flex-col md:justify-center">
+      <div className="pagina-ancho mb-8 flex items-end justify-between gap-4">
         <h2 id="titulo-galeria" className="titulo-display max-w-[20ch] text-[clamp(1.75rem,3.6vw,3rem)] font-semibold">
           Carreras para empezar a explorar
         </h2>
@@ -77,7 +77,7 @@ export function GaleriaCarreras() {
       </div>
       <ul
         ref={pista}
-        className="m-0 flex list-none snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 md:px-[max(2rem,calc((100vw-80rem)/2+2rem))]"
+        className="pista-tarjetas snap-x snap-mandatory overflow-x-auto px-[var(--gutter)] pb-4 md:px-[max(var(--gutter),calc((100vw-var(--ancho-portada))/2+var(--gutter)))]"
       >
         {CARRERAS_DESTACADAS.map((c) => {
           const f = rutaCarrera(c.nombre);
@@ -99,7 +99,7 @@ export function GaleriaCarreras() {
                     imgClassName="transition-transform duration-500 ease-[var(--ease-salida)] group-hover:scale-[1.03] motion-reduce:transition-none"
                   />
                 </div>
-                <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-panel/85 to-transparent p-4 pt-16 font-display text-lg font-semibold text-sobre-panel">
+                <span className="line-clamp-2 absolute inset-x-0 bottom-0 bg-gradient-to-t from-panel/90 to-transparent p-4 pt-16 font-display text-lg leading-6 font-semibold text-sobre-panel">
                   {c.nombre}
                 </span>
               </Link>

@@ -40,7 +40,7 @@ export function LayoutPublico() {
           solida && 'border-borde bg-fondo/90 shadow-1 backdrop-blur-md',
         )}
       >
-        <div className="mx-auto flex h-16 max-w-[80rem] items-center gap-3 px-4 md:px-8">
+        <div className="pagina-ancho flex h-16 items-center gap-3">
           <Link to="/" aria-label="SAN, inicio">
             <Logo />
           </Link>
@@ -112,8 +112,8 @@ export function LayoutPublico() {
           <Outlet />
         </Suspense>
       </main>
-      <footer className="border-t border-borde px-4 py-8 text-sm text-texto-3 md:px-8">
-        <div className="mx-auto flex max-w-[80rem] flex-wrap items-center justify-between gap-3">
+      <footer className="border-t border-borde py-8 text-sm text-texto-3">
+        <div className="pagina-ancho flex flex-wrap items-center justify-between gap-3">
           <p>SAN, Sistema Académico de Navegación. Los datos del catálogo son demostrativos.</p>
           <a href="/campus/CREDITOS.md" className="text-texto-2">
             Créditos de las fotos

@@ -55,7 +55,7 @@ export function Cifras() {
     : [];
   return (
     <section ref={raiz} aria-label="El catálogo en cifras" className="border-b border-borde">
-      <dl className="mx-auto grid min-h-28 max-w-[80rem] grid-cols-2 gap-6 px-4 py-8 md:grid-cols-4 md:px-8" aria-busy={cargando}>
+      <dl className="pagina-ancho grid min-h-28 grid-cols-2 gap-x-[var(--gap-grilla)] gap-y-6 py-8 md:grid-cols-4" aria-busy={cargando}>
         {cargando && [0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-12" />)}
         {items.map((c) => (
           <div key={c.t} className="flex items-baseline gap-2.5">

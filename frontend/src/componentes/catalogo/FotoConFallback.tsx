@@ -17,6 +17,8 @@ interface Props {
   area?: string | null;
   /** Ícono propio para el respaldo (por ejemplo, una universidad). */
   icono?: ComponentType<{ className?: string; 'aria-hidden'?: boolean }>;
+  /** El tamaño lo da el contenedor (clases), sin `aspect-ratio` propio. */
+  relleno?: boolean;
   /** Si falla la imagen no dibuja nada (para fondos decorativos que ya tienen su propio color). */
   ocultarSiFalla?: boolean;
   prioridad?: boolean;
@@ -26,7 +28,7 @@ interface Props {
 
 /**
  * Imagen con `srcset`, dimensiones fijas (sin saltos de diseño) y carga diferida. Si la foto falta o falla,
- * muestra un degradado con el ícono del área en lugar de una imagen rota.
+ * muestra el patrón de esquirlas de marca (tinte suave) con el ícono del área en lugar de una imagen rota.
  */
 export function FotoConFallback({
   src,
@@ -40,6 +42,7 @@ export function FotoConFallback({
   icono,
   prioridad,
   ocultarSiFalla,
+  relleno,
   className,
   imgClassName,
 }: Props) {
@@ -49,16 +52,16 @@ export function FotoConFallback({
   const carga = prioridad ? ({ loading: 'eager', fetchPriority: 'high' } as const) : ({ loading: 'lazy' } as const);
 
   return (
-    <div className={cn('relative overflow-hidden bg-superficie-2', className)} style={{ aspectRatio: `${width} / ${height}` }}>
+    <div className={cn('relative overflow-hidden bg-superficie-2', className)} style={relleno ? undefined : { aspectRatio: `${width} / ${height}` }}>
       {fallida === src && ocultarSiFalla ? null : fallida === src ? (
         <div
           data-fallback
           role={alt ? 'img' : undefined}
           aria-label={alt || undefined}
           aria-hidden={alt ? undefined : true}
-          className="grid size-full place-items-center bg-gradient-to-br from-acento-suave to-superficie-2 text-acento-texto"
+          className="fondo-esquirlas-suave esquirlas grid size-full place-items-center text-acento-texto"
         >
-          <Icono className="size-[28%] max-h-12 min-h-5 opacity-80" aria-hidden />
+          <Icono className="size-[28%] max-h-12 min-h-5" aria-hidden />
         </div>
       ) : (
         <img

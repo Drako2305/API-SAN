@@ -12,7 +12,7 @@ export function BarraComparar({ ofertas, onVaciar }: { ofertas: OfertaSelecciona
       aria-label="Ofertas elegidas para comparar"
       className="fixed inset-x-0 bottom-0 z-20 border-t border-borde-fuerte bg-superficie shadow-2"
     >
-      <div className="mx-auto flex max-w-[72rem] items-center gap-3 px-4 py-3 md:px-8">
+      <div className="mx-auto flex max-w-[var(--ancho-pagina)] items-center gap-3 px-[var(--gutter)] py-3">
         <p className="min-w-0 flex-1 text-sm">
           <span className="block truncate font-medium">{ofertas.map((o) => o.universidad).join(' · ')}</span>
           <span className="block text-texto-3">

@@ -24,7 +24,7 @@ export function Shell() {
         Saltar al contenido
       </a>
       <NavSuperior />
-      <main id="contenido" tabIndex={-1} className="mx-auto w-full max-w-[72rem] px-4 pt-6 pb-12 outline-none md:px-8 md:pt-8">
+      <main id="contenido" tabIndex={-1} className="mx-auto w-full max-w-[var(--ancho-pagina)] px-[var(--gutter)] pt-6 pb-16 outline-none md:pt-8">
         <Suspense fallback={<CargandoPagina />}>
           <Outlet />
         </Suspense>

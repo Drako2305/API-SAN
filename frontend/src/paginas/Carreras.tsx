@@ -147,7 +147,7 @@ export default function Carreras() {
       ) : lista.length === 0 ? (
         <EmptyState icono={<GraduationCap />} titulo="Ninguna carrera coincide" texto={nombre ? `No hay carreras que contengan "${nombre}"${area ? ` en ${etiquetaArea(area)}` : ''}. Prueba con otra palabra.` : `No hay carreras en el área ${etiquetaArea(area)}.`} accion={<button type="button" className="font-medium text-acento-texto" onClick={() => { setTexto(''); setParams({}, { replace: true }); }}>Ver todas las carreras</button>} />
       ) : (
-        <ul aria-busy={carreras.cargando} className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <ul aria-busy={carreras.cargando} className="rejilla-tarjetas">
           {lista.map((c) => (
             <TarjetaCarrera key={c.id} carrera={c} ofertas={deCarrera(c)} />
           ))}

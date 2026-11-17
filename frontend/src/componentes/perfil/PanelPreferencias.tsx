@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Slider } from '@/componentes';
+import { AvisoError, Button, Slider } from '@/componentes';
 import { useToast } from '@/componentes/Toast';
 import { mensajeError, usuarios } from '@/lib/api';
 import { CRITERIO_ETIQUETA } from '@/lib/formato';
@@ -80,9 +80,7 @@ export function PanelPreferencias({ usuarioId, inicial, onGuardado }: Props) {
       </div>
       {suma === 0 && <p className="mt-4 text-sm text-aviso">Con todos los pesos en 0 ningún criterio influye. Sube al menos uno.</p>}
       {error && (
-        <p role="alert" className="mt-4 text-sm font-medium text-peligro">
-          {error}
-        </p>
+        <AvisoError className="mt-4">{error}</AvisoError>
       )}
       <div className="mt-6">
         <Button onClick={guardar} cargando={guardando} disabled={sinCambios}>

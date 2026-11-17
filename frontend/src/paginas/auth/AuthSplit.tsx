@@ -34,11 +34,14 @@ export function AuthSplit({ children, foto = 'andes' }: { children: ReactNode; f
 
       <aside
         aria-label="Sobre SAN"
-        className="relative isolate hidden overflow-hidden bg-panel text-sobre-panel lg:m-3 lg:flex lg:flex-col lg:justify-between lg:rounded-xl lg:p-10"
+        className="fondo-esquirlas esquirlas hidden lg:m-3 lg:flex lg:flex-col lg:justify-between lg:rounded-xl lg:p-12"
       >
-        <img src={f.src} alt="" className="absolute inset-0 -z-20 size-full object-cover" />
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,oklch(0.2_0.05_268/0.78),oklch(0.2_0.05_268/0.9))]" />
+        <img src={f.src} alt="" className="absolute inset-0 -z-30 size-full object-cover" />
+        <div className="absolute inset-0 -z-20 bg-panel/90" />
         <div>
+          <p aria-hidden className="logotipo mb-8 text-[clamp(3.5rem,7vw,6rem)]">
+            APi-SAN
+          </p>
           <p className="max-w-[18ch] font-display text-4xl leading-[1.08] font-semibold tracking-tight text-balance">
             Cada puntaje viene con su porqué.
           </p>

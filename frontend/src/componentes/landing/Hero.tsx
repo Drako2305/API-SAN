@@ -50,7 +50,7 @@ export function Hero({ onRegistro }: { onRegistro: () => void }) {
   return (
     <section ref={raiz} className="relative isolate overflow-hidden" aria-labelledby="titulo-hero">
       <FondoConstelacion />
-      <div className="relative mx-auto grid min-h-[min(100dvh,52rem)] max-w-[80rem] items-center gap-10 px-4 pt-28 pb-14 md:px-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:pt-24">
+      <div className="pagina-ancho relative grid min-h-[min(100dvh,52rem)] items-center gap-10 pt-28 pb-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:pt-24">
         <div>
           <h1 id="titulo-hero" data-titulo className="titulo-display max-w-[15ch] text-[clamp(2.5rem,6.4vw,5rem)] leading-[1.03] font-semibold">
             Compara carreras con un puntaje que puedes explicar.

@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { Link, Navigate, useNavigate, useSearchParams } from 'react-router';
-import { Button, Input } from '@/componentes';
+import { AvisoError, Button, Input } from '@/componentes';
 import { mensajeError } from '@/lib/api';
 import { useSesion } from '@/lib/sesion';
 import { AuthSplit } from './AuthSplit';
@@ -40,9 +40,7 @@ export default function Ingresar() {
         <Input etiqueta="Correo electrónico" type="email" name="correo" autoComplete="username" required value={correo} onChange={(e) => setCorreo(e.target.value)} autoFocus />
         <Input etiqueta="Clave" type="password" name="clave" autoComplete="current-password" required value={clave} onChange={(e) => setClave(e.target.value)} />
         {error && (
-          <p role="alert" className="rounded-md bg-peligro-suave px-3 py-2 text-sm font-medium text-peligro">
-            {error}
-          </p>
+          <AvisoError>{error}</AvisoError>
         )}
         <Button type="submit" tamano="lg" cargando={enviando}>
           Ingresar

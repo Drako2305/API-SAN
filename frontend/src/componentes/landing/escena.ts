@@ -26,7 +26,7 @@ function leerColor(variable: string): Color {
   const c = document.createElement('canvas');
   c.width = c.height = 1;
   const ctx = c.getContext('2d', { willReadFrequently: true });
-  if (!ctx) return new Color(0.3, 0.35, 0.8);
+  if (!ctx) return new Color(0.63, 0.11, 0.13);
   ctx.fillStyle = '#000';
   ctx.fillStyle = css;
   ctx.fillRect(0, 0, 1, 1);

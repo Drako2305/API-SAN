@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { Search } from 'lucide-react';
-import { Button, EncabezadoPagina, Input, Select, Slider } from '@/componentes';
+import { AvisoError, Button, EncabezadoPagina, Input, Select, Slider } from '@/componentes';
 import { busquedas, catalogo, mensajeError, usuarios } from '@/lib/api';
 import { CRITERIO_ETIQUETA, ciudadLegible, etiquetaJornada, etiquetaModalidad, nombreLegible } from '@/lib/formato';
 import { CRITERIOS, JORNADAS, MODALIDADES, type BusquedaRequest, type Criterio, type Jornada, type Modalidad, type Pesos } from '@/lib/modelos';
@@ -181,9 +181,7 @@ export default function Buscar() {
           </fieldset>
 
           {error && (
-            <p role="alert" className="rounded-md bg-peligro-suave px-3 py-2 text-sm font-medium text-peligro">
-              {error}
-            </p>
+            <AvisoError>{error}</AvisoError>
           )}
 
           <div className="flex flex-wrap items-center gap-4">

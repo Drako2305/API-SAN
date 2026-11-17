@@ -7,8 +7,11 @@ import { TextMorph } from '@/morphing';
 export function CtaFinal({ onRegistro }: { onRegistro: () => void }) {
   const { autenticado } = useSesion();
   return (
-    <section aria-labelledby="titulo-final" className="border-t border-borde bg-panel text-sobre-panel">
-      <div className="mx-auto max-w-[80rem] px-4 py-24 text-center md:px-8">
+    <section aria-labelledby="titulo-final" className="fondo-esquirlas esquirlas">
+      <div className="pagina-ancho py-24 text-center">
+        <p aria-hidden className="logotipo mb-8 text-[clamp(3rem,9vw,6rem)] text-sobre-panel">
+          APi-SAN
+        </p>
         <h2 id="titulo-final" className="titulo-display font-semibold">
           <span className="sr-only">Encuentra, compara y decide tu carrera.</span>
           <span aria-hidden className="flex flex-col items-center gap-1 text-[clamp(2.25rem,6vw,4.5rem)] leading-[1.05]">
@@ -21,17 +24,17 @@ export function CtaFinal({ onRegistro }: { onRegistro: () => void }) {
             <span className="text-sobre-panel-2">tu carrera con el porqué a la vista.</span>
           </span>
         </h2>
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+        <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
           {autenticado ? (
-            <LinkButton to="/buscar" tamano="lg" icono={<ArrowRight className="size-4" aria-hidden />}>
+            <LinkButton to="/buscar" variante="sobrePanel" tamano="lg" icono={<ArrowRight className="size-4" aria-hidden />}>
               Buscar una carrera
             </LinkButton>
           ) : (
-            <Button tamano="lg" onClick={onRegistro} icono={<ArrowRight className="size-4" aria-hidden />}>
+            <Button variante="sobrePanel" tamano="lg" onClick={onRegistro} icono={<ArrowRight className="size-4" aria-hidden />}>
               Crear cuenta gratis
             </Button>
           )}
-          <LinkButton to="/comparar" variante="secundario" tamano="lg">
+          <LinkButton to="/comparar" variante="contornoPanel" tamano="lg">
             Comparar ofertas
           </LinkButton>
         </div>

@@ -2,12 +2,11 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import { Pause, Play } from 'lucide-react';
 import { FotoConFallback } from '@/componentes/catalogo';
-import { catalogo } from '@/lib/api';
 import { Building2 } from 'lucide-react';
 import { fotoUniversidad } from '@/lib/fotos';
 import { ciudadLegible } from '@/lib/formato';
 import type { Universidad } from '@/lib/modelos';
-import { useCarga } from '@/lib/useCarga';
+import { useCatalogoCompleto } from '@/lib/useCatalogoConteos';
 
 const CSS = `
 .lp-pista { display: flex; width: max-content; gap: var(--gap-grilla); }
@@ -29,6 +28,7 @@ function Item({ u }: { u: Universidad }) {
     <li className="h-20 w-72 shrink-0">
       <Link
         to={`/universidades/${u.id}`}
+        viewTransition
         className="flex h-full items-center gap-3 rounded-lg border border-borde bg-superficie p-2 pr-4 text-texto no-underline transition-colors hover:bg-superficie-2"
       >
         {/* Miniatura de tamaño fijo (con o sin foto) para que todas las fichas midan lo mismo. */}
@@ -44,16 +44,15 @@ function Item({ u }: { u: Universidad }) {
 
 /** Tira infinita de universidades (animación CSS, pausa con hover/foco/botón). Con reduced motion es una lista estática. */
 export function Marquesina() {
-  const { datos, error } = useCarga(() => catalogo.universidades(), []);
+  const { datos: todo, error } = useCatalogoCompleto();
+  const datos = todo?.universidades;
   const [pausa, setPausa] = useState(false);
   if (error || (datos && datos.length === 0)) return null;
   return (
-    <section aria-labelledby="titulo-unis" className="seccion-ritmo">
+    <section aria-label="Todas las universidades del catálogo, en movimiento" className="pb-[var(--ritmo-seccion)]">
       <style>{CSS}</style>
-      <div className="pagina-ancho mb-6 flex items-end justify-between gap-4">
-        <h2 id="titulo-unis" className="titulo-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold">
-          Universidades en el catálogo
-        </h2>
+      <div className="pagina-ancho mb-3 flex items-center justify-between gap-4">
+        <p className="text-sm text-texto-2">Todas las universidades del catálogo.</p>
         <button
           type="button"
           onClick={() => setPausa((p) => !p)}
@@ -80,13 +79,6 @@ export function Marquesina() {
           </div>
         )}
       </div>
-      <p className="pagina-ancho mt-4 text-xs text-texto-3">
-        Fotos de Wikimedia Commons con licencia libre.{' '}
-        <a href="/campus/CREDITOS.md" className="text-texto-2">
-          Ver créditos
-        </a>
-        .
-      </p>
     </section>
   );
 }

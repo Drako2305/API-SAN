@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import { Outlet } from 'react-router';
 import { Skeleton } from '@/componentes';
-import { NavSuperior } from './NavSuperior';
 
 function CargandoPagina() {
   return (
@@ -13,22 +12,13 @@ function CargandoPagina() {
   );
 }
 
-/** Armazón de la aplicación: barra de navegación superior fija y el contenido de cada página en <Outlet />. */
+/** Contenido de la aplicación bajo la cabecera común (`Marco`): mismo ancho y márgenes que la portada. */
 export function Shell() {
   return (
-    <div className="min-h-dvh">
-      <a
-        href="#contenido"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[60] focus:rounded-md focus:bg-acento focus:px-3 focus:py-2 focus:text-sobre-acento"
-      >
-        Saltar al contenido
-      </a>
-      <NavSuperior />
-      <main id="contenido" tabIndex={-1} className="mx-auto w-full max-w-[var(--ancho-pagina)] px-[var(--gutter)] pt-6 pb-16 outline-none md:pt-8">
-        <Suspense fallback={<CargandoPagina />}>
-          <Outlet />
-        </Suspense>
-      </main>
-    </div>
+    <main id="contenido" tabIndex={-1} className="pagina-ancho pt-6 pb-16 outline-none md:pt-10">
+      <Suspense fallback={<CargandoPagina />}>
+        <Outlet />
+      </Suspense>
+    </main>
   );
 }

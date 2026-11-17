@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 import { ArrowUpRight, GitCompareArrows, Heart, Search } from 'lucide-react';
 import { Avatar, Badge, Card, EmptyState, Skeleton } from '@/componentes';
-import { CarrerasPopulares } from '@/componentes/catalogo';
+import { BuscadorCarrera, CarrerasPopulares } from '@/componentes/catalogo';
 import { busquedas, usuarios } from '@/lib/api';
 import { ciudadLegible, etiquetaJornada, etiquetaModalidad, formatoCop, nombreLegible } from '@/lib/formato';
 import { busquedasRecientes } from '@/lib/recientes';
@@ -88,10 +88,12 @@ export default function Inicio() {
   return (
     <>
       <title>Inicio · SAN</title>
-      <h1 className="text-[1.75rem] md:text-4xl">
+      {/* Misma escala tipográfica, ancho y buscador que el hero de la portada: la primera pantalla continúa la portada. */}
+      <h1 className="titulo-display text-[clamp(2rem,4.4vw,3.25rem)] leading-[1.05] font-semibold">
         {saludo()}, {usuario?.nombre}
       </h1>
-      <p className="mt-2 text-texto-2">¿Qué quieres resolver hoy?</p>
+      <p className="mt-4 max-w-[52ch] text-lg text-texto-2">¿Qué quieres resolver hoy?</p>
+      <BuscadorCarrera className="mt-6 block max-w-[40rem]" />
 
       <div className="mt-8 grid gap-[var(--gap-grilla)] md:grid-cols-3">
         <Link to="/buscar" viewTransition className={`${TARJETA} border-transparent bg-acento text-sobre-acento`}>

@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button, LinkButton } from '@/componentes';
-import { FotoConFallback } from '@/componentes/catalogo';
+import { BuscadorCarrera, FotoConFallback } from '@/componentes/catalogo';
 import { fotoPorSlug } from '@/lib/campus';
 import { useSesion } from '@/lib/sesion';
 import { FondoConstelacion } from './FondoConstelacion';
@@ -48,27 +48,30 @@ export function Hero({ onRegistro }: { onRegistro: () => void }) {
   );
 
   return (
-    <section ref={raiz} className="relative isolate overflow-hidden" aria-labelledby="titulo-hero">
+    <section ref={raiz} className="relative isolate -mt-[var(--barra)] overflow-hidden" aria-labelledby="titulo-hero">
       <FondoConstelacion />
-      <div className="pagina-ancho relative grid min-h-[min(100dvh,52rem)] items-center gap-10 pt-28 pb-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:pt-24">
+      <div className="pagina-ancho relative grid min-h-[min(88dvh,44rem)] items-center gap-8 pt-[calc(var(--barra)+2.5rem)] pb-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-12 lg:pt-[calc(var(--barra)+1.5rem)] lg:pb-12">
         <div>
           <h1 id="titulo-hero" data-titulo className="titulo-display max-w-[15ch] text-[clamp(2.5rem,6.4vw,5rem)] leading-[1.03] font-semibold">
             Compara carreras con un puntaje que puedes explicar.
           </h1>
-          <p data-entra className="mt-6 max-w-[52ch] text-lg text-texto-2">
+          <p data-entra className="mt-5 max-w-[52ch] text-lg text-texto-2">
             Busca por ciudad, costo, modalidad y jornada. Tú decides cuánto pesa cada criterio y SAN te muestra el porqué de cada resultado.
           </p>
-          <div data-entra className="mt-8 flex flex-wrap items-center gap-3">
+          <div data-entra className="mt-7 max-w-[40rem]">
+            <BuscadorCarrera />
+          </div>
+          <div data-entra className="mt-5 flex flex-wrap items-center gap-3">
             {autenticado ? (
-              <LinkButton to="/buscar" tamano="lg" icono={<ArrowRight className="size-4" aria-hidden />}>
-                Buscar una carrera
+              <LinkButton to="/inicio" viewTransition variante="secundario" icono={<ArrowRight className="size-4" aria-hidden />}>
+                Ir a mi inicio
               </LinkButton>
             ) : (
-              <Button tamano="lg" onClick={onRegistro} icono={<ArrowRight className="size-4" aria-hidden />}>
+              <Button variante="secundario" onClick={onRegistro} icono={<ArrowRight className="size-4" aria-hidden />}>
                 Crear cuenta gratis
               </Button>
             )}
-            <LinkButton to="/carreras" variante="secundario" tamano="lg">
+            <LinkButton to="/carreras" viewTransition variante="fantasma">
               Explorar el catálogo
             </LinkButton>
           </div>

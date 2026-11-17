@@ -56,9 +56,9 @@ export default function Perfil() {
             <Skeleton className="size-14 rounded-full" />
             <Skeleton className="h-10 w-56" />
           </div>
-          <p className="mt-3 text-sm text-texto-2">
+          <div className="mt-3 text-sm text-texto-2">
             <TextMorph palabras={['Cargando tu perfil', 'Un momento']} />
-          </p>
+          </div>
         </Card>
       );
     }

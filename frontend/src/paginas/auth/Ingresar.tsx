@@ -24,7 +24,7 @@ export default function Ingresar() {
     setEnviando(true);
     try {
       await login(correo.trim(), clave);
-      navegar(destino, { replace: true });
+      navegar(destino, { replace: true, viewTransition: true });
     } catch (err) {
       setError(mensajeError(err, 'No pudimos iniciar sesión. Intenta de nuevo.'));
       setEnviando(false);

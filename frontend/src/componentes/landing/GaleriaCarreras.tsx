@@ -5,6 +5,8 @@ import { FotoConFallback } from '@/componentes/catalogo';
 import { CARRERAS_DESTACADAS, rutaCarrera } from './carreras';
 import { gsap, ESCRITORIO, SIN_REDUCCION, useGSAP } from './gsap';
 
+const ALTA = '(min-height: 700px)';
+
 /**
  * Galería horizontal: en escritorio con movimiento se fija y avanza con el scroll (scrub) con parallax dentro de cada foto;
  * en móvil y con reduced motion es una tira con scroll nativo y snap.
@@ -16,7 +18,8 @@ export function GaleriaCarreras() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add(`${SIN_REDUCCION} and ${ESCRITORIO}`, () => {
+      // Solo con espacio para que la sección fijada llene la pantalla: sin huecos en pantallas bajas ni en móvil.
+      mm.add(`${SIN_REDUCCION} and ${ESCRITORIO} and ${ALTA}`, () => {
         const el = pista.current!;
         const tarjetas = gsap.utils.toArray<HTMLElement>('[data-tarjeta]', el);
         const recorrido = () => Math.max(0, el.scrollWidth - el.clientWidth);
@@ -27,8 +30,9 @@ export function GaleriaCarreras() {
           ease: 'none',
           scrollTrigger: {
             trigger: raiz.current,
-            start: 'top top+=64',
-            end: () => `+=${recorrido()}`,
+            start: 'top top+=56',
+            // La pista avanza 1,5 veces más rápido que el scroll: menos recorrido vertical fijado.
+            end: () => `+=${Math.round(recorrido() / 1.5)}`,
             pin: true,
             scrub: 0.5,
             invalidateOnRefresh: true,
@@ -66,8 +70,8 @@ export function GaleriaCarreras() {
   );
 
   return (
-    <section ref={raiz} aria-labelledby="titulo-galeria" className="seccion-ritmo overflow-hidden md:flex md:min-h-[calc(100dvh-4rem)] md:flex-col md:justify-center">
-      <div className="pagina-ancho mb-8 flex items-end justify-between gap-4">
+    <section ref={raiz} aria-labelledby="titulo-galeria" className="galeria-fija seccion-ritmo overflow-hidden">
+      <div className="pagina-ancho mb-6 flex items-end justify-between gap-4">
         <h2 id="titulo-galeria" className="titulo-display max-w-[20ch] text-[clamp(1.75rem,3.6vw,3rem)] font-semibold">
           Carreras para empezar a explorar
         </h2>
@@ -82,7 +86,7 @@ export function GaleriaCarreras() {
         {CARRERAS_DESTACADAS.map((c) => {
           const f = rutaCarrera(c.nombre);
           return (
-            <li key={c.nombre} data-tarjeta className="w-[72vw] max-w-80 shrink-0 snap-start md:w-80">
+            <li key={c.nombre} data-tarjeta className="w-[72vw] max-w-80 shrink-0 snap-start md:w-[calc(var(--alto-tarjeta)*0.8)] md:max-w-none">
               <Link
                 to={`/carreras?nombre=${encodeURIComponent(c.nombre)}`}
                 className="group relative block aspect-[4/5] overflow-hidden rounded-xl border border-borde bg-superficie-2 text-texto no-underline"

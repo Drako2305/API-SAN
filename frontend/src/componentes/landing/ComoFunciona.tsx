@@ -3,7 +3,7 @@ import { Card, PuntajeBarra } from '@/componentes';
 import { CRITERIO_ETIQUETA } from '@/lib/formato';
 import { CRITERIOS, type Pesos } from '@/lib/modelos';
 import { MorphingRing } from '@/morphing';
-import { gsap, ESCRITORIO, SIN_REDUCCION, useGSAP } from './gsap';
+import { gsap, SIN_REDUCCION, useGSAP } from './gsap';
 
 const PASOS = [
   { titulo: 'Elige carrera', texto: 'Parte de lo que quieres estudiar. Filtra por ciudad, costo máximo, modalidad y jornada.' },
@@ -17,7 +17,7 @@ const DESGLOSE_DEMO: Pesos = { costo: 0.9, modalidad: 0.8, ubicacion: 0.95, acre
 const PUNTAJE_DEMO = 87;
 const CERO: Pesos = { costo: 0, modalidad: 0, ubicacion: 0, acreditacion: 0 };
 
-/** "Cómo funciona": sección fijada con ScrollTrigger; al desplazarse avanza el paso activo y el puntaje de muestra sube de 0 a 87. */
+/** "Cómo funciona": al desplazarse (scrub, sin fijar la sección ni dejar huecos) avanza el paso activo y el puntaje de muestra sube de 0 a 87. */
 export function ComoFunciona() {
   const raiz = useRef<HTMLElement>(null);
   // Estado final por defecto: reduced motion y lectores de pantalla ven el resultado completo.
@@ -27,8 +27,7 @@ export function ComoFunciona() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add({ animado: `${SIN_REDUCCION} and ${ESCRITORIO}`, ligero: `${SIN_REDUCCION} and (max-width: 767.98px)` }, (ctx) => {
-        const fijar = !!ctx.conditions?.animado;
+      mm.add(SIN_REDUCCION, () => {
         const q = gsap.utils.selector(raiz);
         const pasos = q('[data-paso]');
         const pesos = q('[data-peso]');
@@ -54,11 +53,9 @@ export function ComoFunciona() {
           defaults: { ease: 'none' },
           scrollTrigger: {
             trigger: raiz.current,
-            start: fijar ? 'top top+=64' : 'top 70%',
-            end: fijar ? '+=160%' : 'bottom 60%',
-            pin: fijar,
+            start: 'top 75%',
+            end: 'bottom 40%',
             scrub: 0.6,
-            anticipatePin: 1,
           },
         });
         tl.to(pasos[0]!, { opacity: 1, duration: 0.3 }, 0)
@@ -85,12 +82,12 @@ export function ComoFunciona() {
 
   return (
     <section ref={raiz} aria-labelledby="titulo-como" className="relative border-y border-borde bg-superficie">
-      <div className="pagina-ancho seccion-ritmo grid min-h-[calc(100dvh-4rem)] items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:gap-20">
+      <div className="pagina-ancho seccion-ritmo grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:gap-16">
         <div>
           <h2 id="titulo-como" className="titulo-display max-w-[18ch] text-[clamp(1.75rem,3.6vw,3rem)] font-semibold">
             Cómo funciona
           </h2>
-          <ol className="mt-8 flex flex-col gap-6">
+          <ol className="mt-6 flex flex-col gap-5">
             {PASOS.map((p, i) => (
               <li
                 key={p.titulo}

@@ -6,7 +6,7 @@ SPA React 19 + TypeScript estricto + Vite + Tailwind v4. Código y UI en españo
 
 - `lib/` lógica sin UI: `api.ts` (cliente), `almacenSesion.ts` + `sesion.tsx` (sesión), `tema.tsx`, `modelos.ts`, `formato.ts`, `campus.ts` (fotos y créditos), `recientes.ts`, `useCarga.ts`, `useCatalogoConteos.ts`.
 - `componentes/` primitivas del sistema de diseño (Button, Campo/Input/Select/Textarea, Card, Badge, Tabs, Dialog, Slider, Avatar, EmptyState, Skeleton, Toast, PuntajeBarra, Logo, EncabezadoPagina). Se importan de `@/componentes`.
-- `layout/` `Shell` (riel + barra superior + nav móvil), `LayoutPublico`, `RutaPrivada`, `MenuUsuario`, `navegacion.ts`.
+- `layout/` `Marco` (cabecera única `NavSuperior` con `variante` portada/app + `<Outlet />`), `Shell` (contenido de la app), `LayoutPublico` (contenido de la portada), `RutaPrivada`, `MenuUsuario`, `navegacion.ts`. `App.tsx` usa un router de datos para que `viewTransition` funcione.
 - `paginas/` una pantalla por archivo con `export default`, cargada con `lazy` desde `rutas.tsx`. `paginas/auth/` contiene ingreso y registro.
 - `morphing/` componentes portados de amicro (importan de `framer-motion`).
 - `index.css` es el único lugar de tokens (colores `light-dark()`, tipografía, radios, sombras, movimiento).

@@ -81,8 +81,8 @@
   --e-20: 5rem; /* 80 */
   --gutter: 1rem; /* margen lateral de página: 16 móvil, 24 tablet, 32 escritorio */
   --gap-grilla: 1rem;
-  --ritmo-seccion: 4rem; /* separación entre secciones: 48 móvil, 64, 80 */
-  --ancho-pagina: 72rem; /* app */
+  --ritmo-seccion: 2.5rem; /* relleno vertical de cada sección de la portada: 40 móvil, 48, 56 (entre dos secciones: 80, 96, 112) */
+  --ancho-pagina: 80rem; /* app: igual que la portada, para que el logo no se mueva */
   --ancho-portada: 80rem; /* portada */
   --medida: 65ch; /* ancho máximo de texto corrido */
 
@@ -146,6 +146,8 @@
     accent-color: var(--c-acento);
     scrollbar-color: var(--c-borde-fuerte) transparent;
     scrollbar-width: thin;
+    /* Anclas y foco por teclado quedan bajo la cabecera fija. */
+    scroll-padding-top: calc(var(--barra) + 1rem);
   }
   body {
     margin: 0;
@@ -192,10 +194,10 @@
 
 /* ---------- Espaciado y grillas (ver DISENO-GRILLA.md) ---------- */
 @media (min-width: 40rem) {
-  :root { --gutter: 1.5rem; --gap-grilla: 1.25rem; --ritmo-seccion: 4rem; }
+  :root { --gutter: 1.5rem; --gap-grilla: 1.25rem; --ritmo-seccion: 3rem; }
 }
 @media (min-width: 64rem) {
-  :root { --gutter: 2rem; --gap-grilla: 1.5rem; --ritmo-seccion: 5rem; }
+  :root { --gutter: 2rem; --gap-grilla: 1.5rem; --ritmo-seccion: 3.5rem; }
 }
 @utility pagina-ancho {
   margin-inline: auto;
@@ -332,6 +334,32 @@ input[type='range'].san-slider { accent-color: var(--c-acento); }
   @starting-style { .panel-nav[popover]:popover-open { opacity: 0; translate: 0 -0.5rem; } }
 }
 
+/* Galería de carreras: tarjetas altas según la pantalla y, donde se fija con el scroll, la sección llena la ventana (sin franjas vacías). */
+.galeria-fija { --alto-tarjeta: 24rem; }
+@media (min-width: 48rem) and (min-height: 43.75rem) {
+  .galeria-fija { --alto-tarjeta: clamp(22rem, 56dvh, 34rem); }
+}
+@media (min-width: 48rem) and (min-height: 43.75rem) and (prefers-reduced-motion: no-preference) {
+  .galeria-fija {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-block-size: calc(100dvh - var(--barra));
+  }
+}
+
+/* ---------- Preguntas frecuentes (details nativo) ---------- */
+.faq-item::details-content { block-size: 0; overflow: hidden; }
+.faq-item[open]::details-content { block-size: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .faq-item { interpolate-size: allow-keywords; }
+  .faq-item::details-content {
+    transition: block-size var(--dur-media) var(--ease-salida), content-visibility var(--dur-media) allow-discrete;
+  }
+}
+.faq-item summary { list-style: none; }
+.faq-item summary::-webkit-details-marker { display: none; }
+
 /* ---------- Skeleton ---------- */
 @keyframes san-brillo { to { background-position: -200% 0; } }
 .san-skeleton {
@@ -342,12 +370,17 @@ input[type='range'].san-slider { accent-color: var(--c-acento); }
 }
 
 /* ---------- Transición entre vistas (same-document) ---------- */
+/* La cabecera tiene nombre propio: queda fuera del fundido de la página y no parpadea al cambiar de ruta. */
+.cabecera-san { view-transition-name: cabecera; }
 @media (prefers-reduced-motion: no-preference) {
   ::view-transition-old(root),
   ::view-transition-new(root) {
-    animation-duration: 160ms;
+    animation-duration: 220ms;
     animation-timing-function: var(--ease-salida);
   }
+  ::view-transition-group(cabecera) { animation-duration: 0s; }
+  ::view-transition-old(cabecera) { display: none; }
+  ::view-transition-new(cabecera) { animation: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),

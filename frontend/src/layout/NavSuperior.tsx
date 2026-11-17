@@ -1,12 +1,12 @@
 import { useEffect, useId, useRef, useState, useSyncExternalStore, type FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
-import { Menu, Search } from 'lucide-react';
+import { LogIn, Menu, Search, UserPlus } from 'lucide-react';
 import { Logo, LinkButton } from '@/componentes';
 import { cn } from '@/lib/cn';
 import { useSesion } from '@/lib/sesion';
 import { BotonTema } from './BotonTema';
 import { MenuUsuario } from './MenuUsuario';
-import { ITEMS_NAV, estaActivo } from './navegacion';
+import { ITEMS_NAV, ITEMS_PUBLICOS, estaActivo } from './navegacion';
 
 const CONSULTA_ANCHO = '(min-width: 768px)';
 
@@ -20,12 +20,16 @@ const anchoActual = () => window.matchMedia?.(CONSULTA_ANCHO).matches ?? true;
 /** `true` cuando caben los items en línea; en pantallas angostas se vuelven un panel desplegable. */
 const useAncho = () => useSyncExternalStore(suscribirAncho, anchoActual, () => true);
 
+export type VarianteCabecera = 'app' | 'portada';
+
 /**
+ * Cabecera única de SAN (portada y aplicación): misma altura, mismo ancho, mismo logo y acciones con ícono y texto.
+ * `variante="portada"` va sin buscador (el hero ya trae el suyo) y se ve transparente sobre el hero hasta que se desplaza.
  * Barra superior fija: logo, navegación con ícono y texto, búsqueda, tema y cuenta.
  * Una sola lista de enlaces: en línea desde 768 px (con etiquetas completas desde ~1100 px) y, más angosta,
  * un `popover` nativo abierto por el botón de menú (Esc, clic fuera y retorno del foco los da el navegador).
  */
-export function NavSuperior() {
+export function NavSuperior({ variante = 'app' }: { variante?: VarianteCabecera }) {
   const { autenticado, esAdmin } = useSesion();
   const ubicacion = useLocation();
   const navegar = useNavigate();
@@ -54,7 +58,10 @@ export function NavSuperior() {
     navegar(q ? `/buscar?carrera=${encodeURIComponent(q)}` : '/buscar', { viewTransition: true });
   };
 
-  const items = ITEMS_NAV.filter((i) => !i.soloAdmin || esAdmin);
+  const items = autenticado ? ITEMS_NAV.filter((i) => !i.soloAdmin || esAdmin) : ITEMS_PUBLICOS;
+  const conBuscador = variante === 'app';
+  // Con muchos destinos (o con buscador) solo la página actual conserva su texto entre 768 y 1099 px.
+  const compacto = conBuscador || items.length > 3;
   const cerrarPanel = () => {
     if (!ancho) panel.current?.hidePopover?.();
   };
@@ -62,12 +69,13 @@ export function NavSuperior() {
   return (
     <header
       data-desplazado={desplazado || undefined}
+      data-variante={variante}
       className={cn(
-        'sticky top-0 z-30 border-b bg-fondo/85 backdrop-blur-md transition-[border-color,box-shadow] duration-[var(--dur-media)] supports-[backdrop-filter]:bg-fondo/75',
-        desplazado ? 'border-borde shadow-1' : 'border-transparent',
+        'cabecera-san sticky top-0 z-30 border-b transition-[background-color,border-color,box-shadow] duration-[var(--dur-media)]',
+        desplazado ? 'border-borde bg-fondo/85 shadow-1 backdrop-blur-md supports-[backdrop-filter]:bg-fondo/75' : 'border-transparent bg-transparent',
       )}
     >
-      <div className="mx-auto flex max-w-[84rem] flex-wrap items-center gap-x-2 gap-y-2 px-4 py-2 md:min-h-[var(--barra)] md:flex-nowrap md:gap-x-3 md:px-6 md:py-0">
+      <div className="pagina-ancho flex flex-wrap items-center gap-x-1.5 gap-y-2 py-2 md:h-[var(--barra)] md:flex-nowrap md:gap-x-3 md:py-0">
         <button
           type="button"
           popoverTarget={idMenu}
@@ -84,11 +92,11 @@ export function NavSuperior() {
           <span className="sr-only">Menú</span>
         </button>
 
-        <Link to={autenticado ? '/inicio' : '/'} className="shrink-0 rounded-lg" aria-label="SAN, ir al inicio">
+        <Link to={autenticado ? '/inicio' : '/'} viewTransition className="shrink-0 rounded-lg" aria-label="SAN, ir al inicio">
           <Logo conNombre={false} />
         </Link>
 
-        <nav aria-label="Principal" className="md:shrink-0">
+        <nav aria-label="Principal" className="max-md:contents md:shrink-0">
           <ul
             ref={panel}
             id={idMenu}
@@ -115,7 +123,7 @@ export function NavSuperior() {
                     )}
                   >
                     <Icono className="size-[1.15rem] shrink-0" aria-hidden />
-                    <span className={cn(ancho && !activo && 'max-[1099px]:sr-only')}>{item.etiqueta}</span>
+                    <span className={cn(ancho && !activo && compacto && 'max-[1099px]:sr-only')}>{item.etiqueta}</span>
                   </Link>
                 </li>
               );
@@ -123,18 +131,22 @@ export function NavSuperior() {
           </ul>
         </nav>
 
-        <form role="search" onSubmit={enviar} className="relative order-last basis-full md:order-none md:basis-auto md:flex-1 md:min-w-36 md:max-w-xs md:ml-auto">
-          <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-texto-3" aria-hidden />
-          <input
-            type="search"
-            value={consulta}
-            onChange={(e) => setConsulta(e.target.value)}
-            placeholder="Buscar una carrera"
-            aria-label="Buscar una carrera"
-            enterKeyHint="search"
-            className="h-9 w-full rounded-full border border-borde bg-superficie pr-4 pl-9 text-sm placeholder:text-texto-3 hover:border-borde-fuerte focus-visible:border-acento"
-          />
-        </form>
+        {conBuscador ? (
+          <form role="search" onSubmit={enviar} className="relative order-last basis-full md:order-none md:basis-auto md:flex-1 md:min-w-36 md:max-w-xs md:ml-auto">
+            <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-texto-3" aria-hidden />
+            <input
+              type="search"
+              value={consulta}
+              onChange={(e) => setConsulta(e.target.value)}
+              placeholder="Buscar una carrera"
+              aria-label="Buscar una carrera"
+              enterKeyHint="search"
+              className="h-9 w-full rounded-full border border-borde bg-superficie pr-4 pl-9 text-sm placeholder:text-texto-3 hover:border-borde-fuerte focus-visible:border-acento"
+            />
+          </form>
+        ) : (
+          <span aria-hidden className="hidden flex-1 md:block" />
+        )}
 
         <div className="ml-auto flex items-center gap-1.5 md:ml-0">
           <BotonTema />
@@ -142,10 +154,10 @@ export function NavSuperior() {
             <MenuUsuario />
           ) : (
             <>
-              <LinkButton to="/ingresar" variante="fantasma" tamano="sm" className="hidden sm:inline-flex">
-                Ingresar
+              <LinkButton to="/ingresar" viewTransition variante="fantasma" tamano="sm" icono={<LogIn className="size-4" aria-hidden />}>
+                <span className="max-sm:sr-only">Ingresar</span>
               </LinkButton>
-              <LinkButton to="/registro" tamano="sm">
+              <LinkButton to="/registro" viewTransition tamano="sm" icono={<UserPlus className="size-4" aria-hidden />}>
                 Crear cuenta
               </LinkButton>
             </>

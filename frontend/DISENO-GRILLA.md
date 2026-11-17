@@ -14,8 +14,8 @@ Reglas que aplica el frontend para que las tarjetas se alineen y la mirada tenga
 ## Reglas adoptadas
 
 1. **Escala de espaciado 4/8.** Tokens `--e-1…--e-20` (4, 8, 12, 16, 24, 32, 48, 64, 80 px); Tailwind usa la misma base de 4 px. Dentro de una tarjeta: 4 a 16 px; entre tarjetas: `--gap-grilla`; entre secciones: 48 px o más.
-2. **Ritmo de secciones.** `--ritmo-seccion` (64 px móvil y tablet, 80 px en escritorio) en la portada (`seccion-ritmo`); en la app, `mt-12` (48 px) entre bloques y 16 px bajo cada encabezado. Más espacio encima del título que debajo, para que cada título se pegue a su contenido (proximidad).
-3. **Ancho y márgenes de página.** App: `--ancho-pagina` 72 rem; portada: `--ancho-portada` 80 rem. Margen lateral `--gutter`: 16 px en móvil, 24 px desde 640 px y 32 px desde 1024 px (`pagina-ancho`).
+2. **Ritmo de secciones.** `--ritmo-seccion` (40 px móvil, 48 px tablet y 56 px en escritorio: entre dos secciones quedan 80, 96 y 112 px) en la portada (`seccion-ritmo`); en la app, `mt-12` (48 px) entre bloques y 16 px bajo cada encabezado. Más espacio encima del título que debajo, para que cada título se pegue a su contenido (proximidad).
+3. **Ancho y márgenes de página.** App y portada: 80 rem (`--ancho-pagina` = `--ancho-portada`), el mismo de la cabecera única, para que el logo y el contenido no se muevan al cambiar de pantalla. Margen lateral `--gutter`: 16 px en móvil, 24 px desde 640 px y 32 px desde 1024 px (`pagina-ancho`).
 4. **Grilla de tarjetas.** `rejilla-tarjetas`: `repeat(auto-fill, minmax(min(100%, var(--min-tarjeta, 16rem)), 1fr))`, `align-items: stretch` y el mismo `--gap-grilla` en ambos ejes (16, 20 y 24 px). `auto-fill` evita que la última fila estire las tarjetas.
 5. **Tiras horizontales.** `pista-tarjetas` con ancho de tarjeta fijo (marquesina 18 rem, carreras populares 10 rem, galería 20 rem) y altura fija o proporción fija.
 6. **Estructura de la tarjeta.** Columna flex con foto de proporción fija arriba, título `line-clamp-2` con `min-height` de dos líneas, metadatos de una línea con `truncate` y el pie o acción anclado con `mt-auto`. Todo alineado a la izquierda y la etiqueta junto a su valor.
@@ -24,3 +24,5 @@ Reglas que aplica el frontend para que las tarjetas se alineen y la mirada tenga
 9. **Medida.** Texto corrido con `--medida` (65ch); los títulos balanceados con `text-wrap: balance`.
 10. **Agrupar con región común.** Las unidades (tarjeta, fila de lista, panel) llevan borde o fondo; lo que no se relaciona se separa con más espacio, no con más líneas.
 11. **Mismo hueco que la grilla en móvil.** Desde 360 px sin desplazamiento horizontal; los filtros en chips se desplazan dentro de su propia banda.
+12. **Cabecera única y primera pantalla continua.** Una sola `NavSuperior` (variante `portada` o `app`) con la misma altura (`--barra`), ancho, márgenes y logo; ícono y texto en cada acción. `/inicio` repite la escala del hero (titular, buscador) sobre el mismo fondo.
+13. **Secciones de la portada sin huecos.** Nada de relleno de la altura de la ventana: "Cómo funciona" avanza con el scroll sin fijarse y la galería solo se fija con espacio (ancho de 768 px y alto de 700 px) y ocupando la ventana. Cuadrículas fijas de 4 columnas (áreas y universidades), tiras de tarjetas de 16,5 rem (ofertas) y un bento de 12 columnas (campus).

@@ -25,3 +25,6 @@ export function estaActivo(item: ItemNav, ruta: string, search: string): boolean
   const prefijos = item.activo ?? [item.a];
   return prefijos.some((p) => ruta === p || ruta.startsWith(`${p}/`));
 }
+
+/** Destinos sin sesión: las vistas públicas (el resto exige cuenta). */
+export const ITEMS_PUBLICOS: ItemNav[] = ITEMS_NAV.filter((i) => ['/buscar', '/carreras', '/comparar'].includes(i.a));

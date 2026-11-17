@@ -36,7 +36,7 @@ export function MenuUsuario() {
           <p className="truncate text-xs text-texto-3">{usuario.correo}</p>
         </div>
         <hr className="my-1 border-borde" />
-        <Link to="/perfil" className={item} onClick={cerrar}>
+        <Link to="/perfil" viewTransition className={item} onClick={cerrar}>
           <UserRound className="size-4 text-texto-3" aria-hidden /> Mi perfil
         </Link>
         <hr className="my-1 border-borde" />
@@ -46,7 +46,7 @@ export function MenuUsuario() {
           onClick={() => {
             cerrar();
             logout();
-            navegar('/');
+            navegar('/', { viewTransition: true });
           }}
         >
           <LogOut className="size-4 text-texto-3" aria-hidden /> Cerrar sesión

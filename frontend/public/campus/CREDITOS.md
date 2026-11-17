@@ -90,3 +90,67 @@ Todas las imágenes provienen de Wikimedia Commons y se usan bajo la licencia in
 - **Autor:** A Random Internaut
 - **Licencia:** CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
 - **Modificaciones:** recortada a 16:9 y convertida a WebP
+
+## rosario - Universidad del Rosario (Bogotá)
+
+- **Título del archivo en Commons:** Sede Claustro Universidad del Rosario.jpg
+- **Página del archivo:** https://commons.wikimedia.org/wiki/File:Sede_Claustro_Universidad_del_Rosario.jpg
+- **Autor:** MutisiaClematis
+- **Licencia:** CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- **Modificaciones:** recortada a 16:9 y convertida a WebP
+
+## externado - Universidad Externado de Colombia (Bogotá)
+
+- **Título del archivo en Commons:** Vista desde la Universidad Externado de Colombia.jpg
+- **Página del archivo:** https://commons.wikimedia.org/w/index.php?curid=39004150
+- **Autor:** Peter Angritt
+- **Licencia:** CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- **Modificaciones:** recortada a 16:9 y convertida a WebP
+
+## caldas - Universidad de Caldas (Manizales)
+
+- **Título del archivo en Commons:** Universidad de Caldas - Centro Cultural Universitario Rogelio Salmona.jpg
+- **Página del archivo:** https://commons.wikimedia.org/wiki/File:Universidad_de_Caldas_-_Centro_Cultural_Universitario_Rogelio_Salmona.jpg
+- **Autor:** Ccurogeliosalmona
+- **Licencia:** CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- **Modificaciones:** recortada a 16:9 (se quitó la franja gris de relleno de la parte inferior) y convertida a WebP
+
+## cartagena - Universidad de Cartagena (Cartagena)
+
+- **Título del archivo en Commons:** Universidad de Cartagena Sede San Agustín.jpg
+- **Página del archivo:** https://commons.wikimedia.org/wiki/File:Universidad_de_Cartagena_Sede_San_Agust%C3%ADn.jpg
+- **Autor:** Así es Cartagena
+- **Licencia:** CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- **Modificaciones:** recortada a 16:9 (centro) y convertida a WebP
+
+## sabana - Universidad de La Sabana (Chía)
+
+- **Título del archivo en Commons:** Vista del edificio Ad Portas desde el Puente Gris de la Universidad de La Sabana.jpg
+- **Página del archivo:** https://commons.wikimedia.org/w/index.php?curid=92962398
+- **Autor:** Carlosguhe
+- **Licencia:** CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- **Modificaciones:** recortada a 16:9 y convertida a WebP
+
+## utp - Universidad Tecnológica de Pereira (Pereira)
+
+- **Título del archivo en Commons:** UTP, edificio de sistemas y bloque A.jpg
+- **Página del archivo:** https://commons.wikimedia.org/w/index.php?curid=16163411
+- **Autor:** Daho90 (subida en Commons; el campo de autor está vacío)
+- **Licencia:** CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
+- **Modificaciones:** recortada a 16:9 (centro) y convertida a WebP
+
+## uis - Universidad Industrial de Santander (Bucaramanga)
+
+- **Título del archivo en Commons:** Sede principal de la Universidad Industrial de Santander (UIS).jpg
+- **Página del archivo:** https://commons.wikimedia.org/w/index.php?curid=20840821
+- **Autor:** Darwinjvega
+- **Licencia:** CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
+- **Modificaciones:** recortada a 16:9 (centro) y convertida a WebP
+
+## icesi - Universidad Icesi (Cali)
+
+- **Título del archivo en Commons:** Foto áerea Universidad Icesi
+- **Página del archivo:** https://commons.wikimedia.org/w/index.php?curid=74822840
+- **Autor:** Marialejandra.paz
+- **Licencia:** CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- **Modificaciones:** recortada a 16:9 (centro) y convertida a WebP

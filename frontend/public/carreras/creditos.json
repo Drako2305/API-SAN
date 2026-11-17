@@ -1,13 +1,128 @@
 {
-  "ingenieria-de-sistemas": {
-    "autor": "Lbronn",
+  "administracion-de-empresas": {
+    "autor": "The White House",
+    "licencia": "Public domain",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Small_Business_Administrator_Isabel_Guzman_participates_in_a_meeting_with_child_care_businesses,_lenders,_national_child_care_organizations_and_philanthropy,_March_24,_2024,_in_the_Eisenhower_Executive_Office_Building_at_the_White_House.jpg"
+  },
+  "agronomia": {
+    "autor": "jemasmith",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/26085795@N02/6193178809"
+  },
+  "arquitectura": {
+    "autor": "Nick Krastev",
+    "licencia": "CC0",
+    "fuente": "https://wordpress.org/photos/photo/82063e02aa/"
+  },
+  "artes-plasticas": {
+    "autor": "dejankrsmanovic",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/155403590@N07/46422320134"
+  },
+  "biologia": {
+    "autor": "kaibara87",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/34745138@N00/3839720754"
+  },
+  "ciencia-de-datos": {
+    "autor": "Unhindered by Talent",
+    "licencia": "CC BY-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/26406919@N00/2217375343"
+  },
+  "ciencia-politica": {
+    "autor": "Colin",
     "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Programmers.jpg"
+    "fuente": "https://commons.wikimedia.org/w/index.php?curid=30460982"
+  },
+  "cine-y-television": {
+    "autor": "Don Ramey Logan",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:A_Behind_the_Scene_shots_of_one_of_our_production_sets_Don_Ramey_Logan.jpg"
+  },
+  "comunicacion-social": {
+    "autor": "RavikaChand",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Sports_Journalism.jpg"
+  },
+  "contaduria-publica": {
+    "autor": "kenteegardin",
+    "licencia": "CC BY-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/26373139@N08/5537894072"
+  },
+  "derecho": {
+    "autor": "Cadop",
+    "licencia": "CC0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Law_library_at_Umich.jpg"
+  },
+  "diseno-grafico": {
+    "autor": "Tim Sullivan",
+    "licencia": "CC0 1.0",
+    "fuente": "https://stocksnap.io/photo/color-swatches-VYSZEM4UWE"
+  },
+  "diseno-industrial": {
+    "autor": "juhansonin",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/38869431@N00/8337821045"
+  },
+  "economia": {
+    "autor": "Leticia inca jorge",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Bloque_antiguo_de_la_facultad_de_economia.jpg"
+  },
+  "enfermeria": {
+    "autor": "joguldi",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/55573153@N00/528782775"
+  },
+  "filosofia": {
+    "autor": "Mrstrimming",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Philosophy_.jpg"
+  },
+  "finanzas": {
+    "autor": "Thomas J. O'Halloran",
+    "licencia": "Public domain",
+    "fuente": "https://commons.wikimedia.org/wiki/File:NY_stock_exchange_traders_floor_LC-U9-10548-6.jpg"
+  },
+  "fisica": {
+    "autor": "Jeremyida002",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:A_physics_laboratory.jpg"
+  },
+  "fisioterapia": {
+    "autor": "Virpana",
+    "licencia": "CC0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Instituto_nacional_de_medicina_f%C3%ADsica_y_rehabilitaci%C3%B3n_en_Ciudad_de_Panam%C3%A1.jpg"
+  },
+  "gastronomia": {
+    "autor": "US Army Africa",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/36281822@N08/4149857219"
+  },
+  "ingenieria-ambiental": {
+    "autor": "Vraj Acharya, WELL Labs",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Doddabommasandra_Lake_STP_Bengaluru_sewage_treatment_plant_aerial_view_India.jpg"
+  },
+  "ingenieria-biomedica": {
+    "autor": "U.S. Army Materiel Command",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/10393857@N03/10594966953"
   },
   "ingenieria-civil": {
     "autor": "Bernardobenzecry",
     "licencia": "CC BY-SA 4.0",
     "fuente": "https://commons.wikimedia.org/wiki/File:Heavy_machinery_in_construction_site_in_Manaus_by_Platinum_Constru%C3%A7%C3%B5es.jpg"
+  },
+  "ingenieria-de-sistemas": {
+    "autor": "Lbronn",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Programmers.jpg"
+  },
+  "ingenieria-electronica": {
+    "autor": "germanium from Eichwalde, Germany",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://commons.wikimedia.org/w/index.php?curid=41980965"
   },
   "ingenieria-industrial": {
     "autor": "cwizner Indie_charles",
@@ -19,15 +134,50 @@
     "licencia": "CC0",
     "fuente": "https://commons.wikimedia.org/wiki/File:Mechanical_engineering_workshop_at_Arusha_Technical_College,_Tanzania.jpg"
   },
-  "ingenieria-ambiental": {
-    "autor": "Vraj Acharya, WELL Labs",
+  "licenciatura-en-educacion-infantil": {
+    "autor": "amrufm",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/92405724@N00/2594759050"
+  },
+  "licenciatura-en-matematicas": {
+    "autor": "LBM1948",
     "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Doddabommasandra_Lake_STP_Bengaluru_sewage_treatment_plant_aerial_view_India.jpg"
+    "fuente": "https://commons.wikimedia.org/wiki/File:Classroom_blackboard_at_Cornell_University,_Ithaca,_NY_25.jpg"
+  },
+  "matematicas": {
+    "autor": "quinn.anya",
+    "licencia": "CC BY-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/53326337@N00/4561383183"
   },
   "medicina": {
     "autor": "U.S. Navy photo by Mass Communication Specialist 3rd Class Matthew Jackson",
     "licencia": "Public domain",
     "fuente": "https://commons.wikimedia.org/wiki/File:US_Navy_100720-N-6410J-030_Medical_professionals_from_the_education_and_training_department_aboard_the_Military_Sealift_Command_hospital_ship_USNS_Mercy_(T-AH_19)_conduct_a_subject_matter_expert_exchange_with_students_at_a_medi.jpg"
+  },
+  "medicina-veterinaria": {
+    "autor": "JuanGris (Lucía Estévez)",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Cl%C3%ADnica_para_peque%C3%B1os_animales,_Veterinaria_Universidad_Nacional.JPG"
+  },
+  "mercadeo": {
+    "autor": "Rawpixel Ltd",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/147875007@N03/45739291052"
+  },
+  "musica": {
+    "autor": "firepile",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/17643132@N00/2348620550"
+  },
+  "negocios-internacionales": {
+    "autor": "Alexandre Prevot",
+    "licencia": "CC BY-SA 2.0",
+    "fuente": "https://www.flickr.com/photos/32569229@N06/53943623042"
+  },
+  "nutricion-y-dietetica": {
+    "autor": "rexipe",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/7352088@N08/1040570600"
   },
   "odontologia": {
     "autor": "Sisib Universidad de Chile",
@@ -39,64 +189,24 @@
     "licencia": "CC BY 2.5",
     "fuente": "https://commons.wikimedia.org/wiki/File:Festejo_decimo_aniversario_psicologia_unlp.jpg"
   },
-  "fisioterapia": {
-    "autor": "Virpana",
-    "licencia": "CC0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Instituto_nacional_de_medicina_f%C3%ADsica_y_rehabilitaci%C3%B3n_en_Ciudad_de_Panam%C3%A1.jpg"
-  },
-  "medicina-veterinaria": {
-    "autor": "JuanGris (Lucía Estévez)",
-    "licencia": "CC BY-SA 3.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Cl%C3%ADnica_para_peque%C3%B1os_animales,_Veterinaria_Universidad_Nacional.JPG"
-  },
-  "derecho": {
-    "autor": "Cadop",
-    "licencia": "CC0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Law_library_at_Umich.jpg"
-  },
-  "filosofia": {
-    "autor": "Mrstrimming",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Philosophy_.jpg"
-  },
-  "economia": {
-    "autor": "Leticia inca jorge",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Bloque_antiguo_de_la_facultad_de_economia.jpg"
-  },
-  "finanzas": {
-    "autor": "Thomas J. O'Halloran",
-    "licencia": "Public domain",
-    "fuente": "https://commons.wikimedia.org/wiki/File:NY_stock_exchange_traders_floor_LC-U9-10548-6.jpg"
-  },
-  "comunicacion-social": {
-    "autor": "RavikaChand",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Sports_Journalism.jpg"
-  },
-  "cine-y-television": {
-    "autor": "Don Ramey Logan",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:A_Behind_the_Scene_shots_of_one_of_our_production_sets_Don_Ramey_Logan.jpg"
-  },
-  "licenciatura-en-matematicas": {
-    "autor": "LBM1948",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Classroom_blackboard_at_Cornell_University,_Ithaca,_NY_25.jpg"
+  "publicidad": {
+    "autor": "Daveness_98",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/31216636@N00/3253842434"
   },
   "quimica": {
     "autor": "Belikov Maxim",
     "licencia": "CC BY 4.0",
     "fuente": "https://commons.wikimedia.org/wiki/File:Laboratory_equipment_of_modern_chemistry_classroom.jpg"
   },
-  "fisica": {
-    "autor": "Jeremyida002",
-    "licencia": "CC BY-SA 4.0",
-    "fuente": "https://commons.wikimedia.org/wiki/File:A_physics_laboratory.jpg"
+  "relaciones-internacionales": {
+    "autor": "Tom Page",
+    "licencia": "CC BY-SA 2.0",
+    "fuente": "https://commons.wikimedia.org/w/index.php?curid=25912446"
   },
-  "administracion-de-empresas": {
-    "autor": "The White House",
-    "licencia": "Public domain",
-    "fuente": "https://commons.wikimedia.org/wiki/File:Small_Business_Administrator_Isabel_Guzman_participates_in_a_meeting_with_child_care_businesses,_lenders,_national_child_care_organizations_and_philanthropy,_March_24,_2024,_in_the_Eisenhower_Executive_Office_Building_at_the_White_House.jpg"
+  "trabajo-social": {
+    "autor": "United Workers",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://www.flickr.com/photos/10040051@N02/8405917939"
   }
 }

@@ -52,7 +52,7 @@ export function CarrerasPopulares({ cantidad = 6 }: { cantidad?: number }) {
             return (
               <li key={c.id} className="w-40 shrink-0 snap-start md:w-auto md:shrink">
                 <Link
-                  to={`/buscar?carrera=${encodeURIComponent(c.nombre)}`}
+                  to={`/carreras/${c.id}`}
                   viewTransition
                   className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-borde bg-superficie text-texto no-underline transition-[box-shadow,border-color] duration-[var(--dur-rapida)] hover:border-borde-fuerte hover:shadow-2"
                 >

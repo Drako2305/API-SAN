@@ -126,9 +126,15 @@ export default function Oferta() {
         <FotoConFallback src={fotoBanda.src} sm={fotoBanda.sm} sizes="(min-width: 1152px) 72rem, 100vw" width={1600} height={600} className="absolute inset-0 -z-20 size-full bg-panel" imgClassName="opacity-60" ocultarSiFalla />
         <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-panel via-panel/80 to-panel/60" />
         <nav aria-label="Ruta" className="text-sm text-sobre-panel-2">
-          <Link to="/buscar" className="text-sobre-panel-2">Ofertas</Link>
+          <Link to="/carreras" viewTransition className="text-sobre-panel-2">Carreras</Link>
           <span aria-hidden> / </span>
-          <span>{carrera}</span>
+          {o.carreraId ? (
+            <Link to={`/carreras/${o.carreraId}`} viewTransition className="text-sobre-panel-2">{carrera}</Link>
+          ) : (
+            <span>{carrera}</span>
+          )}
+          <span aria-hidden> / </span>
+          <span aria-current="page">{o.universidad}</span>
         </nav>
         <div className="mt-3 flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
           <div className="min-w-0">

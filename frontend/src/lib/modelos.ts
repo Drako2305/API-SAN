@@ -110,6 +110,8 @@ export interface UsuarioSesion {
   nombre: string;
   correo: string;
   rol: Rol;
+  /** Foto del perfil (enlace o data URL). `undefined` = aún no se ha consultado; `null` = no tiene. */
+  avatar?: string | null;
 }
 
 export interface AuthData {
@@ -138,7 +140,7 @@ export interface RegistroRequest {
   nombre: string;
   correo: string;
   clave: string;
-  perfil: { apellido: string; ciudad: string; avatar?: string };
+  perfil: { apellido: string; ciudad: string; avatar?: string | null };
 }
 
 export interface ActualizarUsuarioRequest {

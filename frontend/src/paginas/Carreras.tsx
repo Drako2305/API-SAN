@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router';
-import { GraduationCap, Search } from 'lucide-react';
+import { ArrowRight, GraduationCap } from 'lucide-react';
 import { Badge, EmptyState, EncabezadoPagina, Input, claseBoton } from '@/componentes';
 import { Cargando, FotoConFallback } from '@/componentes/catalogo';
 import { catalogo } from '@/lib/api';
@@ -49,12 +49,12 @@ function TarjetaCarrera({ carrera, ofertas }: { carrera: Carrera; ofertas: Ofert
             <p className="mt-auto text-sm text-texto-3">Aún no hay universidades que la ofrezcan.</p>
           ) : (
             <Link
-              to={`/buscar?carrera=${encodeURIComponent(carrera.nombre)}`}
+              to={`/carreras/${carrera.id}`}
               viewTransition
               className={claseBoton('secundario', 'sm', 'mt-auto no-underline after:absolute after:inset-0 after:content-[""]')}
             >
-              <Search className="size-4" aria-hidden />
-              Buscar <span className="sr-only">{nombre}</span>
+              Ver ofertas <span className="sr-only">de {nombre}</span>
+              <ArrowRight className="size-4" aria-hidden />
             </Link>
           )}
         </div>
@@ -109,7 +109,7 @@ export default function Carreras() {
   return (
     <>
       <title>Carreras · SAN</title>
-      <EncabezadoPagina titulo="Carreras" descripcion="Explora las carreras del catálogo y entra a las ofertas que tiene cada una." />
+      <EncabezadoPagina titulo="Carreras" descripcion="Elige una carrera para ver en qué universidades se ofrece, cuánto cuesta y en qué modalidad." />
 
       <search className="mb-4 block max-w-md">
         <Input etiqueta="Buscar carrera" type="search" value={texto} onChange={(e) => setTexto(e.target.value)} placeholder="Por ejemplo, Psicología" autoComplete="off" />

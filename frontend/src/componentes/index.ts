@@ -1,5 +1,8 @@
 export { Button, LinkButton, claseBoton } from './Button';
 export { Campo, Input, Select, Textarea } from './Campo';
+export { Selector, type OpcionSelector } from './Selector';
+export { ComboCarrera } from './ComboCarrera';
+export { EditorPesos } from './EditorPesos';
 export { Card } from './Card';
 export { Badge, type TonoBadge } from './Badge';
 export { Tabs, type TabDef } from './Tabs';

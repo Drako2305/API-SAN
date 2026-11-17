@@ -13,6 +13,7 @@ const Buscar = lazy(() => import('@/paginas/Buscar'));
 const Busqueda = lazy(() => import('@/paginas/Busqueda'));
 const Carreras = lazy(() => import('@/paginas/Carreras'));
 const Universidades = lazy(() => import('@/paginas/Universidades'));
+const CarreraDetalle = lazy(() => import('@/paginas/CarreraDetalle'));
 const UniversidadDetalle = lazy(() => import('@/paginas/UniversidadDetalle'));
 const Oferta = lazy(() => import('@/paginas/Oferta'));
 const Comparar = lazy(() => import('@/paginas/Comparar'));
@@ -38,6 +39,7 @@ export const rutas = (
           <Route path="buscar" element={<Buscar />} />
           <Route path="busquedas/:id" element={<Busqueda />} />
           <Route path="carreras" element={<Carreras />} />
+          <Route path="carreras/:id" element={<CarreraDetalle />} />
           <Route path="universidades" element={<Universidades />} />
           <Route path="universidades/:id" element={<UniversidadDetalle />} />
           <Route path="ofertas/:id" element={<Oferta />} />

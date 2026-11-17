@@ -124,7 +124,7 @@ export class AlmacenSesion {
   }
 
   /** Refleja en la sesión los cambios de nombre o correo hechos en el perfil. */
-  actualizarSesion(cambios: Partial<Pick<UsuarioSesion, 'nombre' | 'correo'>>): void {
+  actualizarSesion(cambios: Partial<Pick<UsuarioSesion, 'nombre' | 'correo' | 'avatar'>>): void {
     if (!this.usuario) return;
     const nuevo = { ...this.usuario, ...cambios };
     escribir(CLAVE_USUARIO, JSON.stringify(nuevo));

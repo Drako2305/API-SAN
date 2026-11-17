@@ -19,3 +19,12 @@ if (!window.matchMedia) {
     dispatchEvent: () => false,
   })) as unknown as typeof window.matchMedia;
 }
+
+// jsdom no trae ResizeObserver (lo usa Headless UI para posicionar los paneles).
+if (typeof window.ResizeObserver === 'undefined') {
+  window.ResizeObserver = class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  } as unknown as typeof ResizeObserver;
+}

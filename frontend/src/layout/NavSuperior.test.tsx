@@ -40,14 +40,14 @@ describe('NavSuperior', () => {
     mockAncho(true);
     montar('/carreras');
     const nav = screen.getByRole('navigation', { name: 'Principal' });
-    for (const etiqueta of ['Inicio', 'Buscar', 'Catálogo', 'Comparar', 'Favoritos', 'Perfil']) {
+    for (const etiqueta of ['Inicio', 'Buscar', 'Catálogo', 'Comparar', 'Perfil']) {
       expect(within(nav).getByRole('link', { name: etiqueta })).toBeInTheDocument();
     }
     expect(within(nav).queryByRole('link', { name: 'Admin' })).not.toBeInTheDocument();
     expect(within(nav).getByRole('link', { name: 'Catálogo' })).toHaveAttribute('aria-current', 'page');
     expect(within(nav).getByRole('link', { name: 'Inicio' })).not.toHaveAttribute('aria-current');
     expect(nav.querySelector('ul')).not.toHaveAttribute('popover');
-    expect(screen.getByRole('searchbox', { name: 'Buscar una carrera' })).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: 'Buscar una carrera' })).toBeInTheDocument();
   });
 
   it('muestra Admin solo a administradores', () => {
@@ -63,7 +63,7 @@ describe('NavSuperior', () => {
     const lista = document.getElementById(boton.getAttribute('aria-controls')!)!;
     expect(boton).toHaveAttribute('popovertarget', lista.id);
     expect(lista).toHaveAttribute('popover', 'auto');
-    expect(Array.from(lista.querySelectorAll('a'), (a) => a.textContent)).toEqual(['Inicio', 'Buscar', 'Catálogo', 'Comparar', 'Favoritos', 'Perfil']);
+    expect(Array.from(lista.querySelectorAll('a'), (a) => a.textContent)).toEqual(['Inicio', 'Buscar', 'Catálogo', 'Comparar', 'Perfil']);
     expect(boton).toHaveAttribute('aria-expanded', 'false');
 
     // El navegador emite `toggle` al abrir y cerrar el popover (Esc, clic fuera o el propio botón).
@@ -99,10 +99,10 @@ describe('NavSuperior', () => {
   it('la variante portada no repite el buscador (el hero ya trae el suyo) y la app sí', () => {
     mockAncho(true);
     const { unmount } = montar('/', 'estudiante', 'portada', false);
-    expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
+    expect(screen.queryByRole('combobox', { name: 'Buscar una carrera' })).not.toBeInTheDocument();
     expect(document.querySelector('header')).toHaveAttribute('data-variante', 'portada');
     unmount();
     montar('/carreras', 'estudiante', 'app', false);
-    expect(screen.getByRole('searchbox', { name: 'Buscar una carrera' })).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: 'Buscar una carrera' })).toBeInTheDocument();
   });
 });

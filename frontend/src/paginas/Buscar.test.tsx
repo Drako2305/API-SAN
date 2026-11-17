@@ -43,9 +43,11 @@ describe('Buscar', () => {
     const u = userEvent.setup();
     montar();
     await u.type(screen.getByLabelText('Carrera'), 'Ingenieria de Sistemas');
-    await u.selectOptions(await screen.findByLabelText('Ciudad'), 'Cali');
+    await u.click(await screen.findByRole('button', { name: /^Ciudad/ }));
+    await u.click(await screen.findByRole('option', { name: 'Cali' }));
     await u.type(screen.getByLabelText(/Costo máximo/), '5000000');
-    await u.selectOptions(screen.getByRole('combobox', { name: 'Modalidad' }), 'virtual');
+    await u.click(screen.getByRole('button', { name: /^Modalidad/ }));
+    await u.click(await screen.findByRole('option', { name: 'Virtual' }));
     await u.click(screen.getByRole('button', { name: /Buscar ofertas/ }));
 
     await screen.findByText('Pantalla de resultados');

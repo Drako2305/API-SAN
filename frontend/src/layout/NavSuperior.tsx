@@ -1,7 +1,11 @@
 import { useEffect, useId, useRef, useState, useSyncExternalStore, type FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { LogIn, Menu, Search, UserPlus } from 'lucide-react';
-import { Logo, LinkButton } from '@/componentes';
+import { ComboCarrera, Logo, LinkButton } from '@/componentes';
+import { carreraExacta } from '@/componentes/ComboCarrera';
+import { catalogo } from '@/lib/api';
+import type { Carrera } from '@/lib/modelos';
+import { useCarga } from '@/lib/useCarga';
 import { cn } from '@/lib/cn';
 import { useSesion } from '@/lib/sesion';
 import { BotonTema } from './BotonTema';
@@ -52,10 +56,18 @@ export function NavSuperior({ variante = 'app' }: { variante?: VarianteCabecera 
     if (ancho) setAbierto(false);
   }, [ancho]);
 
+  // Carreras para las sugerencias del buscador (solo en la variante con buscador).
+  const carreras = useCarga(() => (variante === 'app' ? catalogo.carreras() : Promise.resolve(null)), [variante]);
+  const irACarrera = (c: Carrera) => {
+    setConsulta('');
+    navegar(`/carreras/${c.id}`, { viewTransition: true });
+  };
   const enviar = (e: FormEvent) => {
     e.preventDefault();
     const q = consulta.trim();
-    navegar(q ? `/buscar?carrera=${encodeURIComponent(q)}` : '/buscar', { viewTransition: true });
+    const exacta = carreraExacta(carreras.datos, q);
+    if (exacta) return irACarrera(exacta);
+    navegar(q ? `/carreras?nombre=${encodeURIComponent(q)}` : '/carreras', { viewTransition: true });
   };
 
   const items = autenticado ? ITEMS_NAV.filter((i) => !i.soloAdmin || esAdmin) : ITEMS_PUBLICOS;
@@ -133,15 +145,17 @@ export function NavSuperior({ variante = 'app' }: { variante?: VarianteCabecera 
 
         {conBuscador ? (
           <form role="search" onSubmit={enviar} className="relative order-last basis-full md:order-none md:basis-auto md:flex-1 md:min-w-36 md:max-w-xs md:ml-auto">
-            <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-texto-3" aria-hidden />
-            <input
-              type="search"
-              value={consulta}
-              onChange={(e) => setConsulta(e.target.value)}
+            <ComboCarrera
+              etiqueta="Buscar una carrera"
+              etiquetaOculta
+              variante="barra"
+              icono={<Search />}
               placeholder="Buscar una carrera"
-              aria-label="Buscar una carrera"
-              enterKeyHint="search"
-              className="h-9 w-full rounded-full border border-borde bg-superficie pr-4 pl-9 text-sm placeholder:text-texto-3 hover:border-borde-fuerte focus-visible:border-acento"
+              carreras={carreras.datos}
+              texto={consulta}
+              onTexto={setConsulta}
+              onElegir={irACarrera}
+              maximo={6}
             />
           </form>
         ) : (

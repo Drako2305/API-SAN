@@ -56,7 +56,6 @@ describe('Landing', () => {
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/puntaje que puedes explicar/i);
     expect(screen.getByRole('heading', { level: 2, name: 'Cómo funciona' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 2, name: 'Carreras para empezar a explorar' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 2, name: 'Encuentra, compara y decide tu carrera.' })).toBeInTheDocument();
     expect(await screen.findByRole('heading', { level: 2, name: 'Universidades en el catálogo' })).toBeInTheDocument();
     for (const nombre of ['Explora por área', 'Ofertas destacadas', 'Preguntas frecuentes']) {
@@ -74,13 +73,27 @@ describe('Landing', () => {
     expect(within(screen.getByRole('group', { name: 'Virtuales' })).getByRole('link', { name: /Derecho/ })).toHaveAttribute('href', '/ofertas/o2');
   });
 
-  it('el buscador del hero lleva a /buscar con carrera y ciudad', async () => {
+  it('el buscador del hero lleva a las ofertas de la carrera, filtradas por la ciudad elegida', async () => {
     const user = userEvent.setup();
     montar();
-    await user.type(screen.getByRole('combobox', { name: '¿Qué quieres estudiar?' }), 'Medicina');
-    await user.selectOptions(await screen.findByRole('combobox', { name: 'Ciudad' }), 'Medellin');
+    await user.click(await screen.findByRole('button', { name: /^Ciudad/ }));
+    await user.click(await screen.findByRole('option', { name: 'Medellín' }));
+    await user.type(screen.getByRole('combobox', { name: '¿Qué quieres estudiar?' }), 'medicina');
     await user.click(screen.getByRole('button', { name: 'Buscar' }));
-    expect(await screen.findByTestId('ubicacion')).toHaveTextContent('/buscar?carrera=Medicina&ciudad=Medellin');
+    expect(await screen.findByTestId('ubicacion')).toHaveTextContent('/carreras/c1?ciudad=Medellin');
+  });
+
+  it('elegir una sugerencia del buscador abre esa carrera y un texto libre abre el catálogo filtrado', async () => {
+    const user = userEvent.setup();
+    const { unmount } = montar();
+    await user.type(screen.getByRole('combobox', { name: '¿Qué quieres estudiar?' }), 'der');
+    await user.click(await screen.findByRole('option', { name: /Derecho/ }));
+    expect(await screen.findByTestId('ubicacion')).toHaveTextContent('/carreras/c2');
+    unmount();
+    montar();
+    await user.type(screen.getByRole('combobox', { name: '¿Qué quieres estudiar?' }), 'zoo');
+    await user.click(screen.getByRole('button', { name: 'Buscar' }));
+    expect(await screen.findByTestId('ubicacion')).toHaveTextContent('/carreras?nombre=zoo');
   });
 
   it('las preguntas frecuentes son details nativos', () => {

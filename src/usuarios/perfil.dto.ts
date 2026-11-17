@@ -1,11 +1,6 @@
 import { PartialType } from '@nestjs/swagger';
-import {
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsUrl,
-  MaxLength,
-} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import { EsAvatar } from './avatar.validator';
 
 export class CrearPerfilDto {
   @IsString()
@@ -19,9 +14,8 @@ export class CrearPerfilDto {
   ciudad: string;
 
   @IsOptional()
-  @IsUrl()
-  @MaxLength(255)
-  avatar?: string;
+  @EsAvatar()
+  avatar?: string | null;
 }
 
 export class ActualizarPerfilDto extends PartialType(CrearPerfilDto) {}

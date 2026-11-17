@@ -1,4 +1,4 @@
-import { GitCompareArrows, GraduationCap, Heart, Home, Search, Shield, UserRound, type LucideIcon } from 'lucide-react';
+import { GitCompareArrows, GraduationCap, Home, Search, Shield, UserRound, type LucideIcon } from 'lucide-react';
 
 export interface ItemNav {
   a: string;
@@ -14,14 +14,12 @@ export const ITEMS_NAV: ItemNav[] = [
   { a: '/buscar', etiqueta: 'Buscar', icono: Search, activo: ['/buscar', '/busquedas'] },
   { a: '/carreras', etiqueta: 'Catálogo', icono: GraduationCap, activo: ['/carreras', '/universidades', '/ofertas'] },
   { a: '/comparar', etiqueta: 'Comparar', icono: GitCompareArrows },
-  { a: '/perfil?pestana=favoritos', etiqueta: 'Favoritos', icono: Heart, activo: [] },
   { a: '/perfil', etiqueta: 'Perfil', icono: UserRound, activo: ['/perfil'] },
   { a: '/admin', etiqueta: 'Admin', icono: Shield, soloAdmin: true },
 ];
 
-export function estaActivo(item: ItemNav, ruta: string, search: string): boolean {
-  if (item.a.startsWith('/perfil?pestana=favoritos')) return ruta === '/perfil' && search.includes('pestana=favoritos');
-  if (item.a === '/perfil') return ruta === '/perfil' && !search.includes('pestana=favoritos');
+/** `_search` se conserva en la firma para no romper a quien la llama. */
+export function estaActivo(item: ItemNav, ruta: string, _search?: string): boolean {
   const prefijos = item.activo ?? [item.a];
   return prefijos.some((p) => ruta === p || ruta.startsWith(`${p}/`));
 }

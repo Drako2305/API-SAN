@@ -3,7 +3,10 @@ import { Card, PuntajeBarra } from '@/componentes';
 import { CRITERIO_ETIQUETA } from '@/lib/formato';
 import { CRITERIOS, type Pesos } from '@/lib/modelos';
 import { MorphingRing } from '@/morphing';
-import { gsap, SIN_REDUCCION, useGSAP } from './gsap';
+import { gsap, ScrollTrigger, SIN_REDUCCION, useGSAP } from './gsap';
+
+/** Se fija con el scroll solo en pantallas anchas y con alto suficiente para verla entera. */
+const FIJAR = '(min-width: 1024px) and (min-height: 640px)';
 
 const PASOS = [
   { titulo: 'Elige carrera', texto: 'Parte de lo que quieres estudiar. Filtra por ciudad, costo máximo, modalidad y jornada.' },
@@ -17,7 +20,7 @@ const DESGLOSE_DEMO: Pesos = { costo: 0.9, modalidad: 0.8, ubicacion: 0.95, acre
 const PUNTAJE_DEMO = 87;
 const CERO: Pesos = { costo: 0, modalidad: 0, ubicacion: 0, acreditacion: 0 };
 
-/** "Cómo funciona": al desplazarse (scrub, sin fijar la sección ni dejar huecos) avanza el paso activo y el puntaje de muestra sube de 0 a 87. */
+/** "Cómo funciona": al desplazarse (scrub) avanza el paso activo y el puntaje de muestra sube de 0 a 87. En escritorio la sección se fija mientras ocurre. */
 export function ComoFunciona() {
   const raiz = useRef<HTMLElement>(null);
   // Estado final por defecto: reduced motion y lectores de pantalla ven el resultado completo.
@@ -27,11 +30,12 @@ export function ComoFunciona() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add(SIN_REDUCCION, () => {
+      mm.add({ movimiento: SIN_REDUCCION, fijar: FIJAR }, (ctx) => {
+        if (!ctx.conditions?.movimiento) return;
         const q = gsap.utils.selector(raiz);
         const pasos = q('[data-paso]');
         const pesos = q('[data-peso]');
-        const estado = { p: 0, k: 0 };
+        const estado = { p: 0 };
         const pintar = () => {
           setPuntaje(Math.round(estado.p * PUNTAJE_DEMO));
           setDesglose({
@@ -49,15 +53,14 @@ export function ComoFunciona() {
         const activar = (i: number) => pasos.forEach((p, n) => p.toggleAttribute('data-activo', n === i));
         activar(0);
 
-        const tl = gsap.timeline({
-          defaults: { ease: 'none' },
-          scrollTrigger: {
-            trigger: raiz.current,
-            start: 'top 75%',
-            end: 'bottom 40%',
-            scrub: 0.6,
-          },
-        });
+        // Escritorio: la sección se fija centrada bajo la barra y el recorrido entero ocurre mientras se ve completa.
+        // Móvil (o pantallas bajas): sin fijar, y el recorrido empieza cuando la sección ya llena buena parte de la pantalla.
+        const barra = () => document.querySelector<HTMLElement>('.cabecera-san')?.offsetHeight ?? 56;
+        const disparador: ScrollTrigger.Vars = ctx.conditions.fijar
+          ? { trigger: raiz.current, start: () => `center ${(window.innerHeight + barra()) / 2}px`, end: '+=130%', pin: true, scrub: 0.5, anticipatePin: 1, invalidateOnRefresh: true }
+          : { trigger: raiz.current, start: 'top 45%', end: 'bottom 75%', scrub: 0.5 };
+
+        const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: disparador });
         tl.to(pasos[0]!, { opacity: 1, duration: 0.3 }, 0)
           .call(() => activar(0), undefined, 0)
           .call(() => activar(1), undefined, 1)
@@ -68,8 +71,18 @@ export function ComoFunciona() {
           .to(pasos[1]!, { opacity: 0.4, duration: 0.2 }, 2)
           .to(pasos[2]!, { opacity: 1, duration: 0.3 }, 2)
           .to(estado, { p: 1, duration: 1.3, ease: 'power2.out', onUpdate: pintar }, 2)
-          .to({}, { duration: 0.4 });
+          .to({}, { duration: 0.5 });
+
+        // Las secciones de arriba cambian de alto al llegar los datos de la API: se recalculan las posiciones.
+        let espera = 0;
+        const ro = new ResizeObserver(() => {
+          cancelAnimationFrame(espera);
+          espera = requestAnimationFrame(() => ScrollTrigger.refresh());
+        });
+        ro.observe(document.body);
         return () => {
+          ro.disconnect();
+          cancelAnimationFrame(espera);
           pasos.forEach((p) => p.removeAttribute('data-activo'));
           setPuntaje(PUNTAJE_DEMO);
           setDesglose(DESGLOSE_DEMO);

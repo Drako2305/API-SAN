@@ -2,16 +2,26 @@ import { useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button, LinkButton } from '@/componentes';
 import { BuscadorCarrera, FotoConFallback } from '@/componentes/catalogo';
-import { fotoPorSlug } from '@/lib/campus';
+import { fotoPorSlug, type SlugCampus } from '@/lib/campus';
 import { useSesion } from '@/lib/sesion';
 import { FondoConstelacion } from './FondoConstelacion';
 import { gsap, SIN_REDUCCION, SplitText, useGSAP } from './gsap';
+
+/**
+ * Collage escalonado de cuatro campus de ciudades distintas (sin repetir los del collage del final de la portada).
+ * Orden de lectura: columna izquierda (alto, cuadrado) y derecha desplazada hacia abajo (cuadrado, alto).
+ */
+const CAMPUS_HERO: Array<{ slug: SlugCampus; alto: 'alto' | 'cuadro' }> = [
+  { slug: 'nacional', alto: 'alto' },
+  { slug: 'javeriana', alto: 'cuadro' },
+  { slug: 'uis', alto: 'cuadro' },
+  { slug: 'cartagena', alto: 'alto' },
+];
 
 /** Hero: titular con revelado por líneas (SplitText), constelación 3D de fondo y la foto de LCP sin carga diferida. */
 export function Hero({ onRegistro }: { onRegistro: () => void }) {
   const { autenticado } = useSesion();
   const raiz = useRef<HTMLElement>(null);
-  const foto = fotoPorSlug('nacional');
 
   useGSAP(
     () => {
@@ -48,7 +58,7 @@ export function Hero({ onRegistro }: { onRegistro: () => void }) {
   );
 
   return (
-    <section ref={raiz} className="relative isolate -mt-[var(--barra)] overflow-hidden" aria-labelledby="titulo-hero">
+    <section ref={raiz} className="relative isolate z-10 -mt-[var(--barra)] overflow-x-clip" aria-labelledby="titulo-hero">
       <FondoConstelacion />
       <div className="pagina-ancho relative grid min-h-[min(88dvh,44rem)] items-center gap-8 pt-[calc(var(--barra)+2.5rem)] pb-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-12 lg:pt-[calc(var(--barra)+1.5rem)] lg:pb-12">
         <div>
@@ -58,7 +68,7 @@ export function Hero({ onRegistro }: { onRegistro: () => void }) {
           <p data-entra className="mt-5 max-w-[52ch] text-lg text-texto-2">
             Busca por ciudad, costo, modalidad y jornada. Tú decides cuánto pesa cada criterio y SAN te muestra el porqué de cada resultado.
           </p>
-          <div data-entra className="mt-7 max-w-[40rem]">
+          <div data-entra className="relative z-20 mt-7 max-w-[40rem]">
             <BuscadorCarrera />
           </div>
           <div data-entra className="mt-5 flex flex-wrap items-center gap-3">
@@ -77,21 +87,34 @@ export function Hero({ onRegistro }: { onRegistro: () => void }) {
           </div>
         </div>
 
-        <figure data-entra className="relative m-0 w-full max-w-72 justify-self-start lg:max-w-80 lg:justify-self-end">
-          <FotoConFallback
-            src={foto.src}
-            sm={foto.sm}
-            sizes="(min-width: 1024px) 20rem, 18rem"
-            width={800}
-            height={1000}
-            prioridad
-            alt={`Campus de la ${foto.universidad}, ${foto.ciudad}`}
-            className="rounded-xl shadow-3"
-          />
-          <figcaption className="absolute bottom-2 left-2 rounded-full bg-superficie/90 px-2.5 py-1 text-xs font-medium text-texto backdrop-blur-sm">
-            {foto.universidad}
-          </figcaption>
-        </figure>
+        <div className="grid grid-cols-2 gap-3 lg:gap-4" aria-label="Campus del catálogo">
+          {[0, 1].map((col) => (
+            <div key={col} className={col === 1 ? 'flex flex-col gap-3 lg:gap-4 lg:pt-14' : 'flex flex-col gap-3 lg:gap-4'}>
+              {CAMPUS_HERO.filter((_, i) => i % 2 === col).map(({ slug, alto }, i) => {
+                const f = fotoPorSlug(slug);
+                const primera = col === 0 && i === 0;
+                return (
+                  <figure key={slug} data-entra className="relative m-0 overflow-hidden rounded-xl bg-superficie-2 shadow-2">
+                    <FotoConFallback
+                      src={f.src}
+                      sm={f.sm}
+                      sizes="(min-width: 1024px) 15rem, 50vw"
+                      width={800}
+                      height={alto === 'alto' ? 1000 : 800}
+                      prioridad={primera}
+                      alt={`Campus de la ${f.universidad}, ${f.ciudad}`}
+                      className={alto === 'alto' ? 'aspect-[4/3] lg:aspect-[4/5]' : 'aspect-[4/3] lg:aspect-square'}
+                    />
+                    <figcaption className="absolute right-2 bottom-2 left-2 truncate rounded-md bg-superficie/90 px-2 py-1 text-xs font-medium text-texto backdrop-blur-sm sm:right-auto sm:max-w-[calc(100%-1rem)] sm:rounded-full sm:px-2.5">
+                      {f.universidad}
+                      <span className="text-texto-3"> · {f.ciudad}</span>
+                    </figcaption>
+                  </figure>
+                );
+              })}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

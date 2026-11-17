@@ -56,7 +56,7 @@ export function PanelLateral() {
         <summary className={TITULO}>Cuenta</summary>
         <div className="flex flex-col gap-3 px-4 pb-4">
           <div className="flex items-center gap-3">
-            <Avatar nombre={usuario.nombre} tamano="sm" />
+            <Avatar nombre={usuario.nombre} src={usuario.avatar} tamano="sm" />
             <p className="min-w-0 truncate text-sm text-texto-2">{usuario.correo}</p>
           </div>
           <Button

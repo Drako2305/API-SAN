@@ -5,11 +5,11 @@
 
 /*
  * Sistema de diseño SAN. Fuente única de tokens (colores, tipografía, radios, sombras, movimiento).
- * Claro/oscuro con light-dark(); `data-tema` en <html> fija el esquema, sin él se sigue al sistema.
+ * Claro/oscuro con light-dark(). El claro es el predeterminado; `data-tema` en <html> elige oscuro o el del sistema.
  * Acento rojo de marca (hue ~25, #a11b22). Neutros cálidos con un matiz mínimo hacia el mismo rojo (hue 20).
  */
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
   /* Superficies (neutros cálidos: matiz 20, croma mínimo hacia el rojo de marca) */
   --c-fondo: light-dark(oklch(0.982 0.004 20), oklch(0.165 0.012 20));
@@ -95,6 +95,9 @@
 }
 :root[data-tema='dark'] {
   color-scheme: dark;
+}
+:root[data-tema='system'] {
+  color-scheme: light dark;
 }
 
 @theme inline {
@@ -334,18 +337,30 @@ input[type='range'].san-slider { accent-color: var(--c-acento); }
   @starting-style { .panel-nav[popover]:popover-open { opacity: 0; translate: 0 -0.5rem; } }
 }
 
-/* Galería de carreras: tarjetas altas según la pantalla y, donde se fija con el scroll, la sección llena la ventana (sin franjas vacías). */
-.galeria-fija { --alto-tarjeta: 24rem; }
-@media (min-width: 48rem) and (min-height: 43.75rem) {
-  .galeria-fija { --alto-tarjeta: clamp(22rem, 56dvh, 34rem); }
+/* Menú de la cuenta: anclado al avatar (borde derecho alineado con él). Sin anchor(), alineado al borde de la columna de la página. */
+.menu-cuenta[popover] {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  inset-block-start: calc(var(--barra) - 0.25rem);
+  inset-inline-end: max(var(--gutter), calc((100vw - var(--ancho-pagina)) / 2 + var(--gutter)));
 }
-@media (min-width: 48rem) and (min-height: 43.75rem) and (prefers-reduced-motion: no-preference) {
-  .galeria-fija {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-block-size: calc(100dvh - var(--barra));
+@supports (top: anchor(bottom)) {
+  .menu-cuenta[popover] {
+    position-anchor: --avatar-cuenta;
+    inset-block-start: calc(anchor(bottom) + 0.5rem);
+    inset-inline-end: anchor(right);
   }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-cuenta[popover] {
+    transition: opacity var(--dur-rapida) var(--ease-salida), translate var(--dur-rapida) var(--ease-salida), display var(--dur-rapida), overlay var(--dur-rapida);
+    transition-behavior: allow-discrete;
+    opacity: 0;
+    translate: 0 -0.25rem;
+  }
+  .menu-cuenta[popover]:popover-open { opacity: 1; translate: 0; }
+  @starting-style { .menu-cuenta[popover]:popover-open { opacity: 0; translate: 0 -0.25rem; } }
 }
 
 /* ---------- Preguntas frecuentes (details nativo) ---------- */

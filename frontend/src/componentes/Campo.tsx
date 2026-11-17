@@ -1,14 +1,16 @@
 import {
+  Children,
+  isValidElement,
   useId,
   useState,
   type FocusEvent,
   type InputHTMLAttributes,
   type ReactNode,
-  type SelectHTMLAttributes,
   type TextareaHTMLAttributes,
 } from 'react';
-import { AlertCircle, ChevronDown } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/cn';
+import { Selector, type OpcionSelector } from './Selector';
 
 interface PropsCampo {
   etiqueta: string;
@@ -114,24 +116,43 @@ export function Textarea({
   );
 }
 
-export function Select({
-  etiqueta,
-  ayuda,
-  error,
-  className,
-  children,
-  ...resto
-}: PropsCampo & SelectHTMLAttributes<HTMLSelectElement>) {
+interface PropsSelect extends PropsCampo {
+  value: string;
+  onChange?: (e: { target: { value: string } }) => void;
+  name?: string;
+  required?: boolean;
+  disabled?: boolean;
+  /** `<option>` como hijos (con `value`); la opción con valor vacío hace de texto de ayuda. */
+  children: ReactNode;
+}
+
+/**
+ * Lista desplegable del sistema con la API de un `<select>` (hijos `<option>`, `onChange(e.target.value)`),
+ * dibujada con el `Selector` propio en lugar del control nativo del navegador.
+ */
+export function Select({ etiqueta, ayuda, error, className, value, onChange, name, required, disabled, children }: PropsSelect) {
+  const opciones: OpcionSelector[] = [];
+  let placeholder: string | undefined;
+  Children.forEach(children, (hijo) => {
+    if (!isValidElement<{ value?: string | number; children?: ReactNode; disabled?: boolean }>(hijo)) return;
+    const valor = String(hijo.props.value ?? '');
+    const texto = Children.toArray(hijo.props.children).join('');
+    if (valor === '' && required) placeholder = texto;
+    else opciones.push({ valor, etiqueta: texto, deshabilitada: hijo.props.disabled });
+  });
   return (
-    <Campo etiqueta={etiqueta} ayuda={ayuda} error={error} className={className}>
-      {(aria) => (
-        <div className="relative">
-          <select className={cn(CONTROL, 'h-10 cursor-pointer appearance-none pr-9')} {...aria} {...resto}>
-            {children}
-          </select>
-          <ChevronDown className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-texto-3" aria-hidden />
-        </div>
-      )}
-    </Campo>
+    <Selector
+      etiqueta={etiqueta}
+      ayuda={ayuda}
+      error={error}
+      className={className}
+      opciones={opciones}
+      valor={value}
+      placeholder={placeholder}
+      onCambio={(v) => onChange?.({ target: { value: v } })}
+      name={name}
+      required={required}
+      disabled={disabled}
+    />
   );
 }

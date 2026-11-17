@@ -5,6 +5,7 @@ import { useToast } from '@/componentes/Toast';
 import { ApiError, mensajeError, usuarios } from '@/lib/api';
 import type { ActualizarUsuarioRequest, UsuarioDetalle } from '@/lib/modelos';
 import { useSesion } from '@/lib/sesion';
+import { FotoPerfil } from './FotoPerfil';
 
 interface Props {
   detalle: UsuarioDetalle;
@@ -18,7 +19,6 @@ function valoresDe(d: UsuarioDetalle) {
     correo: d.correo,
     apellido: d.perfil?.apellido ?? '',
     ciudad: d.perfil?.ciudad ?? '',
-    avatar: d.perfil?.avatar ?? '',
   };
 }
 
@@ -41,7 +41,6 @@ export function FormularioDatos({ detalle, onGuardado }: Props) {
     const perfil: NonNullable<ActualizarUsuarioRequest['perfil']> = {};
     if (v.apellido.trim() !== base.apellido) perfil.apellido = v.apellido.trim();
     if (v.ciudad.trim() !== base.ciudad) perfil.ciudad = v.ciudad.trim();
-    if (v.avatar.trim() !== base.avatar && v.avatar.trim() !== '') perfil.avatar = v.avatar.trim();
     if (Object.keys(perfil).length) cuerpo.perfil = perfil;
 
     if (Object.keys(cuerpo).length === 0) {
@@ -73,6 +72,7 @@ export function FormularioDatos({ detalle, onGuardado }: Props) {
 
   return (
     <form onSubmit={enviar} className="grid max-w-2xl gap-4 sm:grid-cols-2" aria-label="Datos personales">
+      <FotoPerfil detalle={detalle} nombre={`${detalle.nombre} ${detalle.perfil?.apellido ?? ''}`.trim()} onGuardado={onGuardado} />
       {error && (
         <div role="alert" className="flex items-start gap-2 rounded-md bg-peligro-suave p-3 text-sm text-peligro sm:col-span-2">
           <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden />
@@ -92,15 +92,6 @@ export function FormularioDatos({ detalle, onGuardado }: Props) {
       <Input etiqueta="Apellido" value={v.apellido} onChange={cambiar('apellido')} required maxLength={100} autoComplete="family-name" />
       <Input etiqueta="Correo" type="email" value={v.correo} onChange={cambiar('correo')} required maxLength={150} autoComplete="email" className="sm:col-span-2" />
       <Input etiqueta="Ciudad" value={v.ciudad} onChange={cambiar('ciudad')} required maxLength={100} autoComplete="address-level2" />
-      <Input
-        etiqueta="Foto de perfil (enlace)"
-        ayuda="Opcional. Un enlace https a una imagen."
-        type="url"
-        value={v.avatar}
-        onChange={cambiar('avatar')}
-        maxLength={255}
-        placeholder="https://"
-      />
       <div className="sm:col-span-2">
         <Button type="submit" cargando={guardando}>
           Guardar cambios

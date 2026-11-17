@@ -4,7 +4,6 @@ import { Collage } from '@/componentes/landing/Collage';
 import { ComoFunciona } from '@/componentes/landing/ComoFunciona';
 import { CtaFinal } from '@/componentes/landing/CtaFinal';
 import { ExploraAreas } from '@/componentes/landing/ExploraAreas';
-import { GaleriaCarreras } from '@/componentes/landing/GaleriaCarreras';
 import { Hero } from '@/componentes/landing/Hero';
 import { Marquesina } from '@/componentes/landing/Marquesina';
 import { OfertasDestacadas } from '@/componentes/landing/OfertasDestacadas';
@@ -23,7 +22,6 @@ export default function Landing() {
       <Cifras />
       <ExploraAreas />
       <ComoFunciona />
-      <GaleriaCarreras />
       <UniversidadesCatalogo />
       <Marquesina />
       <OfertasDestacadas />

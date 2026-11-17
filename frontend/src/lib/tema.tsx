@@ -6,17 +6,17 @@ const CLAVE = 'san.tema';
 function leer(): Tema {
   try {
     const t = localStorage.getItem(CLAVE);
-    return t === 'light' ? 'claro' : t === 'dark' ? 'oscuro' : 'sistema';
+    return t === 'dark' ? 'oscuro' : t === 'system' ? 'sistema' : 'claro';
   } catch {
-    return 'sistema';
+    return 'claro';
   }
 }
 
-/** Refleja el tema en <meta name="color-scheme"> y en `data-tema` (el CSS mapea ambos a `color-scheme`). */
+/** El tema por defecto es el claro; el oscuro (o seguir al sistema) solo si la persona lo eligió. Refleja el tema en <meta name="color-scheme"> y en `data-tema` (el CSS mapea ambos a `color-scheme`). */
 function aplicar(t: Tema) {
   const valor = t === 'claro' ? 'light' : t === 'oscuro' ? 'dark' : 'light dark';
   document.querySelector('meta[name="color-scheme"]')?.setAttribute('content', valor);
-  if (t === 'sistema') delete document.documentElement.dataset.tema;
+  if (t === 'sistema') document.documentElement.dataset.tema = 'system';
   else document.documentElement.dataset.tema = valor;
 }
 
@@ -46,8 +46,9 @@ export function TemaProvider({ children }: { children: ReactNode }) {
   const fijar = useCallback((t: Tema) => {
     setTema(t);
     try {
-      if (t === 'sistema') localStorage.removeItem(CLAVE);
-      else localStorage.setItem(CLAVE, t === 'claro' ? 'light' : 'dark');
+      // Sin nada guardado el tema es el claro.
+      if (t === 'claro') localStorage.removeItem(CLAVE);
+      else localStorage.setItem(CLAVE, t === 'oscuro' ? 'dark' : 'system');
     } catch {
       /* sin almacenamiento */
     }

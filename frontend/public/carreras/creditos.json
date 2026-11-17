@@ -1,0 +1,102 @@
+{
+  "ingenieria-de-sistemas": {
+    "autor": "Lbronn",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Programmers.jpg"
+  },
+  "ingenieria-civil": {
+    "autor": "Bernardobenzecry",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Heavy_machinery_in_construction_site_in_Manaus_by_Platinum_Constru%C3%A7%C3%B5es.jpg"
+  },
+  "ingenieria-industrial": {
+    "autor": "cwizner Indie_charles",
+    "licencia": "CC0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Industrial-1840111_1280.jpg"
+  },
+  "ingenieria-mecanica": {
+    "autor": "Hilda Raphael",
+    "licencia": "CC0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Mechanical_engineering_workshop_at_Arusha_Technical_College,_Tanzania.jpg"
+  },
+  "ingenieria-ambiental": {
+    "autor": "Vraj Acharya, WELL Labs",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Doddabommasandra_Lake_STP_Bengaluru_sewage_treatment_plant_aerial_view_India.jpg"
+  },
+  "medicina": {
+    "autor": "U.S. Navy photo by Mass Communication Specialist 3rd Class Matthew Jackson",
+    "licencia": "Public domain",
+    "fuente": "https://commons.wikimedia.org/wiki/File:US_Navy_100720-N-6410J-030_Medical_professionals_from_the_education_and_training_department_aboard_the_Military_Sealift_Command_hospital_ship_USNS_Mercy_(T-AH_19)_conduct_a_subject_matter_expert_exchange_with_students_at_a_medi.jpg"
+  },
+  "odontologia": {
+    "autor": "Sisib Universidad de Chile",
+    "licencia": "CC BY 2.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Clinica_Odontologia_Universidad_de_Chile.jpg"
+  },
+  "psicologia": {
+    "autor": "Universidad Nacional de La Plata",
+    "licencia": "CC BY 2.5",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Festejo_decimo_aniversario_psicologia_unlp.jpg"
+  },
+  "fisioterapia": {
+    "autor": "Virpana",
+    "licencia": "CC0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Instituto_nacional_de_medicina_f%C3%ADsica_y_rehabilitaci%C3%B3n_en_Ciudad_de_Panam%C3%A1.jpg"
+  },
+  "medicina-veterinaria": {
+    "autor": "JuanGris (Lucía Estévez)",
+    "licencia": "CC BY-SA 3.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Cl%C3%ADnica_para_peque%C3%B1os_animales,_Veterinaria_Universidad_Nacional.JPG"
+  },
+  "derecho": {
+    "autor": "Cadop",
+    "licencia": "CC0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Law_library_at_Umich.jpg"
+  },
+  "filosofia": {
+    "autor": "Mrstrimming",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Philosophy_.jpg"
+  },
+  "economia": {
+    "autor": "Leticia inca jorge",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Bloque_antiguo_de_la_facultad_de_economia.jpg"
+  },
+  "finanzas": {
+    "autor": "Thomas J. O'Halloran",
+    "licencia": "Public domain",
+    "fuente": "https://commons.wikimedia.org/wiki/File:NY_stock_exchange_traders_floor_LC-U9-10548-6.jpg"
+  },
+  "comunicacion-social": {
+    "autor": "RavikaChand",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Sports_Journalism.jpg"
+  },
+  "cine-y-television": {
+    "autor": "Don Ramey Logan",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:A_Behind_the_Scene_shots_of_one_of_our_production_sets_Don_Ramey_Logan.jpg"
+  },
+  "licenciatura-en-matematicas": {
+    "autor": "LBM1948",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Classroom_blackboard_at_Cornell_University,_Ithaca,_NY_25.jpg"
+  },
+  "quimica": {
+    "autor": "Belikov Maxim",
+    "licencia": "CC BY 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Laboratory_equipment_of_modern_chemistry_classroom.jpg"
+  },
+  "fisica": {
+    "autor": "Jeremyida002",
+    "licencia": "CC BY-SA 4.0",
+    "fuente": "https://commons.wikimedia.org/wiki/File:A_physics_laboratory.jpg"
+  },
+  "administracion-de-empresas": {
+    "autor": "The White House",
+    "licencia": "Public domain",
+    "fuente": "https://commons.wikimedia.org/wiki/File:Small_Business_Administrator_Isabel_Guzman_participates_in_a_meeting_with_child_care_businesses,_lenders,_national_child_care_organizations_and_philanthropy,_March_24,_2024,_in_the_Eisenhower_Executive_Office_Building_at_the_White_House.jpg"
+  }
+}

@@ -7,3 +7,4 @@ test
 *.rpm
 *.tsbuildinfo
 npm-debug.log
+frontend

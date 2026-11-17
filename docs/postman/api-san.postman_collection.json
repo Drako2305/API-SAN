@@ -1,0 +1,1354 @@
+{
+  "info": {
+    "name": "API SAN",
+    "description": "Pruebas de la API SAN (Sistema Academico de Navegacion). Ejecutar primero \"Auth / Login admin\" para llenar las variables de sesion. Ver README.md, seccion \"Probar con Postman\".",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "usuarioId",
+      "value": "00000000-0000-4000-8000-000000000001",
+      "type": "string"
+    },
+    {
+      "key": "adminUsuarioId",
+      "value": "00000000-0000-4000-8000-000000000002",
+      "type": "string"
+    },
+    {
+      "key": "carreraId",
+      "value": "00000000-0000-4000-8000-000000000011",
+      "type": "string"
+    },
+    {
+      "key": "universidadId",
+      "value": "00000000-0000-4000-8000-000000000021",
+      "type": "string"
+    },
+    {
+      "key": "ofertaId",
+      "value": "00000000-0000-4000-8000-000000000101",
+      "type": "string"
+    },
+    {
+      "key": "ofertaSecundariaId",
+      "value": "00000000-0000-4000-8000-000000000105",
+      "type": "string"
+    },
+    {
+      "key": "busquedaId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "comparacionId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "carreraNuevaId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "universidadNuevaId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "ofertaNuevaId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "description": "Registro, login y refresh. Son publicos (noauth). El login admin debe ejecutarse antes de las escrituras del catalogo y de /usuarios.",
+      "item": [
+        {
+          "name": "Registro",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/registro",
+            "description": "Crea un usuario estudiante nuevo. No cambia las variables de sesion.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Usuario de prueba\",\n  \"correo\": \"prueba.{{$timestamp}}@correo.com\",\n  \"clave\": \"clave12345\",\n  \"perfil\": {\n    \"apellido\": \"Prueba\",\n    \"ciudad\": \"Bogota\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login estudiante",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/login",
+            "description": "Guarda accessToken, refreshToken y usuarioId (estudiante demo). Sobrescribe accessToken: despues de este login las escrituras del catalogo responden 403.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"nicolas@correo.com\",\n  \"clave\": \"12345678\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set(\"accessToken\", json.data.accessToken);",
+                  "pm.collectionVariables.set(\"refreshToken\", json.data.refreshToken);",
+                  "pm.collectionVariables.set(\"usuarioId\", json.data.usuario.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/login",
+            "description": "Guarda accessToken, refreshToken y adminUsuarioId. Ejecutar primero para las escrituras del catalogo.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"admin@correo.com\",\n  \"clave\": \"admin12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set(\"accessToken\", json.data.accessToken);",
+                  "pm.collectionVariables.set(\"refreshToken\", json.data.refreshToken);",
+                  "pm.collectionVariables.set(\"adminUsuarioId\", json.data.usuario.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refresh",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/refresh",
+            "description": "Renueva los tokens con el refreshToken guardado (el del admin).",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set(\"accessToken\", json.data.accessToken);",
+                  "pm.collectionVariables.set(\"refreshToken\", json.data.refreshToken);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Catalogo",
+      "description": "Lecturas publicas y escrituras solo para admin. Las escrituras crean, modifican y eliminan registros propios (carreraNuevaId, universidadNuevaId, ofertaNuevaId) para no tocar los datos del seed.",
+      "item": [
+        {
+          "name": "Carreras",
+          "description": "CRUD de carreras",
+          "item": [
+            {
+              "name": "Listar carreras (filtro nombre)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{baseUrl}}/carreras?nombre=Ingenieria",
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "const c = pm.response.json().find((x) => x.nombre === \"Ingenieria de Sistemas\");",
+                      "pm.test(\"Carrera del seed encontrada\", () => pm.expect(c).to.not.be.undefined);",
+                      "if (c) pm.collectionVariables.set(\"carreraId\", c.id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Consultar carrera",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{baseUrl}}/carreras/{{carreraId}}",
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Crear carrera",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{baseUrl}}/carreras",
+                "description": "Requiere token admin.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Carrera de prueba nueva {{$timestamp}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                      "pm.collectionVariables.set(\"carreraNuevaId\", pm.response.json().data.id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Actualizar carrera (PUT)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{baseUrl}}/carreras/{{carreraNuevaId}}",
+                "description": "Requiere token admin. Actualiza la carrera creada por el POST anterior.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Carrera de prueba PUT {{$timestamp}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Actualizar carrera (PATCH)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{baseUrl}}/carreras/{{carreraNuevaId}}",
+                "description": "Requiere token admin. Mismo body que PUT.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Carrera de prueba PATCH {{$timestamp}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Eliminar carrera",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": "{{baseUrl}}/carreras/{{carreraNuevaId}}",
+                "description": "Requiere token admin. Elimina la carrera creada en esta coleccion."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Universidades",
+          "description": "CRUD de universidades",
+          "item": [
+            {
+              "name": "Listar universidades (filtro ciudad)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{baseUrl}}/universidades?ciudad=Bogota",
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "const u = pm.response.json().find((x) => x.nombre === \"Universidad Nacional de Colombia\");",
+                      "pm.test(\"Universidad del seed encontrada\", () => pm.expect(u).to.not.be.undefined);",
+                      "if (u) pm.collectionVariables.set(\"universidadId\", u.id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Consultar universidad",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{baseUrl}}/universidades/{{universidadId}}",
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Crear universidad",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{baseUrl}}/universidades",
+                "description": "Requiere token admin.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Universidad de prueba nueva {{$timestamp}}\",\n  \"ciudad\": \"Cali\",\n  \"imagenUrl\": \"/campus/prueba.webp\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                      "pm.collectionVariables.set(\"universidadNuevaId\", pm.response.json().data.id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Actualizar universidad (PUT)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{baseUrl}}/universidades/{{universidadNuevaId}}",
+                "description": "Requiere token admin.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Universidad de prueba PUT {{$timestamp}}\",\n  \"ciudad\": \"Cali\",\n  \"imagenUrl\": \"/campus/prueba.webp\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Actualizar universidad (PATCH)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{baseUrl}}/universidades/{{universidadNuevaId}}",
+                "description": "Requiere token admin. Mismo body que PUT.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nombre\": \"Universidad de prueba PATCH {{$timestamp}}\",\n  \"ciudad\": \"Cali\",\n  \"imagenUrl\": \"/campus/prueba.webp\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Eliminar universidad",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": "{{baseUrl}}/universidades/{{universidadNuevaId}}",
+                "description": "Requiere token admin. Elimina tambien sus ofertas (solo las creadas aqui)."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Ofertas",
+          "description": "CRUD de ofertas academicas, con filtros en el listado",
+          "item": [
+            {
+              "name": "Listar ofertas (filtros carreraId y ciudad)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{baseUrl}}/ofertas?carreraId={{carreraId}}&ciudad=Bogota",
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                      "const lista = pm.response.json();",
+                      "pm.test(\"Hay ofertas\", () => pm.expect(lista.length).to.be.above(0));",
+                      "if (lista.length) pm.collectionVariables.set(\"ofertaId\", lista[0].id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Listar ofertas (filtro universidadId)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{baseUrl}}/ofertas?universidadId={{universidadId}}",
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Consultar oferta",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{baseUrl}}/ofertas/{{ofertaId}}",
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Crear oferta",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{baseUrl}}/ofertas",
+                "description": "Requiere token admin. Usa la universidad y la carrera del seed.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"snies\": \"PRUEBA-NUEVA-{{$timestamp}}\",\n  \"ciudad\": \"Cali\",\n  \"costo\": 3000000,\n  \"modalidad\": \"virtual\",\n  \"jornada\": \"nocturna\",\n  \"duracion\": 8,\n  \"acreditacion\": false,\n  \"universidadId\": \"{{universidadId}}\",\n  \"carreraId\": \"{{carreraId}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                      "pm.collectionVariables.set(\"ofertaNuevaId\", pm.response.json().data.id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Actualizar oferta (PUT)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{baseUrl}}/ofertas/{{ofertaNuevaId}}",
+                "description": "Requiere token admin.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"snies\": \"PRUEBA-PUT-{{$timestamp}}\",\n  \"ciudad\": \"Cali\",\n  \"costo\": 3000000,\n  \"modalidad\": \"virtual\",\n  \"jornada\": \"nocturna\",\n  \"duracion\": 8,\n  \"acreditacion\": false,\n  \"universidadId\": \"{{universidadId}}\",\n  \"carreraId\": \"{{carreraId}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Actualizar oferta (PATCH)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{baseUrl}}/ofertas/{{ofertaNuevaId}}",
+                "description": "Requiere token admin. Mismo body que PUT.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"snies\": \"PRUEBA-PATCH-{{$timestamp}}\",\n  \"ciudad\": \"Cali\",\n  \"costo\": 3000000,\n  \"modalidad\": \"virtual\",\n  \"jornada\": \"nocturna\",\n  \"duracion\": 8,\n  \"acreditacion\": false,\n  \"universidadId\": \"{{universidadId}}\",\n  \"carreraId\": \"{{carreraId}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Eliminar oferta",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": "{{baseUrl}}/ofertas/{{ofertaNuevaId}}",
+                "description": "Requiere token admin."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Busquedas",
+      "description": "Busqueda publica: el body usa el nombre de la carrera, no el ID",
+      "item": [
+        {
+          "name": "Crear busqueda",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/busquedas",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"carrera\": \"Ingenieria de Sistemas\",\n  \"ciudad\": \"Bogota\",\n  \"costoMax\": 25000000,\n  \"modalidad\": \"presencial\",\n  \"jornada\": \"diurna\",\n  \"pesos\": {\n    \"costo\": 4,\n    \"modalidad\": 2,\n    \"ubicacion\": 5,\n    \"acreditacion\": 3\n  },\n  \"usuarioId\": \"{{usuarioId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Tiene resultados\", () => pm.expect(json.data.resultados).to.be.an(\"array\"));",
+                  "pm.collectionVariables.set(\"busquedaId\", json.data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar busqueda",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/busquedas/{{busquedaId}}",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar resultados de busqueda",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/busquedas/{{busquedaId}}/resultados",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Comparaciones",
+      "description": "Comparacion publica de 2 a 4 ofertas distintas",
+      "item": [
+        {
+          "name": "Crear comparacion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/comparaciones",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ofertaIds\": [\n    \"{{ofertaId}}\",\n    \"{{ofertaSecundariaId}}\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"comparacionId\", pm.response.json().data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar comparacion",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/comparaciones/{{comparacionId}}",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Eliminar comparacion",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/comparaciones/{{comparacionId}}",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "description": "Requiere token valido del propio usuario o de admin (PropietarioGuard). Se usa el token admin de la sesion.",
+      "item": [
+        {
+          "name": "Consultar usuario",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/usuarios/{{usuarioId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar usuario (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios/{{usuarioId}}",
+            "description": "No envia correo ni clave, para no romper los logins del seed.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Nicolas\",\n  \"perfil\": {\n    \"ciudad\": \"Bogota\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar usuario (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios/{{usuarioId}}",
+            "description": "Mismo body que PUT.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Nicolas\",\n  \"perfil\": {\n    \"ciudad\": \"Bogota\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar preferencias",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/usuarios/{{usuarioId}}/preferencias"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar preferencias (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios/{{usuarioId}}/preferencias",
+            "description": "Los cuatro campos son obligatorios (enteros de 0 a 5).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"costo\": 4,\n  \"modalidad\": 2,\n  \"ubicacion\": 5,\n  \"acreditacion\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar preferencias (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios/{{usuarioId}}/preferencias",
+            "description": "Mismo body que PUT.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"costo\": 4,\n  \"modalidad\": 2,\n  \"ubicacion\": 5,\n  \"acreditacion\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar favoritos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/usuarios/{{usuarioId}}/favoritos"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Agregar favorito",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/usuarios/{{usuarioId}}/favoritos",
+            "description": "Si la oferta ya es favorita responde 409; por eso el DELETE va despues en la misma coleccion.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ofertaId\": \"{{ofertaSecundariaId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Quitar favorito",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/usuarios/{{usuarioId}}/favoritos/{{ofertaSecundariaId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Errores",
+      "description": "Ejemplos de respuestas de error (la prueba valida el codigo esperado)",
+      "item": [
+        {
+          "name": "Crear carrera sin token (401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/carreras",
+            "description": "Sin header Authorization responde 401 \"Token de acceso requerido\".",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Carrera sin token\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear carrera con body invalido (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/carreras",
+            "description": "Con token admin, el body falla ValidationPipe (nombre vacio y campo no declarado).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"\",\n  \"campoNoPermitido\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear busqueda con modalidad invalida (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/busquedas",
+            "description": "La modalidad debe ser presencial, virtual o hibrida.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"carrera\": \"Ingenieria de Sistemas\",\n  \"modalidad\": \"remota\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

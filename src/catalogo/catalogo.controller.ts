@@ -5,12 +5,13 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
@@ -51,10 +52,23 @@ export class CatalogoController {
   }
 
   @Put('carreras/:id')
+  @ApiOperation({ summary: 'Actualizar la carrera (PUT, por compatibilidad)' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   actualizarCarrera(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() cambios: ActualizarCarreraDto,
+  ) {
+    return this.catalogoService.actualizarCarrera(id, cambios);
+  }
+
+  @Patch('carreras/:id')
+  @ApiOperation({ summary: 'Actualizar parcialmente la carrera (PATCH)' })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  actualizarCarreraParcial(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() cambios: ActualizarCarreraDto,
   ) {
@@ -88,10 +102,25 @@ export class CatalogoController {
   }
 
   @Put('universidades/:id')
+  @ApiOperation({
+    summary: 'Actualizar la universidad (PUT, por compatibilidad)',
+  })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   actualizarUniversidad(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() cambios: ActualizarUniversidadDto,
+  ) {
+    return this.catalogoService.actualizarUniversidad(id, cambios);
+  }
+
+  @Patch('universidades/:id')
+  @ApiOperation({ summary: 'Actualizar parcialmente la universidad (PATCH)' })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  actualizarUniversidadParcial(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() cambios: ActualizarUniversidadDto,
   ) {
@@ -125,10 +154,23 @@ export class CatalogoController {
   }
 
   @Put('ofertas/:id')
+  @ApiOperation({ summary: 'Actualizar la oferta (PUT, por compatibilidad)' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   actualizarOferta(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() cambios: ActualizarOfertaDto,
+  ) {
+    return this.catalogoService.actualizarOferta(id, cambios);
+  }
+
+  @Patch('ofertas/:id')
+  @ApiOperation({ summary: 'Actualizar parcialmente la oferta (PATCH)' })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  actualizarOfertaParcial(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() cambios: ActualizarOfertaDto,
   ) {

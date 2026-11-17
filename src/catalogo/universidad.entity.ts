@@ -1,9 +1,11 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
   type Relation,
+  UpdateDateColumn,
 } from 'typeorm';
 import { OfertaAcademica } from './oferta-academica.entity';
 
@@ -23,4 +25,10 @@ export class Universidad {
 
   @OneToMany(() => OfertaAcademica, (oferta) => oferta.universidad)
   ofertas: Relation<OfertaAcademica[]>;
+
+  @CreateDateColumn({ type: 'timestamptz' })
+  fechaRegistro: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz' })
+  fechaActualizacion: Date;
 }

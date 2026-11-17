@@ -32,7 +32,7 @@ API REST en NestJS para busqueda, consulta y comparacion de ofertas academicas: 
 - `AuthService`: la clave se guarda con `bcrypt.hash(clave, 10)` y el login usa `bcrypt.compare`. `accessToken` = JWT `{ sub, correo, rol }`; `refreshToken` = JWT `{ sub }` firmado con `JWT_REFRESH_SECRET` (`verifyAsync`, si falla `UnauthorizedException('Refresh token invalido')`). `AuthResponseDto` = `{ accessToken, refreshToken, usuario: { id, nombre, correo, rol } }` dentro de `{ message, data }`.
 - `ROLES = ['estudiante', 'admin']` y type `Rol` en `src/common/constantes.ts`; `Usuario.rol` por defecto `estudiante`. El registro nunca asigna `admin`. `UsuarioService.actualizar` hashea la clave si cambia. Nunca devolver `clave`.
 - Guards en `src/auth/`: `JwtAuthGuard` (Bearer, deja el payload en `request.usuario`, 401 en espanol), `RolesGuard` + `@Roles(...)` (403 en espanol), `PropietarioGuard` (en `/usuarios/:id...` exige `sub === id` o rol admin, si no 403) y el decorador `@UsuarioActual()`.
-- Proteccion: todo `UsuarioController` con `JwtAuthGuard` + `PropietarioGuard`; `POST`/`PUT`/`DELETE` del catalogo con `JwtAuthGuard` + `RolesGuard` y `@Roles('admin')`. Publicos: lecturas del catalogo, `/busquedas`, `/comparaciones` y `/auth`.
+- Proteccion: todo `UsuarioController` con `JwtAuthGuard` + `PropietarioGuard`; `POST`/`PUT`/`PATCH`/`DELETE` del catalogo con `JwtAuthGuard` + `RolesGuard` y `@Roles('admin')`. Publicos: lecturas del catalogo, `/busquedas`, `/comparaciones` y `/auth`.
 - Credenciales demo (semilla, idempotente, claves con hash): `nicolas@correo.com` / `12345678` (estudiante, id `IDS_SEMILLA.usuario`) y `admin@correo.com` / `admin12345` (admin, id `IDS_SEMILLA.admin`).
 - E2E: `test/jest-e2e.json` corre con `maxWorkers: 1` (las suites comparten BD y la semilla/sincronizacion no deben correr en paralelo).
 
@@ -45,10 +45,12 @@ API REST en NestJS para busqueda, consulta y comparacion de ofertas academicas: 
 | Controller | Endpoints | Service |
 |---|---|---|
 | AuthController | POST /auth/registro, POST /auth/login, POST /auth/refresh (publicos) | AuthService |
-| UsuarioController (JWT, propio usuario o admin) | GET/PUT /usuarios/{id}, GET/PUT /usuarios/{id}/preferencias, GET/POST /usuarios/{id}/favoritos, DELETE /usuarios/{id}/favoritos/{ofertaId} | UsuarioService |
+| UsuarioController (JWT, propio usuario o admin) | GET/PUT/PATCH /usuarios/{id}, GET/PUT/PATCH /usuarios/{id}/preferencias, GET/POST /usuarios/{id}/favoritos, DELETE /usuarios/{id}/favoritos/{ofertaId} | UsuarioService |
 | BusquedaController | POST /busquedas, GET /busquedas/{id}, GET /busquedas/{id}/resultados | BusquedaService + ScoringService |
 | ComparacionController | POST /comparaciones, GET /comparaciones/{id}, DELETE /comparaciones/{id} | ComparacionService |
-| CatalogoController (POST/PUT/DELETE solo admin) | GET/POST /carreras, GET/PUT/DELETE /carreras/{id}, GET/POST /universidades, GET/PUT/DELETE /universidades/{id}, GET/POST /ofertas (filtros carreraId, universidadId, ciudad), GET/PUT/DELETE /ofertas/{id} | CatalogoService |
+| CatalogoController (POST/PUT/PATCH/DELETE solo admin) | GET/POST /carreras, GET/PUT/PATCH/DELETE /carreras/{id}, GET/POST /universidades, GET/PUT/PATCH/DELETE /universidades/{id}, GET/POST /ofertas (filtros carreraId, universidadId, ciudad), GET/PUT/PATCH/DELETE /ofertas/{id} | CatalogoService |
+
+`PUT` y `PATCH` comparten DTO, metodo del servicio y guards (`PUT` queda por compatibilidad, `PATCH` es la actualizacion parcial); el controller solo define un handler extra (`actualizar...Parcial`) que delega en el mismo servicio.
 
 DTOs clave (nombres exactos del diagrama):
 
@@ -81,9 +83,9 @@ DTOs clave (nombres exactos del diagrama):
 - Copiar las variables: `cp .env.example .env` (`.env` no se commitea).
 - Solo la base de datos, para correr la API en local con `npm run start:dev`: `docker compose up -d postgres` (expone `localhost:5432` o `POSTGRES_PORT`).
 - API y base de datos en contenedores: `docker compose up -d --build` (API en http://localhost:3000 o `PORT`). Dentro del contenedor la API usa `PORT=3000`, `POSTGRES_HOST=postgres` y `POSTGRES_PORT=5432`, que sobrescriben los valores de `.env`.
-- TypeORM (`@nestjs/typeorm` + `pg`): `TypeOrmModule.forRootAsync` en `src/app.module.ts` con `useFactory` que lee las variables `POSTGRES_*` con `getOrThrow`. `autoLoadEntities: true`: cada modulo registra sus entidades con `TypeOrmModule.forFeature([...])`. `synchronize: true` (crea y actualiza las tablas desde las entidades).
+- TypeORM (`@nestjs/typeorm` + `pg`): `TypeOrmModule.forRootAsync` en `src/app.module.ts` con `useFactory` que lee las variables `POSTGRES_*` con `getOrThrow`. `autoLoadEntities: true`: cada modulo registra sus entidades con `TypeOrmModule.forFeature([...])`. `synchronize: true` (solo para desarrollo; en produccion usar migraciones) (crea y actualiza las tablas desde las entidades).
 - Entidades (TypeORM, nombres en espanol, `@PrimaryGeneratedColumn('uuid')`), cada una registrada con `TypeOrmModule.forFeature` en su modulo:
-  - `catalogo/carrera.entity.ts` (`Carrera`, tabla `carreras`) y `catalogo/universidad.entity.ts` (`Universidad`, tabla `universidades`, con `imagenUrl` opcional): 1:N con `OfertaAcademica`.
+  - `catalogo/carrera.entity.ts` (`Carrera`, tabla `carreras`) y `catalogo/universidad.entity.ts` (`Universidad`, tabla `universidades`, con `imagenUrl` opcional): 1:N con `OfertaAcademica`. Las tres entidades del catalogo tienen `fechaRegistro` (`@CreateDateColumn`, timestamptz) y `fechaActualizacion` (`@UpdateDateColumn`, timestamptz); `OfertaAcademicaDto` no las expone.
   - `catalogo/oferta-academica.entity.ts` (`OfertaAcademica`, tabla `ofertas_academicas`): snies unico, ciudad, costo, modalidad, jornada, duracion, acreditacion; N:1 con `Universidad` y `Carrera`.
   - `usuarios/usuario.entity.ts` (`Usuario`, tabla `usuarios`): nombre, correo unico, clave (hash bcrypt), rol (`estudiante` por defecto o `admin`), preferencias (jsonb), favoritos N:M con `OfertaAcademica` (tabla `usuario_favoritos`), perfil 1:1 opcional con `Perfil` (`@OneToOne` con `cascade: true` y `@JoinColumn` `perfil_id`).
   - `usuarios/perfil.entity.ts` (`Perfil`, tabla `perfiles`): apellido, ciudad, avatar opcional, `fechaRegistro` (`@CreateDateColumn`) y `fechaActualizacion` (`@UpdateDateColumn`). Se crea junto con el usuario en `POST /auth/registro` gracias al `cascade`.

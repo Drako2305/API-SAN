@@ -25,6 +25,7 @@ import { UsuarioModule } from './usuarios/usuario.module';
         password: configService.getOrThrow('POSTGRES_PASSWORD'),
         database: configService.getOrThrow('POSTGRES_DB'),
         autoLoadEntities: true,
+        // Solo para desarrollo: en produccion usar migraciones
         synchronize: true,
       }),
       inject: [ConfigService],

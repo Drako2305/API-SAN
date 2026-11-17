@@ -5,11 +5,12 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PropietarioGuard } from '../auth/propietario.guard';
 import {
@@ -32,7 +33,17 @@ export class UsuarioController {
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Actualizar el usuario (PUT, por compatibilidad)' })
   actualizar(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() cambios: ActualizarUsuarioDto,
+  ) {
+    return this.usuarioService.actualizar(id, cambios);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Actualizar parcialmente el usuario (PATCH)' })
+  actualizarParcial(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() cambios: ActualizarUsuarioDto,
   ) {
@@ -45,7 +56,21 @@ export class UsuarioController {
   }
 
   @Put(':id/preferencias')
+  @ApiOperation({
+    summary: 'Actualizar las preferencias (PUT, por compatibilidad)',
+  })
   actualizarPreferencias(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() datos: PreferenciaDto,
+  ) {
+    return this.usuarioService.actualizarPreferencias(id, datos);
+  }
+
+  @Patch(':id/preferencias')
+  @ApiOperation({
+    summary: 'Actualizar parcialmente las preferencias (PATCH)',
+  })
+  actualizarPreferenciasParcial(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() datos: PreferenciaDto,
   ) {

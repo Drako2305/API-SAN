@@ -140,6 +140,8 @@ describe('Catalogo (e2e)', () => {
           servidor.post(ruta).set('Authorization', `Bearer ${token}`),
         put: (ruta: string) =>
           servidor.put(ruta).set('Authorization', `Bearer ${token}`),
+        patch: (ruta: string) =>
+          servidor.patch(ruta).set('Authorization', `Bearer ${token}`),
         delete: (ruta: string) =>
           servidor.delete(ruta).set('Authorization', `Bearer ${token}`),
       };
@@ -240,6 +242,36 @@ describe('Catalogo (e2e)', () => {
       await http().delete(`/carreras/${carrera.id}`).expect(200);
       await http().get(`/carreras/${carrera.id}`).expect(404);
       await http().delete(`/carreras/${carrera.id}`).expect(404);
+    });
+
+    it('PATCH /carreras/:id actualiza parcialmente con admin', async () => {
+      const carrera = await crearCarrera();
+      const nuevoNombre = `Parcial ${unico()}`;
+      await http()
+        .patch(`/carreras/${carrera.id}`)
+        .send({ nombre: nuevoNombre })
+        .expect(200)
+        .expect((respuesta) => {
+          expect(respuesta.body.message).toBe(
+            'Carrera actualizada correctamente',
+          );
+          expect(respuesta.body.data.id).toBe(carrera.id);
+          expect(respuesta.body.data.nombre).toBe(nuevoNombre);
+        });
+      await http().delete(`/carreras/${carrera.id}`).expect(200);
+    });
+
+    it('PATCH /carreras/:id responde 401 sin token y 403 a un estudiante', async () => {
+      const idInexistente = randomUUID();
+      const cuerpo = { nombre: `Sin permiso ${unico()}` };
+      await request(app.getHttpServer())
+        .patch(`/carreras/${idInexistente}`)
+        .send(cuerpo)
+        .expect(401);
+      await http(tokenEstudiante)
+        .patch(`/carreras/${idInexistente}`)
+        .send(cuerpo)
+        .expect(403);
     });
 
     it('crea y actualiza una universidad con imagenUrl', async () => {

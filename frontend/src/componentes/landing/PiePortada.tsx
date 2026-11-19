@@ -27,7 +27,7 @@ function Columna({ titulo, enlaces }: { titulo: string; enlaces: Enlace[] }) {
               <a href={e.a} target="_blank" rel="noopener noreferrer" className={ENLACE}>
                 <e.icono className="size-4 shrink-0" aria-hidden />
                 {e.t}
-                <span className="sr-only"> (se abre en otra pestaña)</span>
+                <span className="sr-only"> (se abre en una pestaña nueva)</span>
               </a>
             ) : (
               <Link to={e.a} viewTransition className={ENLACE}>
@@ -80,7 +80,7 @@ export function PiePortada() {
       </div>
       <div className="border-t border-sobre-panel/25">
         <p className="pagina-ancho py-4 text-sm text-sobre-panel-2">
-          Equipo: {EQUIPO.join(', ')}. Fotos de campus de Wikimedia Commons con licencia libre.
+          Equipo: {EQUIPO.join(', ')}. Fotos de campus tomadas de Wikimedia Commons, con licencia libre.
         </p>
       </div>
     </footer>

@@ -1,10 +1,10 @@
 # API SAN
 
-API SAN (Sistema Academico de Navegacion) es una API REST hecha con NestJS para buscar, consultar y comparar ofertas academicas. Dada una carrera y los parametros del usuario (ciudad, costo maximo, modalidad, jornada y pesos de preferencia), identifica las universidades que la ofrecen y las ordena por afinidad.
+API SAN (Sistema Académico de Navegación) es una API REST hecha con NestJS para buscar, consultar y comparar ofertas académicas. Dada una carrera y los parámetros del usuario (ciudad, costo máximo, modalidad, jornada y pesos de preferencia), identifica las universidades que la ofrecen y las ordena por afinidad.
 
 Los datos se guardan en PostgreSQL y se acceden con TypeORM.
 
-La referencia de endpoints (metodos, campos, validaciones, respuestas, errores y ejemplos curl) esta en [docs/api.md](docs/api.md).
+La referencia de endpoints (métodos, campos, validaciones, respuestas, errores y ejemplos curl) está en [docs/api.md](docs/api.md).
 
 ## Equipo
 

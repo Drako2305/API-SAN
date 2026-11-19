@@ -9,6 +9,10 @@ import {
 import { Request, Response } from 'express';
 import { Observable, tap } from 'rxjs';
 
+/**
+ * Registra en consola una linea por request con metodo, ruta, estado y tiempo de respuesta en milisegundos.
+ * Si el handler lanza un error, registra su estado HTTP o 500 si no es una HttpException.
+ */
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   private readonly logger = new Logger('HTTP');

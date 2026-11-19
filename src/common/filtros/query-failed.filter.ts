@@ -11,6 +11,10 @@ import { QueryFailedError } from 'typeorm';
 const UNIQUE_VIOLATION = '23505';
 const FOREIGN_KEY_VIOLATION = '23503';
 
+/**
+ * Traduce los errores de consulta de PostgreSQL a respuestas HTTP: unicidad (23505) y llave foranea (23503) responden 409;
+ * cualquier otro error responde 500. Se registra como `APP_FILTER` en `AppModule`.
+ */
 @Catch(QueryFailedError)
 export class QueryFailedFilter implements ExceptionFilter {
   catch(exception: QueryFailedError, host: ArgumentsHost) {

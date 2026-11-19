@@ -80,7 +80,7 @@ export function PiePortada() {
       </div>
       <div className="border-t border-sobre-panel/25">
         <p className="pagina-ancho py-4 text-sm text-sobre-panel-2">
-          Equipo: {EQUIPO.join(', ')}. Fotos de campus de Wikimedia Commons con licencia libre.
+          Equipo: {EQUIPO.join(', ')}. Fotos de campus tomadas de Wikimedia Commons, con licencia libre.
         </p>
       </div>
     </footer>

@@ -4,7 +4,7 @@ import { Skeleton } from '@/componentes';
 
 function CargandoPagina() {
   return (
-    <div aria-busy="true" aria-label="Cargando" className="flex flex-col gap-4">
+    <div aria-busy="true" aria-label="Cargando contenido" className="flex flex-col gap-4">
       <Skeleton className="h-8 w-64" />
       <Skeleton className="h-4 w-96 max-w-full" />
       <Skeleton className="mt-4 h-40 w-full" />

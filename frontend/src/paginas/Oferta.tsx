@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router';
-import { ArrowUpRight, BadgeCheck, Check, GitCompareArrows, Heart, MapPin, SearchX } from 'lucide-react';
+import { ArrowUpRight, BadgeCheck, Check, GitCompareArrows, Heart, Link2, MapPin, SearchX } from 'lucide-react';
 import { Badge, Button, Card, EmptyState, LinkButton, Skeleton, useToast } from '@/componentes';
 import { Cargando, FotoConFallback, FotoUniversidad, OfertaFila } from '@/componentes/catalogo';
 import { MAX_COMPARAR, useSeleccion } from '@/lib/seleccionComparar';
@@ -47,7 +47,7 @@ export default function Oferta() {
   const { id = '' } = useParams();
   const ubicacion = useLocation();
   const { usuario, autenticado } = useSesion();
-  const { mostrar, error: avisoError } = useToast();
+  const { mostrar, ok, error: avisoError } = useToast();
 
   const { datos: o, cargando, error, recargar } = useCarga(
     () => catalogo.oferta(id).catch((e: unknown) => (noEncontrado(e) ? null : Promise.reject(e))),
@@ -116,6 +116,15 @@ export default function Oferta() {
     if (!seleccion.alternar(o)) mostrar(`Solo puedes comparar hasta ${MAX_COMPARAR} ofertas. Quita una en Comparar.`);
   };
 
+  const copiarEnlace = async () => {
+    try {
+      await navigator.clipboard.writeText(`${window.location.origin}${ubicacion.pathname}${ubicacion.search}`);
+      ok('Enlace copiado.');
+    } catch {
+      avisoError('No pudimos copiar el enlace. Cópialo desde la barra de direcciones.');
+    }
+  };
+
   const returnUrl = encodeURIComponent(ubicacion.pathname + ubicacion.search);
 
   return (
@@ -156,6 +165,9 @@ export default function Oferta() {
             )}
             <Button variante={enSeleccion ? 'secundario' : 'primario'} aria-pressed={enSeleccion} onClick={alternarComparar} icono={enSeleccion ? <Check className="size-4" aria-hidden /> : <GitCompareArrows className="size-4" aria-hidden />}>
               {enSeleccion ? 'En tu comparación' : 'Agregar a comparar'}
+            </Button>
+            <Button variante="secundario" onClick={copiarEnlace} icono={<Link2 className="size-4" aria-hidden />}>
+              Copiar enlace
             </Button>
           </div>
         </div>

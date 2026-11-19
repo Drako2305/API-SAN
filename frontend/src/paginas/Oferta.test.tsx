@@ -56,6 +56,18 @@ describe('Oferta', () => {
     expect(screen.getByRole('button', { name: 'En tu comparación' })).toBeInTheDocument();
   });
 
+  it('copia el enlace de la oferta y lo confirma con un aviso', async () => {
+    vi.mocked(catalogo.oferta).mockResolvedValue(oferta as never);
+    const user = userEvent.setup();
+    const escribir = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: escribir } });
+    montar('o1');
+    await screen.findByRole('heading', { level: 1, name: 'Ingeniería de Sistemas' });
+    await user.click(screen.getByRole('button', { name: 'Copiar enlace' }));
+    expect(escribir).toHaveBeenCalledWith(expect.stringMatching(/\/ofertas\/o1$/));
+    expect(await screen.findByText('Enlace copiado.')).toBeInTheDocument();
+  });
+
   it('muestra el estado vacío cuando la API responde 404', async () => {
     vi.mocked(catalogo.oferta).mockRejectedValue(new ApiError(404, 'No encontrado'));
     montar('nada');

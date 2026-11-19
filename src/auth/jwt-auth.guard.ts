@@ -8,8 +8,13 @@ import { JwtService } from '@nestjs/jwt';
 import type { Request } from 'express';
 import { PayloadAccesoJwt } from './auth.dto';
 
+/** Solicitud de Express con el payload del access token ya verificado en `usuario`. */
 export type SolicitudAutenticada = Request & { usuario: PayloadAccesoJwt };
 
+/**
+ * Valida el header `Authorization: Bearer <accessToken>` y deja el payload en `request.usuario`.
+ * Responde 401 si falta el header, el esquema no es Bearer o el token es invalido o esta expirado.
+ */
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
   constructor(private readonly jwtService: JwtService) {}

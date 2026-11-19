@@ -126,7 +126,7 @@ export function ComoFunciona() {
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="font-display text-lg font-semibold">Oferta de ejemplo</p>
-              <p className="text-sm text-texto-3">Valores de muestra para ilustrar; no son del catálogo.</p>
+              <p className="text-sm text-texto-3">Valores de muestra para ilustrar la mecánica; no son datos del catálogo.</p>
             </div>
             <MorphingRing valor={puntaje} cargando={false} tamano={56} color="var(--color-acento)" etiquetaValor={`Puntaje ${puntaje} de 100`} />
           </div>

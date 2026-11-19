@@ -41,6 +41,11 @@
       "type": "string"
     },
     {
+      "key": "estudianteToken",
+      "value": "",
+      "type": "string"
+    },
+    {
       "key": "carreraId",
       "value": "00000000-0000-4000-8000-000000000011",
       "type": "string"
@@ -200,6 +205,7 @@
                   "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
                   "const json = pm.response.json();",
                   "pm.collectionVariables.set(\"accessToken\", json.data.accessToken);",
+                  "pm.collectionVariables.set(\"estudianteToken\", json.data.accessToken);",
                   "pm.collectionVariables.set(\"refreshToken\", json.data.refreshToken);",
                   "pm.collectionVariables.set(\"usuarioId\", json.data.usuario.id);"
                 ]
@@ -1381,6 +1387,107 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear carrera con token de estudiante (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/carreras",
+            "description": "El token de estudiante es valido, pero el endpoint exige rol admin: 403.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{estudianteToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Carrera con token de estudiante\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 403\", () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar carrera inexistente (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/carreras/00000000-0000-4000-8000-999999999999",
+            "description": "UUID valido pero sin registro: el servicio lanza NotFoundException.",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear oferta con SNIES repetido (409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/ofertas",
+            "description": "El SNIES 1001 ya existe en el seed; QueryFailedFilter traduce el 23505 de PostgreSQL a 409.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"snies\": \"1001\",\n  \"ciudad\": \"Bogota\",\n  \"costo\": 3000000,\n  \"modalidad\": \"presencial\",\n  \"jornada\": \"diurna\",\n  \"duracion\": 8,\n  \"acreditacion\": false,\n  \"universidadId\": \"{{universidadId}}\",\n  \"carreraId\": \"{{carreraId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 409\", () => pm.response.to.have.status(409));"
                 ]
               }
             }

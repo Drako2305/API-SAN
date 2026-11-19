@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import { ArrowRight, GraduationCap } from 'lucide-react';
 import { Badge, EmptyState, EncabezadoPagina, Input, claseBoton } from '@/componentes';
@@ -70,6 +70,22 @@ export default function Carreras() {
   const nombre = params.get('nombre') ?? '';
   const area = params.get('area') ?? '';
   const [texto, setTexto] = useState(nombre);
+  const busquedaRef = useRef<HTMLElement>(null);
+
+  // Atajo "/": enfoca el campo de búsqueda, salvo que la persona ya esté escribiendo en un campo.
+  useEffect(() => {
+    const alPulsar = (e: KeyboardEvent) => {
+      if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey || e.isComposing || e.defaultPrevented) return;
+      const destino = e.target as HTMLElement | null;
+      if (destino?.isContentEditable || destino?.tagName === 'INPUT' || destino?.tagName === 'TEXTAREA' || destino?.tagName === 'SELECT') return;
+      const campo = busquedaRef.current?.querySelector('input');
+      if (!campo) return;
+      e.preventDefault();
+      campo.focus();
+    };
+    window.addEventListener('keydown', alPulsar);
+    return () => window.removeEventListener('keydown', alPulsar);
+  }, []);
 
   // Búsqueda con retardo: la URL (?nombre) se actualiza cuando la persona deja de escribir.
   useEffect(() => {
@@ -112,8 +128,8 @@ export default function Carreras() {
     <>
       <EncabezadoPagina titulo="Carreras" descripcion="Elige una carrera para ver en qué universidades se ofrece, cuánto cuesta y en qué modalidad." />
 
-      <search className="mb-4 block max-w-md">
-        <Input etiqueta="Buscar carrera" type="search" value={texto} onChange={(e) => setTexto(e.target.value)} placeholder="Por ejemplo, Psicología" autoComplete="off" />
+      <search ref={busquedaRef} className="mb-4 block max-w-md">
+        <Input etiqueta="Buscar carrera" type="search" value={texto} onChange={(e) => setTexto(e.target.value)} placeholder="Por ejemplo, Psicología" autoComplete="off" aria-keyshortcuts="/" />
       </search>
 
       {areas.length > 0 && (

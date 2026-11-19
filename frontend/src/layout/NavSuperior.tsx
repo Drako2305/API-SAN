@@ -104,7 +104,7 @@ export function NavSuperior({ variante = 'app' }: { variante?: VarianteCabecera 
           <span className="sr-only">Menú</span>
         </button>
 
-        <Link to={autenticado ? '/inicio' : '/'} viewTransition className="shrink-0 rounded-lg" aria-label="SAN, ir al inicio">
+        <Link to={autenticado ? '/inicio' : '/'} viewTransition className="shrink-0 rounded-lg" aria-label="Ir al inicio de SAN">
           <Logo conNombre={false} />
         </Link>
 

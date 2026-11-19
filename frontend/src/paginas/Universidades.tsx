@@ -57,8 +57,8 @@ export default function Universidades() {
         )}
       </div>
 
-      <p className="sr-only" role="status">
-        {datos && !lista.cargando ? `${datos.length} universidades` : ''}
+      <p role="status" className="numeros mb-4 min-h-5 text-sm text-texto-3">
+        {datos && !lista.cargando ? `${datos.length} ${datos.length === 1 ? 'universidad' : 'universidades'}` : ''}
       </p>
 
       {lista.error ? (

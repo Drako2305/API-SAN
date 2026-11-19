@@ -65,7 +65,7 @@ export function Marquesina() {
       <div className="lp-marco overflow-hidden px-4 md:px-0" data-pausa={pausa} aria-busy={!datos} style={{ minHeight: '5rem' }}>
         {datos && (
           <div className="lp-pista lp-pista--mov">
-            <ul className="lp-lista pista-tarjetas" aria-label="Universidades">
+            <ul className="lp-lista pista-tarjetas" aria-label="Lista de universidades">
               {datos.map((u) => (
                 <Item key={u.id} u={u} />
               ))}

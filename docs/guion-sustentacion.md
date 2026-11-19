@@ -1,54 +1,4 @@
-# Guion de sustentacion - API SAN
 
-Video de 9 a 10 minutos (el minimo pedido es 5). Participan los tres integrantes.
-
-## Estado del repositorio
-
-Datos al momento de escribir esta guia (verificar con `git log`, GitHub y `npm test` antes de grabar):
-
-| Dato | Valor |
-|---|---|
-| Commits | 269 en `develop`; Nicolas 103, Jenifer 85, Juan 81 (los tres superan los 80) |
-| PR | 49 mergeados y 2 cerrados (#43 duplicado de #44, #45 integrado en la limpieza final); el PR de limpieza agrega las pruebas de controladores |
-| Ramas | `develop` como integracion y ramas `feature/...` por funcionalidad |
-| Pruebas unitarias | 147 en 21 suites (137 en `develop` antes de integrar las pruebas de controladores) |
-| Pruebas e2e | 43 en 4 suites, contra una base aislada |
-| Catalogo del seed | 42 carreras, 19 universidades y 188 ofertas |
-| Endpoints | 36 en 22 rutas |
-
-## Antes de grabar
-
-1. Levantar la base y la API:
-   ```bash
-   docker compose up -d postgres
-   npm run seed
-   npm run start:dev
-   ```
-   Si se usa todo en Docker: `docker compose up -d --build`. El contenedor de la API no ejecuta el seed.
-2. Revisar el puerto real. En la instancia de prueba la API queda en `http://localhost:3100`; en el README el valor por defecto es `3000`. Usar el mismo puerto en el navegador, en Postman y en los `curl`.
-3. Postman: importar `docs/postman/api-san.postman_collection.json` y cambiar `baseUrl` al puerto real. Ejecutar primero **Auth / Login admin**.
-4. Correr la coleccion completa:
-   ```bash
-   npx newman run docs/postman/api-san.postman_collection.json \
-     --env-var baseUrl=http://localhost:3100
-   ```
-   Debe terminar con 0 fallos. La carpeta **Errores** prueba 400, 401, 403, 404 y 409.
-5. Dejar abiertos en VS Code:
-   `src/main.ts`, `src/app.module.ts`, `src/catalogo/catalogo.module.ts`,
-   `src/catalogo/catalogo.controller.ts`, `src/catalogo/catalogo.dto.ts`,
-   `src/catalogo/oferta-academica.entity.ts`, `src/usuarios/usuario.entity.ts`,
-   `src/busquedas/busqueda.service.ts`, `src/busquedas/scoring.service.ts`,
-   `src/common/filtros/query-failed.filter.ts`, `src/auth/roles.guard.ts`,
-   `src/auth/propietario.guard.ts`.
-6. Dejar abiertas las pestanas: GitHub (Insights > Contributors, Pull requests, Branches), `http://localhost:<puerto>/docs` y una terminal con `npm test`.
-
-## Quien hizo que
-
-- **Jenifer** (85 commits; PR #3, #8, #12, #15, #19, #22, #25, #28, #31, #34, #46, #48, #51): entidades TypeORM, capa inicial de catalogo y comparacion, filtros del catalogo, detalle de universidad con ofertas, busqueda asociada a usuario, desempate, correccion de ubicacion, perfil 1:1 y mejoras de interfaz.
-- **Juan Camilo** (81 commits; PR #2, #7, #11, #14, #18, #21, #24, #27, #30, #33, #44, #47, #49, #50): capa inicial de busquedas, PostgreSQL y Docker, conexion TypeORM, modulos por recurso, `ValidationPipe` estricto, validaciones del registro, filtro de errores de base de datos, interceptor de logs, README, CI y endpoints de filtros.
-- **Nicolas** (103 commits; PR #1, #4, #5, #6, #9, #10, #13, #16, #17, #20, #23, #26, #29, #32, #35, #36, #37, #38, #39, #40, #41, #42): base de NestJS, manejo de excepciones, configuracion de entorno, pgAdmin, repositorios TypeORM, pruebas de scoring, limites de comparacion, CORS, semilla ampliada, e2e, constantes, actualizacion de usuario, CRUD del catalogo, JWT con roles y guards, Swagger, PATCH, Postman, frontend React, catalogo ampliado y landing.
-
----
 
 ## 1. Introduccion - JENIFER (1 min)
 
@@ -56,9 +6,8 @@ Pantalla: README en GitHub.
 
 "Hola, somos Jenifer Urbano, Juan Camilo Lopez y Nicolas Diaz, y les presentamos API SAN, Sistema Academico de Navegacion. Es una API REST hecha con NestJS que ayuda a un estudiante a encontrar donde estudiar una carrera. El usuario dice que carrera quiere, en que ciudad, cuanto puede pagar, la modalidad y la jornada, y la API le devuelve las universidades que la ofrecen, ordenadas por afinidad con un puntaje. Tambien permite comparar ofertas, guardar favoritos y preferencias, y un administrador gestiona el catalogo.
 
-Usamos NestJS con TypeScript, PostgreSQL, TypeORM, JWT y Docker. La base tiene 42 carreras, 19 universidades y 188 ofertas de prueba.
+Usamos NestJS como requisito, implementando PostgreSQL, TypeORM, Docker y demás. La base tiene 42 carreras, 19 universidades y 188 ofertas de prueba.
 
-El video lo dividimos asi: Juan Camilo explica la arquitectura y como se ejecuta; yo explico la persistencia con TypeORM; Juan Camilo las validaciones y el manejo de errores; Nicolas la autenticacion y el CRUD; yo hago la demo de busqueda y comparacion; y Nicolas cierra con Git, pruebas y el uso de IA."
 
 ---
 

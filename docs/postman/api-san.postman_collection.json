@@ -129,6 +129,44 @@
           ]
         },
         {
+          "name": "Correo disponible",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/correo-disponible",
+            "description": "Indica si un correo aun no esta registrado. El correo del estudiante del seed responde disponible false.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"nicolas@correo.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"El correo del seed no esta disponible\", () => pm.expect(pm.response.json().data.disponible).to.eql(false));"
+                ]
+              }
+            }
+          ]
+        },
+        {
           "name": "Login estudiante",
           "request": {
             "method": "POST",

@@ -1,4 +1,5 @@
 import type { Criterio, Jornada, Modalidad } from './modelos';
+import { buscarCiudad } from './municipios';
 
 const COP = new Intl.NumberFormat('es-CO', {
   style: 'currency',
@@ -29,15 +30,11 @@ export const CRITERIO_ETIQUETA: Record<Criterio, string> = {
   acreditacion: 'Acreditación',
 };
 
-/** La API guarda las ciudades sin tilde; aquí solo se presentan con su ortografía. */
-const CIUDADES: Record<string, string> = {
-  Bogota: 'Bogotá',
-  Medellin: 'Medellín',
-};
 
 export const etiquetaModalidad = (m: string): string => MODALIDAD[m as Modalidad] ?? m;
 export const etiquetaJornada = (j: string): string => JORNADA[j as Jornada] ?? j;
-export const ciudadLegible = (c: string): string => CIUDADES[c] ?? c;
+/** La API guarda las ciudades sin tilde; aquí se presentan con la ortografía del municipio. */
+export const ciudadLegible = (c: string): string => buscarCiudad(c)?.nombre ?? c;
 
 /** Las semillas guardan algunos nombres sin tilde; solo se presentan con su ortografía. */
 const NOMBRES: Record<string, string> = {

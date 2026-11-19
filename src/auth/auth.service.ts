@@ -52,6 +52,17 @@ export class AuthService {
     };
   }
 
+  async correoDisponible(correo: string) {
+    const existe =
+      (await this.usuarioRepository.findOneBy({ correo })) !== null;
+    return {
+      message: existe
+        ? 'El correo ya esta registrado'
+        : 'El correo esta disponible',
+      data: { disponible: !existe },
+    };
+  }
+
   async login(datos: LoginDto) {
     const usuario = await this.usuarioRepository.findOneBy({
       correo: datos.correo,

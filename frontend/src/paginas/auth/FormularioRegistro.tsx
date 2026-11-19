@@ -1,10 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { ArrowLeft, Mail } from 'lucide-react';
-import { AvisoError, Button, Input, Select } from '@/componentes';
-import { ApiError, mensajeError } from '@/lib/api';
-import { ciudadLegible } from '@/lib/formato';
+import { AvisoError, Button, Input, SelectorCiudad } from '@/componentes';
+import { ApiError, auth, mensajeError } from '@/lib/api';
 import { useSesion } from '@/lib/sesion';
-import { useCatalogoConteos } from '@/lib/useCatalogoConteos';
 import type { UsuarioSesion } from '@/lib/modelos';
 
 interface Props {
@@ -19,10 +17,11 @@ export const SUBTITULO_PASO = {
   2: 'Con estos datos ordenamos los resultados cerca de ti.',
 } as const;
 
+const CORREO_REPETIDO = 'Ya existe una cuenta con este correo. Ingresa o usa otro correo.';
+
 /** Registro en dos pasos: correo y clave, luego nombre, apellido y ciudad (la API exige `perfil`). */
 export function FormularioRegistro({ paso, onPaso, onListo }: Props) {
   const { registro } = useSesion();
-  const { datos } = useCatalogoConteos();
   const [correo, setCorreo] = useState('');
   const [clave, setClave] = useState('');
   const [nombre, setNombre] = useState('');
@@ -31,10 +30,25 @@ export function FormularioRegistro({ paso, onPaso, onListo }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [errorCorreo, setErrorCorreo] = useState<string | null>(null);
   const [enviando, setEnviando] = useState(false);
+  const [revisando, setRevisando] = useState(false);
 
-  const siguiente = (e: FormEvent<HTMLFormElement>) => {
+  // El correo se revisa antes de pedir nombre y ciudad, así el aviso de cuenta repetida sale en este paso.
+  const siguiente = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (revisando) return;
     setErrorCorreo(null);
+    setRevisando(true);
+    try {
+      const { disponible } = await auth.correoDisponible(correo.trim());
+      if (!disponible) {
+        setErrorCorreo(CORREO_REPETIDO);
+        return;
+      }
+    } catch {
+      // Sin respuesta de la API se sigue: al crear la cuenta el 409 vuelve a este paso.
+    } finally {
+      setRevisando(false);
+    }
     onPaso(2);
   };
 
@@ -46,7 +60,7 @@ export function FormularioRegistro({ paso, onPaso, onListo }: Props) {
       onListo(await registro({ nombre: nombre.trim(), correo: correo.trim(), clave, perfil: { apellido: apellido.trim(), ciudad: ciudad.trim() } }));
     } catch (err) {
       if (err instanceof ApiError && err.status === 409) {
-        setErrorCorreo('Ya existe una cuenta con este correo. Ingresa o usa otro correo.');
+        setErrorCorreo(CORREO_REPETIDO);
         onPaso(1);
       } else setError(mensajeError(err, 'No pudimos crear tu cuenta. Intenta de nuevo.'));
     } finally {
@@ -84,7 +98,7 @@ export function FormularioRegistro({ paso, onPaso, onListo }: Props) {
           value={clave}
           onChange={(e) => setClave(e.target.value)}
         />
-        <Button type="submit" tamano="lg" icono={<Mail className="size-4" aria-hidden />}>
+        <Button type="submit" tamano="lg" cargando={revisando} icono={<Mail className="size-4" aria-hidden />}>
           Continuar con correo
         </Button>
       </form>
@@ -97,20 +111,7 @@ export function FormularioRegistro({ paso, onPaso, onListo }: Props) {
         <Input etiqueta="Nombre" name="nombre" autoComplete="given-name" required maxLength={100} value={nombre} onChange={(e) => setNombre(e.target.value)} autoFocus />
         <Input etiqueta="Apellido" name="apellido" autoComplete="family-name" required maxLength={100} value={apellido} onChange={(e) => setApellido(e.target.value)} />
       </div>
-      {datos && datos.ciudades.length > 0 ? (
-        <Select etiqueta="Ciudad" name="ciudad" required value={ciudad} onChange={(e) => setCiudad(e.target.value)}>
-          <option value="" disabled>
-            Elige tu ciudad
-          </option>
-          {datos.ciudades.map((c) => (
-            <option key={c} value={c}>
-              {ciudadLegible(c)}
-            </option>
-          ))}
-        </Select>
-      ) : (
-        <Input etiqueta="Ciudad" name="ciudad" autoComplete="address-level2" required maxLength={100} value={ciudad} onChange={(e) => setCiudad(e.target.value)} />
-      )}
+      <SelectorCiudad name="ciudad" required valor={ciudad} onCambio={setCiudad} />
       {error && (
         <AvisoError>{error}</AvisoError>
       )}

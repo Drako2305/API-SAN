@@ -1,6 +1,11 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { LoginDto, RefreshDto, RegistroDto } from './auth.dto';
+import {
+  CorreoDisponibleDto,
+  LoginDto,
+  RefreshDto,
+  RegistroDto,
+} from './auth.dto';
 import { AuthService } from './auth.service';
 
 @ApiTags('auth')
@@ -11,6 +16,12 @@ export class AuthController {
   @Post('registro')
   registrar(@Body() datos: RegistroDto) {
     return this.authService.registrar(datos);
+  }
+
+  @Post('correo-disponible')
+  @HttpCode(HttpStatus.OK)
+  correoDisponible(@Body() datos: CorreoDisponibleDto) {
+    return this.authService.correoDisponible(datos.correo);
   }
 
   @Post('login')

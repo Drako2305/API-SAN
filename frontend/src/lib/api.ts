@@ -147,6 +147,9 @@ async function envuelta<T>(ruta: string, o: Opciones = {}): Promise<T> {
 // ---------------------------------------------------------------- auth
 
 export const auth = {
+  /** Si el correo aún no tiene cuenta. Se consulta en el primer paso del registro. */
+  correoDisponible: (correo: string) =>
+    envuelta<{ disponible: boolean }>('/auth/correo-disponible', { metodo: 'POST', cuerpo: { correo }, sinAuth: true }),
   login: (correo: string, clave: string) =>
     envuelta<AuthData>('/auth/login', { metodo: 'POST', cuerpo: { correo, clave }, sinAuth: true }),
   registro: (body: RegistroRequest) =>

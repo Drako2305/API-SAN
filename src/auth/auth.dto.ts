@@ -42,6 +42,13 @@ export class LoginDto {
   clave: string;
 }
 
+export class CorreoDisponibleDto {
+  @IsEmail()
+  @IsNotEmpty()
+  @MaxLength(150)
+  correo: string;
+}
+
 export class RefreshDto {
   @IsString()
   @IsNotEmpty()

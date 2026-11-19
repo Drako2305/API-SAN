@@ -60,7 +60,7 @@ La documentacion interactiva (Swagger UI) esta en http://localhost:3000/docs y e
 | Catalogo | PUT | `/universidades/{id}` | Actualiza una universidad |
 | Catalogo | PATCH | `/universidades/{id}` | Actualiza parcialmente una universidad |
 | Catalogo | DELETE | `/universidades/{id}` | Elimina una universidad y sus ofertas |
-| Catalogo | GET | `/ofertas` | Lista ofertas (filtros `?carreraId=`, `?universidadId=`, `?ciudad=`) |
+| Catalogo | GET | `/ofertas` | Lista ofertas (filtros `?carreraId=`, `?universidadId=`, `?ciudad=`, `?modalidad=`) |
 | Catalogo | GET | `/ofertas/{id}` | Consulta una oferta academica |
 | Catalogo | POST | `/ofertas` | Crea una oferta academica |
 | Catalogo | PUT | `/ofertas/{id}` | Actualiza una oferta academica |
@@ -1015,12 +1015,13 @@ Lista las ofertas ordenadas por SNIES. Devuelve un arreglo de objetos con la mis
 | `carreraId` | UUID | Solo ofertas de esa carrera |
 | `universidadId` | UUID | Solo ofertas de esa universidad |
 | `ciudad` | string | Coincidencia exacta sin distinguir mayusculas |
+| `modalidad` | string | Opcional. Uno de `presencial`, `virtual`, `hibrida` |
 
 **Errores**
 
 | Codigo | Motivo |
 |---|---|
-| 400 | UUID invalido, `?ciudad=` vacio o parametro no declarado |
+| 400 | UUID invalido, `?ciudad=` vacio, `modalidad` fuera de los valores permitidos o parametro no declarado |
 
 **Ejemplo**
 

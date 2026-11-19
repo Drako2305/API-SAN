@@ -1,7 +1,16 @@
+import 'reflect-metadata';
 import { jest } from '@jest/globals';
+import { plainToInstance } from 'class-transformer';
+import { validate } from 'class-validator';
 import { IDS_SEMILLA } from '../common/semilla';
+import { FiltroOfertaDto } from './catalogo.dto';
 import { CatalogoController } from './catalogo.controller';
 import { CatalogoService } from './catalogo.service';
+
+const propiedadesInvalidasFiltroOferta = async (datos: object) =>
+  (await validate(plainToInstance(FiltroOfertaDto, datos))).map(
+    (error) => error.property,
+  );
 
 describe('CatalogoController (PATCH)', () => {
   let controller: CatalogoController;
@@ -55,5 +64,19 @@ describe('CatalogoController (PATCH)', () => {
       IDS_SEMILLA.ofertas.nacionalSistemas,
       cambios,
     );
+  });
+});
+
+describe('FiltroOfertaDto', () => {
+  it('acepta una modalidad permitida', async () => {
+    expect(
+      await propiedadesInvalidasFiltroOferta({ modalidad: 'presencial' }),
+    ).toEqual([]);
+  });
+
+  it('rechaza una modalidad fuera de la lista', async () => {
+    expect(
+      await propiedadesInvalidasFiltroOferta({ modalidad: 'online' }),
+    ).toEqual(['modalidad']);
   });
 });

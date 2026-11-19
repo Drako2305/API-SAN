@@ -108,6 +108,10 @@ export class FiltroOfertaDto {
   @IsString()
   @IsNotEmpty()
   ciudad?: string;
+
+  @IsOptional()
+  @IsIn(MODALIDADES)
+  modalidad?: string;
 }
 
 export class FiltroCarreraDto {

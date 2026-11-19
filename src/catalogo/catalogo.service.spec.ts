@@ -259,6 +259,18 @@ describe('CatalogoService', () => {
     });
   });
 
+  it('filtra ofertas por modalidad', async () => {
+    ofertaRepository.find.mockResolvedValue([]);
+
+    await service.listarOfertas({ modalidad: 'virtual' });
+
+    expect(ofertaRepository.find).toHaveBeenCalledWith({
+      where: { modalidad: 'virtual' },
+      relations: { universidad: true, carrera: true },
+      order: { snies: 'ASC' },
+    });
+  });
+
   describe('carreras', () => {
     it('crea una carrera', async () => {
       carreraRepository.findOneBy.mockResolvedValue(null);

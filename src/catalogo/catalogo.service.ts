@@ -150,6 +150,9 @@ export class CatalogoService {
     if (filtros.ciudad !== undefined) {
       where.ciudad = ILike(this.escaparLike(filtros.ciudad));
     }
+    if (filtros.modalidad !== undefined) {
+      where.modalidad = filtros.modalidad;
+    }
     const ofertas = await this.ofertaRepository.find({
       where,
       relations: { universidad: true, carrera: true },

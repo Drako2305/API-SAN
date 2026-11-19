@@ -137,8 +137,8 @@ export default function Carreras() {
         </div>
       )}
 
-      <p className="sr-only" role="status">
-        {lista && !carreras.cargando ? `${lista.length} carreras` : ''}
+      <p role="status" className="numeros mb-4 min-h-5 text-sm text-texto-3">
+        {lista && !carreras.cargando ? `${lista.length} ${lista.length === 1 ? 'carrera' : 'carreras'}` : ''}
       </p>
 
       {carreras.error ? (

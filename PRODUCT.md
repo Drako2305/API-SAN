@@ -41,24 +41,24 @@ El orden de los resultados no es una caja negra: cada oferta trae su puntaje y e
 
 ## Brand Commitments
 
-- Nombre: **SAN – Sistema Academico de Navegacion**.
+- Nombre: **SAN – Sistema Académico de Navegación**.
 - Copy en español, directo y cercano (tuteo).
-- Marca: **API SAN**, rojo carmesi `#a11b22` con esquirlas angulares `#b0272f` y logotipo "APi-SAN" en blanco con letra manual y robusta (Londrina Solid, solo para el logotipo y acentos de marca; nunca en cuerpo ni titulares de interfaz).
-- Direccion visual: interfaz operativa clara, calmada y precisa, con modo oscuro completo. Superficies blancas y neutros calidos (matiz 20) con croma minimo hacia el rojo; un unico acento **rojo de marca** (claro `oklch(0.46 0.168 25)` = #a11b22; oscuro `oklch(0.7 0.16 24)`) para accion, foco, seleccion, enlaces y barras de puntaje. Verde y ambar solo como estados; el **error es frambuesa** (matiz 350) y siempre lleva icono y texto, para que el rojo de marca no se lea como error. Panel de marca carmesi con esquirlas (CSS) en auth y cierre de la portada. Tipografia: Bricolage Grotesque (titulos y cifras) + Instrument Sans (texto). Estructura: barra superior con busqueda, saludo con tarjetas de accion, listas densas, auth dividido. Tarjetas uniformes (mismo ancho en tiras, misma altura por fila, titulos a 2 lineas, pie anclado) y espaciado en escala 4/8: ver `frontend/DISENO-GRILLA.md`. Tokens en `frontend/src/index.css`; detalle en `.impeccable/surfaces/`.
+- Marca: **API SAN**, rojo carmesí `#a11b22` con esquirlas angulares `#b0272f` y logotipo "APi-SAN" en blanco con letra manual y robusta (Londrina Solid, solo para el logotipo y acentos de marca; nunca en cuerpo ni titulares de interfaz).
+- Dirección visual: interfaz operativa clara, calmada y precisa, con modo oscuro completo. Superficies blancas y neutros cálidos (matiz 20) con croma mínimo hacia el rojo; un único acento **rojo de marca** (claro `oklch(0.46 0.168 25)` = #a11b22; oscuro `oklch(0.7 0.16 24)`) para acción, foco, selección, enlaces y barras de puntaje. Verde y ámbar solo como estados; el **error es frambuesa** (matiz 350) y siempre lleva icono y texto, para que el rojo de marca no se lea como error. Panel de marca carmesí con esquirlas (CSS) en auth y cierre de la portada. Tipografía: Bricolage Grotesque (títulos y cifras) + Instrument Sans (texto). Estructura: barra superior con búsqueda, saludo con tarjetas de acción, listas densas, auth dividido. Tarjetas uniformes (mismo ancho en tiras, misma altura por fila, títulos a 2 líneas, pie anclado) y espaciado en escala 4/8: ver `frontend/DISENO-GRILLA.md`. Tokens en `frontend/src/index.css`; detalle en `.impeccable/surfaces/`.
 
 ## Evidence on Hand
 
-- Datos del catalogo: semilla de `src/common/semilla.ts` (5 carreras, 7 universidades en Bogota, Medellin, Cali y Barranquilla, 10 ofertas). Son **demostrativos**: no inventar precios, acreditaciones, rankings, testimonios ni cifras nuevas; toda cifra visible sale de la API.
-- Fotos de campus con licencia libre de Wikimedia Commons en `frontend/public/campus/` con creditos en `CREDITOS.md` y `creditos.json` (cuando esten disponibles). No se usan imagenes de las referencias visuales (tienen copyright).
-- No hay testimonios, clientes, prensa ni metricas de uso.
+- Datos del catálogo: semilla de `src/common/semilla.ts` (5 carreras, 7 universidades en Bogota, Medellin, Cali y Barranquilla, 10 ofertas). Son **demostrativos**: no inventar precios, acreditaciones, rankings, testimonios ni cifras nuevas; toda cifra visible sale de la API.
+- Fotos de campus con licencia libre de Wikimedia Commons en `frontend/public/campus/` con créditos en `CREDITOS.md` y `creditos.json` (cuando estén disponibles). No se usan imágenes de las referencias visuales (tienen copyright).
+- No hay testimonios, clientes, prensa ni métricas de uso.
 
 ## Product Principles
 
 1. Explicar antes que ordenar: todo puntaje se acompaña de su desglose.
 2. La persona decide los pesos; el sistema no impone un "mejor" universal.
-3. Pocas opciones bien comparadas valen mas que una lista larga.
+3. Pocas opciones bien comparadas valen más que una lista larga.
 4. Nada se inventa: si un dato no viene de la API, no se muestra como hecho.
 
 ## Accessibility & Inclusion
 
-WCAG 2.1 AA: contraste suficiente, foco visible, navegacion completa por teclado (dialogos nativos, pestañas, carrusel), responsive desde 360px y respeto de `prefers-reduced-motion`.
+WCAG 2.1 AA: contraste suficiente, foco visible, navegación completa por teclado (diálogos nativos, pestañas, carrusel), responsive desde 360px y respeto de `prefers-reduced-motion`.

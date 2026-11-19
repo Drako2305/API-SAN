@@ -169,6 +169,25 @@ describe('AuthService', () => {
     ).rejects.toThrow(ConflictException);
   });
 
+  it('informa que un correo registrado no esta disponible', async () => {
+    usuarioRepository.findOneBy.mockResolvedValue(usuario);
+
+    const respuesta = await service.correoDisponible('nicolas@correo.com');
+
+    expect(respuesta.data).toEqual({ disponible: false });
+    expect(usuarioRepository.findOneBy).toHaveBeenCalledWith({
+      correo: 'nicolas@correo.com',
+    });
+  });
+
+  it('informa que un correo nuevo esta disponible', async () => {
+    usuarioRepository.findOneBy.mockResolvedValue(null);
+
+    const respuesta = await service.correoDisponible('nuevo@correo.com');
+
+    expect(respuesta.data).toEqual({ disponible: true });
+  });
+
   it('rechaza un refresh token invalido', async () => {
     jwtService.verifyAsync.mockRejectedValue(new Error('jwt malformed'));
 

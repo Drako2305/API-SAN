@@ -120,6 +120,24 @@ describe('API SAN (e2e)', () => {
       .expect(409);
   });
 
+  it('POST /auth/correo-disponible distingue correos registrados y libres', async () => {
+    await request(app.getHttpServer())
+      .post('/auth/correo-disponible')
+      .send({ correo: 'nicolas@correo.com' })
+      .expect(200)
+      .expect((respuesta) => {
+        expect(respuesta.body.data).toEqual({ disponible: false });
+      });
+
+    return request(app.getHttpServer())
+      .post('/auth/correo-disponible')
+      .send({ correo: `libre-${randomUUID()}@correo.com` })
+      .expect(200)
+      .expect((respuesta) => {
+        expect(respuesta.body.data).toEqual({ disponible: true });
+      });
+  });
+
   it('POST /busquedas devuelve resultados ordenados por puntaje', () => {
     return request(app.getHttpServer())
       .post('/busquedas')

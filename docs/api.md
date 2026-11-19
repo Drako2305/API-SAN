@@ -30,6 +30,7 @@ La documentacion interactiva (Swagger UI) esta en http://localhost:3000/docs y e
 | Grupo | Metodo | Ruta | Descripcion |
 |---|---|---|---|
 | Auth | POST | `/auth/registro` | Registra un usuario y devuelve tokens |
+| Auth | POST | `/auth/correo-disponible` | Indica si un correo aun no esta registrado |
 | Auth | POST | `/auth/login` | Inicia sesion y devuelve tokens |
 | Auth | POST | `/auth/refresh` | Renueva los tokens con un refresh token |
 | Usuarios | GET | `/usuarios/{id}` | Consulta el usuario con su perfil |
@@ -179,6 +180,41 @@ Nota: la clave se guarda con hash bcrypt (10 rondas). El usuario siempre se crea
 curl -X POST http://localhost:3000/auth/registro \
   -H "Content-Type: application/json" \
   -d '{"nombre":"Ana","correo":"ana@correo.com","clave":"clave12345","perfil":{"apellido":"Lopez","ciudad":"Bogota"}}'
+```
+
+### POST /auth/correo-disponible
+
+Indica si un correo se puede usar para registrarse. El frontend lo consulta en el primer paso del registro, antes de pedir nombre, apellido y ciudad, para avisar de inmediato si la cuenta ya existe. Es publico, igual que `/auth/registro`, que ya responde 409 con un correo repetido.
+
+**Body** (`CorreoDisponibleDto`)
+
+| Campo | Tipo | Reglas |
+|---|---|---|
+| `correo` | string | Requerido, formato de correo valido, maximo 150 caracteres |
+
+**Respuesta 200**
+
+```json
+{
+  "message": "El correo esta disponible",
+  "data": { "disponible": true }
+}
+```
+
+Con un correo ya registrado responde 200 con `"message": "El correo ya esta registrado"` y `"disponible": false`.
+
+**Errores**
+
+| Codigo | Motivo |
+|---|---|
+| 400 | Correo faltante o con formato invalido |
+
+**Ejemplo**
+
+```bash
+curl -X POST http://localhost:3000/auth/correo-disponible \
+  -H "Content-Type: application/json" \
+  -d '{"correo":"ana@correo.com"}'
 ```
 
 ### POST /auth/login

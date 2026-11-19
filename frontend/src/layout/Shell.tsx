@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Outlet } from 'react-router';
-import { Skeleton, VolverArriba } from '@/componentes';
+import { AvisoSinConexion, Skeleton, VolverArriba } from '@/componentes';
 
 function CargandoPagina() {
   return (
@@ -22,6 +22,7 @@ export function Shell() {
         </Suspense>
       </main>
       <VolverArriba />
+      <AvisoSinConexion />
     </>
   );
 }

@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Outlet } from 'react-router';
-import { Skeleton } from '@/componentes';
+import { Skeleton, VolverArriba } from '@/componentes';
 
 function CargandoPagina() {
   return (
@@ -15,10 +15,13 @@ function CargandoPagina() {
 /** Contenido de la aplicación bajo la cabecera común (`Marco`): mismo ancho y márgenes que la portada. */
 export function Shell() {
   return (
-    <main id="contenido" tabIndex={-1} className="pagina-ancho pt-6 pb-16 outline-none md:pt-10">
-      <Suspense fallback={<CargandoPagina />}>
-        <Outlet />
-      </Suspense>
-    </main>
+    <>
+      <main id="contenido" tabIndex={-1} className="pagina-ancho pt-6 pb-16 outline-none md:pt-10">
+        <Suspense fallback={<CargandoPagina />}>
+          <Outlet />
+        </Suspense>
+      </main>
+      <VolverArriba />
+    </>
   );
 }

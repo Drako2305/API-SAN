@@ -17,3 +17,4 @@ export { PuntajeBarra } from './PuntajeBarra';
 export { Logo } from './Logo';
 export { EncabezadoPagina } from './EncabezadoPagina';
 export { AvisoError } from './AvisoError';
+export { VolverArriba } from './VolverArriba';

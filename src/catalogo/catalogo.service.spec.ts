@@ -163,6 +163,28 @@ describe('CatalogoService', () => {
     expect(ciudades).toEqual(['Bogota', 'Medellin']);
   });
 
+  it('lista las ofertas de una carrera existente', async () => {
+    carreraRepository.findOneBy.mockResolvedValue({ id: 'c1' });
+    ofertaRepository.find.mockResolvedValue([]);
+
+    await service.listarOfertasDeCarrera('c1');
+
+    expect(ofertaRepository.find).toHaveBeenCalledWith({
+      where: { carrera: { id: 'c1' } },
+      relations: { universidad: true, carrera: true },
+      order: { snies: 'ASC' },
+    });
+  });
+
+  it('lanza 404 si la carrera no existe al listar sus ofertas', async () => {
+    carreraRepository.findOneBy.mockResolvedValue(null);
+
+    await expect(service.listarOfertasDeCarrera('x')).rejects.toThrow(
+      NotFoundException,
+    );
+    expect(ofertaRepository.find).not.toHaveBeenCalled();
+  });
+
   it('lista las areas distintas, ordenadas y sin nulos', async () => {
     carreraRepository.find.mockResolvedValue([
       { area: 'Ciencias' },

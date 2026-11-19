@@ -49,6 +49,12 @@ export class CatalogoController {
     return this.catalogoService.obtenerCarrera(id);
   }
 
+  @Get('carreras/:id/ofertas')
+  @ApiOperation({ summary: 'Lista las ofertas de una carrera' })
+  listarOfertasDeCarrera(@Param('id', ParseUUIDPipe) id: string) {
+    return this.catalogoService.listarOfertasDeCarrera(id);
+  }
+
   @Post('carreras')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)

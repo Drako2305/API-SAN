@@ -51,6 +51,7 @@ La documentacion interactiva (Swagger UI) esta en http://localhost:3000/docs y e
 | Catalogo | GET | `/carreras` | Lista carreras (filtro `?nombre=`) |
 | Catalogo | GET | `/carreras/areas` | Lista las areas distintas de las carreras, ordenadas y sin nulos |
 | Catalogo | GET | `/carreras/{id}` | Consulta una carrera |
+| Catalogo | GET | `/carreras/{id}/ofertas` | Lista las ofertas de una carrera (404 si la carrera no existe) |
 | Catalogo | POST | `/carreras` | Crea una carrera |
 | Catalogo | PUT | `/carreras/{id}` | Actualiza una carrera |
 | Catalogo | PATCH | `/carreras/{id}` | Actualiza parcialmente una carrera |

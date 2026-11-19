@@ -209,6 +209,13 @@ export class CatalogoService {
     return ofertas.map((oferta) => this.aDto(oferta));
   }
 
+  async listarOfertasDeCarrera(
+    carreraId: string,
+  ): Promise<OfertaAcademicaDto[]> {
+    await this.obtenerCarrera(carreraId);
+    return this.listarOfertas({ carreraId });
+  }
+
   async obtenerOferta(id: string): Promise<OfertaAcademicaDto> {
     const oferta = await this.buscarOferta(id);
 

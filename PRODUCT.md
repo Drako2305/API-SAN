@@ -28,16 +28,16 @@ El orden de los resultados no es una caja negra: cada oferta trae su puntaje y e
 
 ## Operating Context
 
-- Busqueda → resultados ordenados → ficha de la oferta → comparar → guardar en favoritos.
-- Sesion opcional: las vistas de catalogo, busqueda y comparacion son publicas; perfil, preferencias y favoritos requieren cuenta (JWT). Un rol `admin` gestiona el catalogo (carreras, universidades, ofertas).
-- Uso tipico en celular y en computador de casa o de colegio.
+- Búsqueda → resultados ordenados → ficha de la oferta → comparar → guardar en favoritos.
+- Sesión opcional: las vistas de catálogo, búsqueda y comparación son públicas; perfil, preferencias y favoritos requieren cuenta (JWT). Un rol `admin` gestiona el catálogo (carreras, universidades, ofertas).
+- Uso típico en celular y en computador de casa o de colegio.
 
 ## Capabilities and Constraints
 
-- Catalogo: carreras, universidades (con ciudad e imagen opcional) y ofertas academicas (SNIES, costo por periodo, modalidad `presencial|virtual|hibrida`, jornada `diurna|nocturna|mixta`, duracion en periodos, acreditacion).
-- Puntaje de busqueda 0-100 con desglose 0-1 por criterio; comparacion con `costoTotal = costo x duracion` y `mejorOfertaId`.
+- Catálogo: carreras, universidades (con ciudad e imagen opcional) y ofertas académicas (SNIES, costo por periodo, modalidad `presencial|virtual|hibrida`, jornada `diurna|nocturna|mixta`, duración en periodos, acreditación).
+- Puntaje de búsqueda 0-100 con desglose 0-1 por criterio; comparación con `costoTotal = costo x duracion` y `mejorOfertaId`.
 - Los nombres de ciudades del catalogo van sin tilde (`Bogota`, `Medellin`) porque asi los guarda la API.
-- No hay integracion real con SNIES/MEN.
+- No hay integración real con SNIES/MEN.
 
 ## Brand Commitments
 

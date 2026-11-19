@@ -10,6 +10,7 @@ import { fotoCarrera } from '@/lib/fotos';
 import { nombreLegible } from '@/lib/formato';
 import type { Carrera, OfertaAcademica } from '@/lib/modelos';
 import { useCarga } from '@/lib/useCarga';
+import { useTituloPagina } from '@/lib/useTituloPagina';
 
 const CHIP = 'inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full border px-4 text-sm font-medium transition-colors';
 
@@ -64,6 +65,7 @@ function TarjetaCarrera({ carrera, ofertas }: { carrera: Carrera; ofertas: Ofert
 }
 
 export default function Carreras() {
+  useTituloPagina('Carreras');
   const [params, setParams] = useSearchParams();
   const nombre = params.get('nombre') ?? '';
   const area = params.get('area') ?? '';
@@ -108,7 +110,6 @@ export default function Carreras() {
 
   return (
     <>
-      <title>Carreras · SAN</title>
       <EncabezadoPagina titulo="Carreras" descripcion="Elige una carrera para ver en qué universidades se ofrece, cuánto cuesta y en qué modalidad." />
 
       <search className="mb-4 block max-w-md">

@@ -15,16 +15,16 @@ React 19 + TypeScript estricto + Vite + Tailwind CSS v4 + react-router 7 + motio
 Cualquier persona que quiera buscar y comparar carreras universitarias en Colombia. El producto atiende tres apartados:
 
 - **Bachilleres** que eligen su primera carrera y necesitan ver opciones por ciudad, costo y modalidad.
-- **Adultos que vuelven a estudiar**, para quienes la jornada (nocturna, mixta) y la modalidad (virtual, hibrida) pesan tanto como la carrera.
-- **Padres y orientadores** que acompañan la decision y comparan costos totales y acreditacion.
+- **Adultos que vuelven a estudiar**, para quienes la jornada (nocturna, mixta) y la modalidad (virtual, híbrida) pesan tanto como la carrera.
+- **Padres y orientadores** que acompañan la decisión y comparan costos totales y acreditación.
 
 ## Product Purpose
 
-SAN (Sistema Academico de Navegacion) permite buscar ofertas academicas por carrera, ciudad, costo maximo, modalidad y jornada, y ordenarlas por afinidad segun pesos personales (costo, modalidad, ubicacion, acreditacion), mostrando un puntaje y su desglose por criterio. Tambien permite comparar de 2 a 4 ofertas lado a lado (costo total, duracion, acreditacion, mejor oferta) y guardar favoritos en un perfil. El exito es que la persona termine con una lista corta y justificada de opciones.
+SAN (Sistema Académico de Navegación) permite buscar ofertas académicas por carrera, ciudad, costo máximo, modalidad y jornada, y ordenarlas por afinidad según pesos personales (costo, modalidad, ubicación, acreditación), mostrando un puntaje y su desglose por criterio. También permite comparar de 2 a 4 ofertas lado a lado (costo total, duracion, acreditacion, mejor oferta) y guardar favoritos en un perfil. El exito es que la persona termine con una lista corta y justificada de opciones.
 
 ## Positioning
 
-El orden de los resultados no es una caja negra: cada oferta trae su puntaje y el desglose de por que obtuvo ese puntaje, calculado con los pesos que la propia persona eligio.
+El orden de los resultados no es una caja negra: cada oferta trae su puntaje y el desglose de por qué obtuvo ese puntaje, calculado con los pesos que la propia persona eligió.
 
 ## Operating Context
 

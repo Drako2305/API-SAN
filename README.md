@@ -75,7 +75,7 @@ Documentacion interactiva (Swagger UI): http://localhost:3000/docs. El esquema e
 
 ## Probar con Postman
 
-La coleccion esta en [docs/postman/api-san.postman_collection.json](docs/postman/api-san.postman_collection.json) (Postman Collection v2.1). Cubre todos los endpoints de [docs/api.md](docs/api.md), con carpetas Auth, Catalogo, Busquedas, Comparaciones, Usuarios y Errores.
+La coleccion esta en [docs/postman/api-san.postman_collection.json](docs/postman/api-san.postman_collection.json) (Postman Collection v2.1). Cubre todos los endpoints de [docs/api.md](docs/api.md), con carpetas Auth, Catalogo, Busquedas, Comparaciones, Usuarios y Errores. La carpeta Errores prueba los codigos 400, 401, 403, 404 y 409.
 
 1. Levantar la API y cargar el seed (`npm run seed`).
 2. En Postman, usar **Import** y elegir `docs/postman/api-san.postman_collection.json`.
@@ -86,8 +86,9 @@ Variables de la coleccion:
 
 | Variable | Uso |
 |---|---|
-| `baseUrl` | URL de la API (`http://localhost:3000`). Cambiarla si `PORT` es otro valor |
+| `baseUrl` | URL de la API (`http://localhost:3000`). Cambiarla si `PORT` es otro valor (por ejemplo `http://localhost:3100`) |
 | `accessToken`, `refreshToken` | Los llenan los requests de login y refresh. No hace falta editarlas |
+| `estudianteToken` | Lo llena **Auth / Login estudiante**. Lo usa el request de 403, porque `accessToken` queda con el token de admin |
 | `usuarioId`, `adminUsuarioId` | IDs del estudiante y del admin del seed |
 | `carreraId`, `universidadId`, `ofertaId` | IDs del seed. Los GET de listado vuelven a leerlos del primer resultado que encuentran |
 | `ofertaSecundariaId` | Oferta del seed (EAFIT) usada en comparaciones y favoritos |
@@ -99,10 +100,23 @@ Los nombres de prueba llevan `{{$timestamp}}`, asi que la coleccion se puede rep
 Para correrla completa desde la consola (con la API arriba):
 
 ```bash
-npx newman run docs/postman/api-san.postman_collection.json
+npx newman run docs/postman/api-san.postman_collection.json \
+  --env-var baseUrl=http://localhost:3000
 ```
 
-Newman ejecuta las carpetas en el mismo orden, asi que el login admin queda antes de las escrituras.
+Si la API corre en otro puerto, cambiar el valor de `--env-var` (por ejemplo `http://localhost:3100`). Newman ejecuta las carpetas en el mismo orden, asi que el login admin queda antes de las escrituras.
+
+## Sustentacion
+
+El guion, el reparto por integrante y las preguntas probables estan en [docs/guion-sustentacion.md](docs/guion-sustentacion.md). El video se enlaza aqui cuando este publicado.
+
+## Referencias
+
+- Proyecto de referencia del curso: [IvonneBarco/book-nestjs-5a](https://github.com/IvonneBarco/book-nestjs-5a). Se tomaron el estilo de configuracion (`ConfigModule`, `TypeOrmModule.forRootAsync`), la estructura por recursos y los DTOs con `class-validator`. La autenticacion JWT, los guards, Swagger, las pruebas y el CI son propios del equipo.
+
+## Uso de IA
+
+La IA se uso como apoyo para revisar errores, proponer pruebas y mejorar la documentacion. Cada cambio lo reviso, lo probo y lo integro un integrante mediante un PR; las decisiones tecnicas y la explicacion del codigo son del equipo.
 
 ## pgAdmin
 
@@ -224,7 +238,7 @@ api-san/
 │   ├── busquedas/              # busqueda y scoring.service.ts
 │   ├── catalogo/               # carreras, universidades y ofertas
 │   └── comparacion/            # comparaciones entre ofertas
-├── test/                       # e2e (app.e2e-spec.ts, jest-e2e.json)
+├── test/                       # e2e (app, busquedas, catalogo y usuarios) + configuracion
 ├── docker/pgadmin/servers.json # servidor precargado en pgAdmin
 ├── docs/api.md                 # referencia de endpoints
 ├── docs/postman/              # coleccion de Postman

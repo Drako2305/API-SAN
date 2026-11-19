@@ -48,7 +48,7 @@ La documentacion interactiva (Swagger UI) esta en http://localhost:3000/docs y e
 | Comparaciones | POST | `/comparaciones` | Compara de 2 a 4 ofertas |
 | Comparaciones | GET | `/comparaciones/{id}` | Consulta una comparacion |
 | Comparaciones | DELETE | `/comparaciones/{id}` | Elimina una comparacion |
-| Catalogo | GET | `/carreras` | Lista carreras (filtro `?nombre=`) |
+| Catalogo | GET | `/carreras` | Lista carreras (filtros `?nombre=` y `?area=`) |
 | Catalogo | GET | `/carreras/areas` | Lista las areas distintas de las carreras, ordenadas y sin nulos |
 | Catalogo | GET | `/carreras/{id}` | Consulta una carrera |
 | Catalogo | GET | `/carreras/{id}/ofertas` | Lista las ofertas de una carrera (404 si la carrera no existe) |

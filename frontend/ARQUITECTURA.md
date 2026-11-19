@@ -17,7 +17,7 @@ SPA React 19 + TypeScript estricto + Vite + Tailwind v4. Código y UI en españo
 2. Regístrala en `src/rutas.tsx` con `lazy(() => import('@/paginas/MiPagina'))`. Las páginas de la app van dentro de `<Shell />`; si exigen sesión, envuélvelas en `<RutaPrivada>` (`soloAdmin` para admin).
 3. Si es un destino principal, agrega el item en `layout/navegacion.ts`.
 
-Placeholders pendientes: Buscar, Busqueda, Carreras, Universidades, UniversidadDetalle, Oferta, Comparar, Perfil, Admin. Favoritos vive en `/perfil?pestana=favoritos`.
+Todas las rutas de `rutas.tsx` ya tienen pantalla. Las direcciones que no existen caen en `NoEncontrado` (`path="*"`). Favoritos vive en `/perfil?pestana=favoritos`.
 
 ## Cliente de API (`lib/api.ts`)
 

@@ -1,4 +1,4 @@
-import { Badge, Input, Select } from '@/componentes';
+import { Badge, Input, Select, SelectorCiudad } from '@/componentes';
 import { catalogo } from '@/lib/api';
 import { ciudadLegible, etiquetaJornada, etiquetaModalidad, formatoCop, nombreLegible } from '@/lib/formato';
 import { JORNADAS, MODALIDADES, type Carrera, type Jornada, type Modalidad, type OfertaAcademica, type Universidad } from '@/lib/modelos';
@@ -46,7 +46,7 @@ const configUniversidades: ConfigCrud<Universidad, VUniversidad> = {
   campos: (v, cambiar) => (
     <>
       <Input etiqueta="Nombre" value={v.nombre} onChange={(e) => cambiar('nombre', e.target.value)} required maxLength={150} />
-      <Input etiqueta="Ciudad" ayuda="Como la guarda el catálogo, por ejemplo Bogota." value={v.ciudad} onChange={(e) => cambiar('ciudad', e.target.value)} required maxLength={100} />
+      <SelectorCiudad valor={v.ciudad} onCambio={(c) => cambiar('ciudad', c)} required />
       <Input etiqueta="Imagen (ruta o enlace)" ayuda="Opcional." value={v.imagenUrl} onChange={(e) => cambiar('imagenUrl', e.target.value)} maxLength={255} />
     </>
   ),
@@ -149,7 +149,7 @@ export function SeccionOfertas() {
         </Select>
         <div className="grid gap-4 sm:grid-cols-2">
           <Input etiqueta="SNIES" value={v.snies} onChange={(e) => cambiar('snies', e.target.value)} required maxLength={50} />
-          <Input etiqueta="Ciudad" value={v.ciudad} onChange={(e) => cambiar('ciudad', e.target.value)} required maxLength={100} />
+          <SelectorCiudad valor={v.ciudad} onCambio={(c) => cambiar('ciudad', c)} required className="sm:col-span-2" />
           <Input etiqueta="Costo por periodo (COP)" type="number" inputMode="numeric" min={0} step={1} value={v.costo} onChange={(e) => cambiar('costo', e.target.value)} required />
           <Input etiqueta="Duración (periodos)" type="number" inputMode="numeric" min={1} step={1} value={v.duracion} onChange={(e) => cambiar('duracion', e.target.value)} required />
           <Select etiqueta="Modalidad" value={v.modalidad} onChange={(e) => cambiar('modalidad', e.target.value as Modalidad)}>

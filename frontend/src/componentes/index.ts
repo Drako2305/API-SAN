@@ -1,6 +1,7 @@
 export { Button, LinkButton, claseBoton } from './Button';
 export { Campo, Input, Select, Textarea } from './Campo';
 export { Selector, type OpcionSelector } from './Selector';
+export { SelectorCiudad } from './SelectorCiudad';
 export { ComboCarrera } from './ComboCarrera';
 export { EditorPesos } from './EditorPesos';
 export { Card } from './Card';

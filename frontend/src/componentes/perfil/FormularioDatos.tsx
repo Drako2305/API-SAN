@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { AlertCircle } from 'lucide-react';
-import { Button, Input } from '@/componentes';
+import { Button, Input, SelectorCiudad } from '@/componentes';
 import { useToast } from '@/componentes/Toast';
 import { ApiError, mensajeError, usuarios } from '@/lib/api';
 import type { ActualizarUsuarioRequest, UsuarioDetalle } from '@/lib/modelos';
@@ -91,7 +91,7 @@ export function FormularioDatos({ detalle, onGuardado }: Props) {
       <Input etiqueta="Nombre" value={v.nombre} onChange={cambiar('nombre')} required maxLength={100} autoComplete="given-name" />
       <Input etiqueta="Apellido" value={v.apellido} onChange={cambiar('apellido')} required maxLength={100} autoComplete="family-name" />
       <Input etiqueta="Correo" type="email" value={v.correo} onChange={cambiar('correo')} required maxLength={150} autoComplete="email" className="sm:col-span-2" />
-      <Input etiqueta="Ciudad" value={v.ciudad} onChange={cambiar('ciudad')} required maxLength={100} autoComplete="address-level2" />
+      <SelectorCiudad valor={v.ciudad} onCambio={(c) => setV((x) => ({ ...x, ciudad: c }))} required className="sm:col-span-2" />
       <div className="sm:col-span-2">
         <Button type="submit" cargando={guardando}>
           Guardar cambios

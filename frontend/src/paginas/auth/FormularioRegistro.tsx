@@ -1,10 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { ArrowLeft, Mail } from 'lucide-react';
-import { AvisoError, Button, Input, Select } from '@/componentes';
+import { AvisoError, Button, Input, SelectorCiudad } from '@/componentes';
 import { ApiError, mensajeError } from '@/lib/api';
-import { ciudadLegible } from '@/lib/formato';
 import { useSesion } from '@/lib/sesion';
-import { useCatalogoConteos } from '@/lib/useCatalogoConteos';
 import type { UsuarioSesion } from '@/lib/modelos';
 
 interface Props {
@@ -22,7 +20,6 @@ export const SUBTITULO_PASO = {
 /** Registro en dos pasos: correo y clave, luego nombre, apellido y ciudad (la API exige `perfil`). */
 export function FormularioRegistro({ paso, onPaso, onListo }: Props) {
   const { registro } = useSesion();
-  const { datos } = useCatalogoConteos();
   const [correo, setCorreo] = useState('');
   const [clave, setClave] = useState('');
   const [nombre, setNombre] = useState('');
@@ -97,20 +94,7 @@ export function FormularioRegistro({ paso, onPaso, onListo }: Props) {
         <Input etiqueta="Nombre" name="nombre" autoComplete="given-name" required maxLength={100} value={nombre} onChange={(e) => setNombre(e.target.value)} autoFocus />
         <Input etiqueta="Apellido" name="apellido" autoComplete="family-name" required maxLength={100} value={apellido} onChange={(e) => setApellido(e.target.value)} />
       </div>
-      {datos && datos.ciudades.length > 0 ? (
-        <Select etiqueta="Ciudad" name="ciudad" required value={ciudad} onChange={(e) => setCiudad(e.target.value)}>
-          <option value="" disabled>
-            Elige tu ciudad
-          </option>
-          {datos.ciudades.map((c) => (
-            <option key={c} value={c}>
-              {ciudadLegible(c)}
-            </option>
-          ))}
-        </Select>
-      ) : (
-        <Input etiqueta="Ciudad" name="ciudad" autoComplete="address-level2" required maxLength={100} value={ciudad} onChange={(e) => setCiudad(e.target.value)} />
-      )}
+      <SelectorCiudad name="ciudad" required valor={ciudad} onCambio={setCiudad} />
       {error && (
         <AvisoError>{error}</AvisoError>
       )}

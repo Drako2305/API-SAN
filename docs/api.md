@@ -6,24 +6,24 @@ La documentacion interactiva (Swagger UI) esta en http://localhost:3000/docs y e
 
 ## Convenciones
 
-- **Validacion**: `ValidationPipe` global con `whitelist`, `forbidNonWhitelisted` y `transform`. Un campo del body o de la query que no este declarado en el DTO responde 400. Query y params se convierten a su tipo.
-- **IDs**: los parametros `:id` y `:ofertaId` deben ser UUID. Si no lo son, responde 400 (`ParseUUIDPipe`).
-- **Codigos de estado**: los POST responden 201 (valor por defecto de NestJS). GET, PUT, PATCH y DELETE responden 200.
-- **Formato de error** (estandar de NestJS):
+- **Validación**: `ValidationPipe` global con `whitelist`, `forbidNonWhitelisted` y `transform`. Un campo del body o de la query que no esté declarado en el DTO responde 400. Query y params se convierten a su tipo.
+- **IDs**: los parámetros `:id` y `:ofertaId` deben ser UUID. Si no lo son, responde 400 (`ParseUUIDPipe`).
+- **Códigos de estado**: los POST responden 201 (valor por defecto de NestJS). GET, PUT, PATCH y DELETE responden 200.
+- **Formato de error** (estándar de NestJS):
 
   ```json
   { "message": "Usuario con ID 00000000-0000-4000-8000-000000000099 no existe", "error": "Not Found", "statusCode": 404 }
   ```
 
-  En errores de validacion, `message` es un arreglo con los mensajes de class-validator. Los DTOs no tienen mensajes personalizados, asi que salen en ingles:
+  En errores de validación, `message` es un arreglo con los mensajes de class-validator. Los DTOs no tienen mensajes personalizados, así que salen en inglés:
 
   ```json
   { "message": ["correo must be an email"], "error": "Bad Request", "statusCode": 400 }
   ```
 
 - **Forma de la respuesta**: algunos endpoints devuelven `{ "message", "data" }` y otros el recurso directamente. Cada seccion lo indica.
-- **Autenticacion**: JWT con el header `Authorization: Bearer <accessToken>`. Ver la seccion [Autenticacion y roles](#autenticacion-y-roles). Sin token o con token invalido responde 401; sin permiso responde 403.
-- **Escrituras del catalogo**: `POST`, `PUT`, `PATCH` y `DELETE` de carreras, universidades y ofertas devuelven `{ "message", "data" }` (el `DELETE` solo `message`). Las lecturas siguen devolviendo el recurso directo.
+- **Autenticación**: JWT con el header `Authorization: Bearer <accessToken>`. Ver la sección [Autenticacion y roles](#autenticacion-y-roles). Sin token o con token inválido responde 401; sin permiso responde 403.
+- **Escrituras del catálogo**: `POST`, `PUT`, `PATCH` y `DELETE` de carreras, universidades y ofertas devuelven `{ "message", "data" }` (el `DELETE` solo `message`). Las lecturas siguen devolviendo el recurso directo.
 
 ### Endpoints
 

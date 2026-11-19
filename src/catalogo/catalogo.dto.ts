@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsBoolean,
   IsIn,
@@ -124,6 +124,15 @@ export class FiltroOfertaDto {
   @IsNumber()
   @Min(0)
   costoMax?: number;
+
+  @IsOptional()
+  @Transform(({ value }) => {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return value;
+  })
+  @IsBoolean()
+  acreditada?: boolean;
 }
 
 export class FiltroCarreraDto {

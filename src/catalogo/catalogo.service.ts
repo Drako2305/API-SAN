@@ -165,6 +165,9 @@ export class CatalogoService {
     if (filtros.costoMax !== undefined) {
       where.costo = LessThanOrEqual(filtros.costoMax);
     }
+    if (filtros.acreditada !== undefined) {
+      where.acreditacion = filtros.acreditada;
+    }
     const ofertas = await this.ofertaRepository.find({
       where,
       relations: { universidad: true, carrera: true },

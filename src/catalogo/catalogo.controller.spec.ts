@@ -104,4 +104,16 @@ describe('FiltroOfertaDto', () => {
       'costoMax',
     ]);
   });
+
+  it('convierte acreditada de texto a boolean, incluido false', async () => {
+    expect(
+      plainToInstance(FiltroOfertaDto, { acreditada: 'false' }).acreditada,
+    ).toBe(false);
+    expect(
+      plainToInstance(FiltroOfertaDto, { acreditada: 'true' }).acreditada,
+    ).toBe(true);
+    expect(
+      await propiedadesInvalidasFiltroOferta({ acreditada: 'si' }),
+    ).toEqual(['acreditada']);
+  });
 });

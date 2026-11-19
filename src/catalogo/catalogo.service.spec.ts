@@ -295,6 +295,18 @@ describe('CatalogoService', () => {
     });
   });
 
+  it('filtra ofertas acreditadas, incluyendo las no acreditadas con false', async () => {
+    ofertaRepository.find.mockResolvedValue([]);
+
+    await service.listarOfertas({ acreditada: false });
+
+    expect(ofertaRepository.find).toHaveBeenCalledWith({
+      where: { acreditacion: false },
+      relations: { universidad: true, carrera: true },
+      order: { snies: 'ASC' },
+    });
+  });
+
   describe('carreras', () => {
     it('crea una carrera', async () => {
       carreraRepository.findOneBy.mockResolvedValue(null);

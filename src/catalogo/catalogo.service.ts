@@ -4,7 +4,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, ILike, In, Repository } from 'typeorm';
+import {
+  FindOptionsWhere,
+  ILike,
+  In,
+  LessThanOrEqual,
+  Repository,
+} from 'typeorm';
 import {
   ActualizarCarreraDto,
   ActualizarOfertaDto,
@@ -155,6 +161,9 @@ export class CatalogoService {
     }
     if (filtros.jornada !== undefined) {
       where.jornada = filtros.jornada;
+    }
+    if (filtros.costoMax !== undefined) {
+      where.costo = LessThanOrEqual(filtros.costoMax);
     }
     const ofertas = await this.ofertaRepository.find({
       where,

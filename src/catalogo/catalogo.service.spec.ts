@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import { ILike, Repository } from 'typeorm';
+import { ILike, LessThanOrEqual, Repository } from 'typeorm';
 import { IDS_SEMILLA } from '../common/semilla';
 import { Carrera } from './carrera.entity';
 import { CatalogoService } from './catalogo.service';
@@ -278,6 +278,18 @@ describe('CatalogoService', () => {
 
     expect(ofertaRepository.find).toHaveBeenCalledWith({
       where: { jornada: 'nocturna' },
+      relations: { universidad: true, carrera: true },
+      order: { snies: 'ASC' },
+    });
+  });
+
+  it('filtra ofertas con costo igual o menor al maximo', async () => {
+    ofertaRepository.find.mockResolvedValue([]);
+
+    await service.listarOfertas({ costoMax: 3000000 });
+
+    expect(ofertaRepository.find).toHaveBeenCalledWith({
+      where: { costo: LessThanOrEqual(3000000) },
       relations: { universidad: true, carrera: true },
       order: { snies: 'ASC' },
     });

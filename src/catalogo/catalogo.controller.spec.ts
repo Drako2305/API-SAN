@@ -88,4 +88,20 @@ describe('FiltroOfertaDto', () => {
       await propiedadesInvalidasFiltroOferta({ jornada: 'madrugada' }),
     ).toEqual(['jornada']);
   });
+
+  it('convierte costoMax de texto a numero y valida que sea >= 0', async () => {
+    const convertido = plainToInstance(FiltroOfertaDto, {
+      costoMax: '3000000',
+    });
+    expect(convertido.costoMax).toBe(3000000);
+    expect(await propiedadesInvalidasFiltroOferta({ costoMax: '0' })).toEqual(
+      [],
+    );
+    expect(await propiedadesInvalidasFiltroOferta({ costoMax: 'abc' })).toEqual(
+      ['costoMax'],
+    );
+    expect(await propiedadesInvalidasFiltroOferta({ costoMax: '-1' })).toEqual([
+      'costoMax',
+    ]);
+  });
 });

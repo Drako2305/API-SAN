@@ -20,6 +20,10 @@ import {
 
 const RONDAS_HASH = 10;
 
+/**
+ * Logica de autenticacion: registro, verificacion de correo, login y renovacion de tokens.
+ * Las claves se guardan con bcrypt (10 rondas) y los tokens se firman con JwtService.
+ */
 @Injectable()
 export class AuthService {
   constructor(

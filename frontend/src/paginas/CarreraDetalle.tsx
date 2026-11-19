@@ -249,7 +249,7 @@ export default function CarreraDetalle() {
         ) : (
           <>
             <div className="mb-4 flex flex-col gap-3">
-              <div role="group" aria-label="Modalidad" className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 md:mx-0 md:flex-wrap md:px-0">
+              <div role="group" aria-label="Filtrar por modalidad" className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 md:mx-0 md:flex-wrap md:px-0">
                 <button type="button" aria-pressed={!modalidad} onClick={() => fijar('modalidad', '')} className={chip(!modalidad)}>
                   Todas <span className="numeros text-xs opacity-70">{todas.length}</span>
                 </button>

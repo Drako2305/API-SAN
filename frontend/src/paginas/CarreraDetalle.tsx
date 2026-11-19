@@ -64,7 +64,7 @@ function FilaOferta({ o, elegida, bloqueada, onComparar }: { o: OfertaAcademica;
         <p className="text-right">
           <span className="numeros block font-display text-lg font-semibold">{formatoCop(o.costo)}</span>
           <span className="numeros block text-xs text-texto-3">
-            por periodo · {o.duracion} periodos · total {formatoCop(o.costo * o.duracion)}
+            por periodo · {o.duracion} periodos · costo total {formatoCop(o.costo * o.duracion)}
           </span>
         </p>
         <label className="relative z-10 inline-flex min-h-8 cursor-pointer items-center gap-2 text-sm font-medium has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-60">
@@ -179,7 +179,7 @@ export default function CarreraDetalle() {
   return (
     <>
       <title>{`${nombre} · SAN`}</title>
-      <nav aria-label="Ruta" className="mb-4 flex flex-wrap items-center gap-1 text-sm text-texto-3">
+      <nav aria-label="Ruta de navegación" className="mb-4 flex flex-wrap items-center gap-1 text-sm text-texto-3">
         <Link to="/carreras" viewTransition className="text-texto-2">
           Carreras
         </Link>
@@ -223,7 +223,7 @@ export default function CarreraDetalle() {
               <Cifra titulo="Ofertas" valor={String(todas.length)} />
               <Cifra titulo="Universidades" valor={String(resumen.universidades)} />
               <Cifra titulo="Acreditadas" valor={String(resumen.acreditadas)} />
-              <Cifra titulo="Desde, por periodo" valor={resumen.desde === null ? '-' : formatoCop(resumen.desde)} />
+              <Cifra titulo="Costo desde, por periodo" valor={resumen.desde === null ? '-' : formatoCop(resumen.desde)} />
             </dl>
           )}
           {todas.length > 0 && (
@@ -249,7 +249,7 @@ export default function CarreraDetalle() {
         ) : (
           <>
             <div className="mb-4 flex flex-col gap-3">
-              <div role="group" aria-label="Modalidad" className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 md:mx-0 md:flex-wrap md:px-0">
+              <div role="group" aria-label="Filtrar por modalidad" className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 md:mx-0 md:flex-wrap md:px-0">
                 <button type="button" aria-pressed={!modalidad} onClick={() => fijar('modalidad', '')} className={chip(!modalidad)}>
                   Todas <span className="numeros text-xs opacity-70">{todas.length}</span>
                 </button>

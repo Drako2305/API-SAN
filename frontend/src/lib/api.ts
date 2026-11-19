@@ -19,6 +19,7 @@ import type {
   UsuarioDetalle,
 } from './modelos';
 
+/** URL base de la API, sin barra final. Sale de `VITE_API_URL` y, si no existe, de `http://localhost:3000`. */
 export const API_URL: string = (import.meta.env.VITE_API_URL ?? 'http://localhost:3000').replace(/\/+$/, '');
 
 // ---------------------------------------------------------------- errores
@@ -55,6 +56,7 @@ export function errorDesdeRespuesta(status: number, cuerpo: unknown): ApiError {
   return new ApiError(status, MENSAJE_POR_ESTADO[status] ?? 'Algo salió mal. Intenta de nuevo.');
 }
 
+/** Error para cuando no hay conexión con la API (`status` 0). */
 export const errorDeRed = (): ApiError =>
   new ApiError(0, 'No pudimos conectar con el servidor. Revisa tu conexión e intenta de nuevo.');
 
@@ -146,6 +148,7 @@ async function envuelta<T>(ruta: string, o: Opciones = {}): Promise<T> {
 
 // ---------------------------------------------------------------- auth
 
+/** Endpoints de autenticación. Son públicos (`sinAuth`): no envían el Bearer. */
 export const auth = {
   /** Si el correo aún no tiene cuenta. Se consulta en el primer paso del registro. */
   correoDisponible: (correo: string) =>
@@ -160,17 +163,23 @@ export const auth = {
 
 // ---------------------------------------------------------------- catálogo
 
+/** Filtros opcionales del listado de carreras (`/carreras`), enviados como query string. */
 export interface FiltrosCarreras {
   nombre?: string;
   area?: string;
 }
 
+/** Filtros opcionales del listado de ofertas (`/ofertas`), enviados como query string. */
 export interface FiltrosOfertas {
   carreraId?: string;
   universidadId?: string;
   ciudad?: string;
 }
 
+/**
+ * Catálogo de carreras, universidades y ofertas. Las lecturas públicas devuelven el recurso directo;
+ * las escrituras de administración devuelven `{ message, data }` y las ediciones usan PATCH.
+ */
 export const catalogo = {
   // Lecturas públicas: recurso directo
   carreras: (filtros: FiltrosCarreras = {}) => peticion<Carrera[]>('/carreras', { query: { ...filtros } }),
@@ -200,12 +209,14 @@ export const catalogo = {
 
 // ---------------------------------------------------------------- búsquedas y comparaciones
 
+/** Búsquedas de ofertas: crear una, leer su resumen y sus resultados ordenados. */
 export const busquedas = {
   crear: (body: BusquedaRequest) => envuelta<BusquedaCreada>('/busquedas', { metodo: 'POST', cuerpo: body }),
   resumen: (id: string) => peticion<BusquedaResumen>(`/busquedas/${id}`),
   resultados: (id: string) => peticion<ResultadoBusqueda[]>(`/busquedas/${id}/resultados`),
 };
 
+/** Comparaciones de ofertas (de 2 a 4): crear, consultar y eliminar. */
 export const comparaciones = {
   crear: (ofertaIds: string[]) => envuelta<Comparacion>('/comparaciones', { metodo: 'POST', cuerpo: { ofertaIds } }),
   obtener: (id: string) => peticion<Comparacion>(`/comparaciones/${id}`),
@@ -214,6 +225,7 @@ export const comparaciones = {
 
 // ---------------------------------------------------------------- usuarios (Bearer propio o admin)
 
+/** Perfil, preferencias (pesos) y favoritos de un usuario. Requiere Bearer propio o rol admin. */
 export const usuarios = {
   obtener: (id: string) => envuelta<UsuarioDetalle>(`/usuarios/${id}`),
   actualizar: (id: string, body: ActualizarUsuarioRequest) =>

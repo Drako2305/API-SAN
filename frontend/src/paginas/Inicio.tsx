@@ -115,7 +115,7 @@ export default function Inicio() {
           <span>
             <span className="block font-display text-lg font-semibold">Mis favoritos</span>
             <span className="mt-1 line-clamp-2 block text-sm text-texto-2">
-              {favoritos.cargando ? 'Cargando…' : `${favoritos.datos?.length ?? 0} guardadas`}
+              {favoritos.cargando ? 'Cargando…' : `${favoritos.datos?.length ?? 0} ${(favoritos.datos?.length ?? 0) === 1 ? 'oferta guardada' : 'ofertas guardadas'}`}
             </span>
           </span>
         </Link>

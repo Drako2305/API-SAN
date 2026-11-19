@@ -21,7 +21,7 @@ export function AuthSplit({ children, foto = 'andes' }: { children: ReactNode; f
     <div className="grid min-h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
       <div className="flex flex-col px-5 py-6 sm:px-10">
         <div className="flex items-center justify-between">
-          <Link to="/" aria-label="SAN, inicio">
+          <Link to="/" aria-label="Ir al inicio de SAN">
             <Logo />
           </Link>
           <BotonTema />

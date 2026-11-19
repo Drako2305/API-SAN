@@ -223,7 +223,7 @@ export default function CarreraDetalle() {
               <Cifra titulo="Ofertas" valor={String(todas.length)} />
               <Cifra titulo="Universidades" valor={String(resumen.universidades)} />
               <Cifra titulo="Acreditadas" valor={String(resumen.acreditadas)} />
-              <Cifra titulo="Desde, por periodo" valor={resumen.desde === null ? '-' : formatoCop(resumen.desde)} />
+              <Cifra titulo="Costo desde, por periodo" valor={resumen.desde === null ? '-' : formatoCop(resumen.desde)} />
             </dl>
           )}
           {todas.length > 0 && (

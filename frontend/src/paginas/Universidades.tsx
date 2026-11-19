@@ -7,10 +7,12 @@ import { catalogo } from '@/lib/api';
 import { cn } from '@/lib/cn';
 import { ciudadLegible } from '@/lib/formato';
 import { useCarga } from '@/lib/useCarga';
+import { useTituloPagina } from '@/lib/useTituloPagina';
 
 const CHIP = 'inline-flex h-10 items-center rounded-full border px-4 text-sm font-medium transition-colors';
 
 export default function Universidades() {
+  useTituloPagina('Universidades');
   const [params, setParams] = useSearchParams();
   const ciudad = params.get('ciudad') ?? '';
 
@@ -30,7 +32,6 @@ export default function Universidades() {
 
   return (
     <>
-      <title>Universidades · SAN</title>
       <EncabezadoPagina titulo="Universidades" descripcion="Instituciones del catálogo, con su ciudad y las ofertas que tienen disponibles." />
 
       <div role="group" aria-label="Filtrar por ciudad" className="-mx-4 mb-6 flex gap-2 overflow-x-auto px-4 pb-1 md:mx-0 md:flex-wrap md:px-0">
@@ -56,8 +57,8 @@ export default function Universidades() {
         )}
       </div>
 
-      <p className="sr-only" role="status">
-        {datos && !lista.cargando ? `${datos.length} universidades` : ''}
+      <p role="status" className="numeros mb-4 min-h-5 text-sm text-texto-3">
+        {datos && !lista.cargando ? `${datos.length} ${datos.length === 1 ? 'universidad' : 'universidades'}` : ''}
       </p>
 
       {lista.error ? (

@@ -12,6 +12,7 @@ import type { UsuarioDetalle } from '@/lib/modelos';
 import { busquedasRecientes } from '@/lib/recientes';
 import { useSesion } from '@/lib/sesion';
 import { useCarga } from '@/lib/useCarga';
+import { useTituloPagina } from '@/lib/useTituloPagina';
 import { TextMorph } from '@/morphing';
 
 const PESTANAS = ['datos', 'preferencias', 'favoritos'] as const;
@@ -27,6 +28,7 @@ function Cifra({ n, t }: { n: number | string; t: string }) {
 }
 
 export default function Perfil() {
+  useTituloPagina('Mi perfil');
   const { usuario } = useSesion();
   const [params, setParams] = useSearchParams();
   const pedida = params.get('pestana');
@@ -95,7 +97,6 @@ export default function Perfil() {
 
   return (
     <>
-      <title>Mi perfil · SAN</title>
       <EncabezadoPagina titulo="Mi perfil" descripcion="Tus datos, tus pesos de búsqueda y tus ofertas guardadas." />
       <div className="grid items-start gap-6 lg:grid-cols-[1fr_18rem]">
         <div className="min-w-0">

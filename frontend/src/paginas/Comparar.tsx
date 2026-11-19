@@ -5,6 +5,7 @@ import { comparaciones } from '@/lib/api';
 import { formatoCop, formatoPuntaje } from '@/lib/formato';
 import { MIN_COMPARAR, useSeleccion } from '@/lib/seleccionComparar';
 import { useCarga } from '@/lib/useCarga';
+import { useTituloPagina } from '@/lib/useTituloPagina';
 
 function Dato({ t, v }: { t: string; v: string }) {
   return (
@@ -16,6 +17,7 @@ function Dato({ t, v }: { t: string; v: string }) {
 }
 
 export default function Comparar() {
+  useTituloPagina('Comparar ofertas');
   const sel = useSeleccion();
   const ids = sel.ofertas.map((o) => o.id);
   const clave = ids.join(',');
@@ -28,7 +30,6 @@ export default function Comparar() {
   if (!sel.lista) {
     return (
       <>
-        <title>Comparar ofertas · SAN</title>
         <h1 className="mb-6 text-[1.75rem] md:text-3xl">Comparar ofertas</h1>
         <EmptyState
           icono={<GitCompareArrows />}
@@ -54,7 +55,6 @@ export default function Comparar() {
 
   return (
     <>
-      <title>Comparar ofertas · SAN</title>
       <header className="mb-6 overflow-hidden rounded-lg bg-acento text-sobre-acento">
         <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 px-5 pt-6 pb-5 md:px-7">
           <div className="min-w-0">

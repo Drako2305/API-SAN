@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import { ArrowRight, GraduationCap } from 'lucide-react';
 import { Badge, EmptyState, EncabezadoPagina, Input, claseBoton } from '@/componentes';
@@ -10,6 +10,7 @@ import { fotoCarrera } from '@/lib/fotos';
 import { nombreLegible } from '@/lib/formato';
 import type { Carrera, OfertaAcademica } from '@/lib/modelos';
 import { useCarga } from '@/lib/useCarga';
+import { useTituloPagina } from '@/lib/useTituloPagina';
 
 const CHIP = 'inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full border px-4 text-sm font-medium transition-colors';
 
@@ -64,10 +65,27 @@ function TarjetaCarrera({ carrera, ofertas }: { carrera: Carrera; ofertas: Ofert
 }
 
 export default function Carreras() {
+  useTituloPagina('Carreras');
   const [params, setParams] = useSearchParams();
   const nombre = params.get('nombre') ?? '';
   const area = params.get('area') ?? '';
   const [texto, setTexto] = useState(nombre);
+  const busquedaRef = useRef<HTMLElement>(null);
+
+  // Atajo "/": enfoca el campo de búsqueda, salvo que la persona ya esté escribiendo en un campo.
+  useEffect(() => {
+    const alPulsar = (e: KeyboardEvent) => {
+      if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey || e.isComposing || e.defaultPrevented) return;
+      const destino = e.target as HTMLElement | null;
+      if (destino?.isContentEditable || destino?.tagName === 'INPUT' || destino?.tagName === 'TEXTAREA' || destino?.tagName === 'SELECT') return;
+      const campo = busquedaRef.current?.querySelector('input');
+      if (!campo) return;
+      e.preventDefault();
+      campo.focus();
+    };
+    window.addEventListener('keydown', alPulsar);
+    return () => window.removeEventListener('keydown', alPulsar);
+  }, []);
 
   // Búsqueda con retardo: la URL (?nombre) se actualiza cuando la persona deja de escribir.
   useEffect(() => {
@@ -108,11 +126,10 @@ export default function Carreras() {
 
   return (
     <>
-      <title>Carreras · SAN</title>
       <EncabezadoPagina titulo="Carreras" descripcion="Elige una carrera para ver en qué universidades se ofrece, cuánto cuesta y en qué modalidad." />
 
-      <search className="mb-4 block max-w-md">
-        <Input etiqueta="Buscar carrera" type="search" value={texto} onChange={(e) => setTexto(e.target.value)} placeholder="Por ejemplo, Psicología" autoComplete="off" />
+      <search ref={busquedaRef} className="mb-4 block max-w-md">
+        <Input etiqueta="Buscar carrera" type="search" value={texto} onChange={(e) => setTexto(e.target.value)} placeholder="Por ejemplo, Psicología" autoComplete="off" aria-keyshortcuts="/" />
       </search>
 
       {areas.length > 0 && (
@@ -136,8 +153,8 @@ export default function Carreras() {
         </div>
       )}
 
-      <p className="sr-only" role="status">
-        {lista && !carreras.cargando ? `${lista.length} carreras` : ''}
+      <p role="status" className="numeros mb-4 min-h-5 text-sm text-texto-3">
+        {lista && !carreras.cargando ? `${lista.length} ${lista.length === 1 ? 'carrera' : 'carreras'}` : ''}
       </p>
 
       {carreras.error ? (

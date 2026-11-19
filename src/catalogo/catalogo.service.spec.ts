@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import { ILike, LessThanOrEqual, Repository } from 'typeorm';
+import { ILike, IsNull, LessThanOrEqual, Not, Repository } from 'typeorm';
 import { IDS_SEMILLA } from '../common/semilla';
 import { Carrera } from './carrera.entity';
 import { CatalogoService } from './catalogo.service';
@@ -145,6 +145,24 @@ describe('CatalogoService', () => {
       where: { nombre: ILike('%nac%') },
       order: { nombre: 'ASC' },
     });
+  });
+
+  it('lista las areas distintas, ordenadas y sin nulos', async () => {
+    carreraRepository.find.mockResolvedValue([
+      { area: 'Ciencias' },
+      { area: 'Salud' },
+      { area: 'Salud' },
+      { area: null },
+    ]);
+
+    const areas = await service.listarAreas();
+
+    expect(carreraRepository.find).toHaveBeenCalledWith({
+      select: { area: true },
+      where: { area: Not(IsNull()) },
+      order: { area: 'ASC' },
+    });
+    expect(areas).toEqual(['Ciencias', 'Salud']);
   });
 
   it('lista todas las carreras sin filtro de nombre', async () => {

@@ -8,7 +8,9 @@ import {
   FindOptionsWhere,
   ILike,
   In,
+  IsNull,
   LessThanOrEqual,
+  Not,
   Repository,
 } from 'typeorm';
 import {
@@ -51,6 +53,18 @@ export class CatalogoService {
       where,
       order: { nombre: 'ASC' },
     });
+  }
+
+  async listarAreas(): Promise<string[]> {
+    const carreras = await this.carreraRepository.find({
+      select: { area: true },
+      where: { area: Not(IsNull()) },
+      order: { area: 'ASC' },
+    });
+    const areas = carreras
+      .map((carrera) => carrera.area)
+      .filter((area): area is string => area !== null);
+    return [...new Set(areas)];
   }
 
   async obtenerCarrera(id: string) {

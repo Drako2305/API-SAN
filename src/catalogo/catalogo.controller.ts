@@ -38,6 +38,12 @@ export class CatalogoController {
     return this.catalogoService.listarCarreras(filtros.nombre, filtros.area);
   }
 
+  @Get('carreras/areas')
+  @ApiOperation({ summary: 'Lista las areas distintas de las carreras' })
+  listarAreas() {
+    return this.catalogoService.listarAreas();
+  }
+
   @Get('carreras/:id')
   obtenerCarrera(@Param('id', ParseUUIDPipe) id: string) {
     return this.catalogoService.obtenerCarrera(id);

@@ -179,7 +179,7 @@ export default function CarreraDetalle() {
   return (
     <>
       <title>{`${nombre} · SAN`}</title>
-      <nav aria-label="Ruta" className="mb-4 flex flex-wrap items-center gap-1 text-sm text-texto-3">
+      <nav aria-label="Ruta de navegación" className="mb-4 flex flex-wrap items-center gap-1 text-sm text-texto-3">
         <Link to="/carreras" viewTransition className="text-texto-2">
           Carreras
         </Link>

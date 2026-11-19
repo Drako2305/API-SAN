@@ -9,6 +9,7 @@ import { registrarBusquedaReciente } from '@/lib/recientes';
 import { useSesion } from '@/lib/sesion';
 import { carreraExacta } from '@/componentes/ComboCarrera';
 import { useCarga } from '@/lib/useCarga';
+import { useTituloPagina } from '@/lib/useTituloPagina';
 import { TextMorph, MorphLoader } from '@/morphing';
 
 const PESOS_INICIALES: Pesos = { costo: 3, modalidad: 3, ubicacion: 3, acreditacion: 3 };
@@ -24,6 +25,7 @@ const esModalidad = (v: string | null): v is Modalidad => MODALIDADES.some((m) =
 const esJornada = (v: string | null): v is Jornada => JORNADAS.some((j) => j === v);
 
 export default function Buscar() {
+  useTituloPagina('Buscar carrera');
   const [params] = useSearchParams();
   const navegar = useNavigate();
   const { usuario, autenticado } = useSesion();
@@ -92,7 +94,6 @@ export default function Buscar() {
 
   return (
     <>
-      <title>Buscar carrera · SAN</title>
       <EncabezadoPagina
         titulo="Buscar carrera"
         descripcion="Cuéntanos qué quieres estudiar y qué pesa más para ti. Ordenamos las ofertas con tus pesos y te mostramos por qué."

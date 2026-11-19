@@ -1,10 +1,11 @@
 import { Compass } from 'lucide-react';
 import { EmptyState, LinkButton } from '@/componentes';
+import { useTituloPagina } from '@/lib/useTituloPagina';
 
 export default function NoEncontrado() {
+  useTituloPagina('Página no encontrada');
   return (
     <>
-      <title>Página no encontrada · SAN</title>
       <EmptyState
         className="mt-10"
         icono={<Compass />}

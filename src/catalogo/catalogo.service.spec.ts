@@ -271,6 +271,18 @@ describe('CatalogoService', () => {
     });
   });
 
+  it('filtra ofertas por jornada', async () => {
+    ofertaRepository.find.mockResolvedValue([]);
+
+    await service.listarOfertas({ jornada: 'nocturna' });
+
+    expect(ofertaRepository.find).toHaveBeenCalledWith({
+      where: { jornada: 'nocturna' },
+      relations: { universidad: true, carrera: true },
+      order: { snies: 'ASC' },
+    });
+  });
+
   describe('carreras', () => {
     it('crea una carrera', async () => {
       carreraRepository.findOneBy.mockResolvedValue(null);

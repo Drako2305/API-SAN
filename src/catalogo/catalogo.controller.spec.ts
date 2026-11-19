@@ -79,4 +79,13 @@ describe('FiltroOfertaDto', () => {
       await propiedadesInvalidasFiltroOferta({ modalidad: 'online' }),
     ).toEqual(['modalidad']);
   });
+
+  it('acepta una jornada permitida y rechaza otra', async () => {
+    expect(
+      await propiedadesInvalidasFiltroOferta({ jornada: 'mixta' }),
+    ).toEqual([]);
+    expect(
+      await propiedadesInvalidasFiltroOferta({ jornada: 'madrugada' }),
+    ).toEqual(['jornada']);
+  });
 });

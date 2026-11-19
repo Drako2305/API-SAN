@@ -112,6 +112,10 @@ export class FiltroOfertaDto {
   @IsOptional()
   @IsIn(MODALIDADES)
   modalidad?: string;
+
+  @IsOptional()
+  @IsIn(JORNADAS)
+  jornada?: string;
 }
 
 export class FiltroCarreraDto {

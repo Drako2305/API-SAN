@@ -153,6 +153,9 @@ export class CatalogoService {
     if (filtros.modalidad !== undefined) {
       where.modalidad = filtros.modalidad;
     }
+    if (filtros.jornada !== undefined) {
+      where.jornada = filtros.jornada;
+    }
     const ofertas = await this.ofertaRepository.find({
       where,
       relations: { universidad: true, carrera: true },

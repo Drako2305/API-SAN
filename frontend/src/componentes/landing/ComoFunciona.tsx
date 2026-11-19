@@ -130,7 +130,7 @@ export function ComoFunciona() {
             </div>
             <MorphingRing valor={puntaje} cargando={false} tamano={56} color="var(--color-acento)" etiquetaValor={`Puntaje ${puntaje} de 100`} />
           </div>
-          <ul className="mt-5 flex flex-wrap gap-2" aria-label="Pesos de ejemplo">
+          <ul className="mt-5 flex flex-wrap gap-2" aria-label="Pesos de ejemplo por criterio">
             {CRITERIOS.map((c) => (
               <li key={c} data-peso className="numeros rounded-full border border-acento-borde bg-acento-suave px-3 py-1 text-xs font-medium text-acento-texto">
                 {CRITERIO_ETIQUETA[c]} {PESOS_DEMO[c]}

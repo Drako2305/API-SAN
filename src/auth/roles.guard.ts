@@ -9,6 +9,11 @@ import { Rol } from '../common/constantes';
 import { SolicitudAutenticada } from './jwt-auth.guard';
 import { ROLES_KEY } from './roles.decorator';
 
+/**
+ * Restringe un handler o controller a los roles indicados con `@Roles(...)`.
+ * Sin metadata de roles deja pasar la peticion. Debe ir despues de JwtAuthGuard, que es quien llena `request.usuario`.
+ * Responde 403 si el usuario no tiene alguno de los roles.
+ */
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}

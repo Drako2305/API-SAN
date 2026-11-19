@@ -64,7 +64,7 @@ function FilaOferta({ o, elegida, bloqueada, onComparar }: { o: OfertaAcademica;
         <p className="text-right">
           <span className="numeros block font-display text-lg font-semibold">{formatoCop(o.costo)}</span>
           <span className="numeros block text-xs text-texto-3">
-            por periodo · {o.duracion} periodos · total {formatoCop(o.costo * o.duracion)}
+            por periodo · {o.duracion} periodos · costo total {formatoCop(o.costo * o.duracion)}
           </span>
         </p>
         <label className="relative z-10 inline-flex min-h-8 cursor-pointer items-center gap-2 text-sm font-medium has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-60">

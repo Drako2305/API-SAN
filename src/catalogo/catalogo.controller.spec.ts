@@ -1,7 +1,16 @@
+import 'reflect-metadata';
 import { jest } from '@jest/globals';
+import { plainToInstance } from 'class-transformer';
+import { validate } from 'class-validator';
 import { IDS_SEMILLA } from '../common/semilla';
+import { FiltroOfertaDto, FiltroUniversidadDto } from './catalogo.dto';
 import { CatalogoController } from './catalogo.controller';
 import { CatalogoService } from './catalogo.service';
+
+const propiedadesInvalidasFiltroOferta = async (datos: object) =>
+  (await validate(plainToInstance(FiltroOfertaDto, datos))).map(
+    (error) => error.property,
+  );
 
 describe('CatalogoController (PATCH)', () => {
   let controller: CatalogoController;
@@ -55,5 +64,65 @@ describe('CatalogoController (PATCH)', () => {
       IDS_SEMILLA.ofertas.nacionalSistemas,
       cambios,
     );
+  });
+});
+
+describe('FiltroUniversidadDto', () => {
+  it('rechaza un nombre vacio', async () => {
+    const errores = await validate(
+      plainToInstance(FiltroUniversidadDto, { nombre: '' }),
+    );
+    expect(errores.map((error) => error.property)).toEqual(['nombre']);
+  });
+});
+
+describe('FiltroOfertaDto', () => {
+  it('acepta una modalidad permitida', async () => {
+    expect(
+      await propiedadesInvalidasFiltroOferta({ modalidad: 'presencial' }),
+    ).toEqual([]);
+  });
+
+  it('rechaza una modalidad fuera de la lista', async () => {
+    expect(
+      await propiedadesInvalidasFiltroOferta({ modalidad: 'online' }),
+    ).toEqual(['modalidad']);
+  });
+
+  it('acepta una jornada permitida y rechaza otra', async () => {
+    expect(
+      await propiedadesInvalidasFiltroOferta({ jornada: 'mixta' }),
+    ).toEqual([]);
+    expect(
+      await propiedadesInvalidasFiltroOferta({ jornada: 'madrugada' }),
+    ).toEqual(['jornada']);
+  });
+
+  it('convierte costoMax de texto a numero y valida que sea >= 0', async () => {
+    const convertido = plainToInstance(FiltroOfertaDto, {
+      costoMax: '3000000',
+    });
+    expect(convertido.costoMax).toBe(3000000);
+    expect(await propiedadesInvalidasFiltroOferta({ costoMax: '0' })).toEqual(
+      [],
+    );
+    expect(await propiedadesInvalidasFiltroOferta({ costoMax: 'abc' })).toEqual(
+      ['costoMax'],
+    );
+    expect(await propiedadesInvalidasFiltroOferta({ costoMax: '-1' })).toEqual([
+      'costoMax',
+    ]);
+  });
+
+  it('convierte acreditada de texto a boolean, incluido false', async () => {
+    expect(
+      plainToInstance(FiltroOfertaDto, { acreditada: 'false' }).acreditada,
+    ).toBe(false);
+    expect(
+      plainToInstance(FiltroOfertaDto, { acreditada: 'true' }).acreditada,
+    ).toBe(true);
+    expect(
+      await propiedadesInvalidasFiltroOferta({ acreditada: 'si' }),
+    ).toEqual(['acreditada']);
   });
 });

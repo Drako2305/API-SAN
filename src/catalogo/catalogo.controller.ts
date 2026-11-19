@@ -38,9 +38,21 @@ export class CatalogoController {
     return this.catalogoService.listarCarreras(filtros.nombre, filtros.area);
   }
 
+  @Get('carreras/areas')
+  @ApiOperation({ summary: 'Lista las areas distintas de las carreras' })
+  listarAreas() {
+    return this.catalogoService.listarAreas();
+  }
+
   @Get('carreras/:id')
   obtenerCarrera(@Param('id', ParseUUIDPipe) id: string) {
     return this.catalogoService.obtenerCarrera(id);
+  }
+
+  @Get('carreras/:id/ofertas')
+  @ApiOperation({ summary: 'Lista las ofertas de una carrera' })
+  listarOfertasDeCarrera(@Param('id', ParseUUIDPipe) id: string) {
+    return this.catalogoService.listarOfertasDeCarrera(id);
   }
 
   @Post('carreras')
@@ -85,7 +97,18 @@ export class CatalogoController {
 
   @Get('universidades')
   listarUniversidades(@Query() filtros: FiltroUniversidadDto) {
-    return this.catalogoService.listarUniversidades(filtros.ciudad);
+    return this.catalogoService.listarUniversidades(
+      filtros.ciudad,
+      filtros.nombre,
+    );
+  }
+
+  @Get('universidades/ciudades')
+  @ApiOperation({
+    summary: 'Lista las ciudades distintas de las universidades',
+  })
+  listarCiudades() {
+    return this.catalogoService.listarCiudades();
   }
 
   @Get('universidades/:id')

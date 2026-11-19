@@ -1,9 +1,11 @@
 import { PartialType } from '@nestjs/swagger';
+import { Transform, Type } from 'class-transformer';
 import {
   IsBoolean,
   IsIn,
   IsInt,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
@@ -108,6 +110,29 @@ export class FiltroOfertaDto {
   @IsString()
   @IsNotEmpty()
   ciudad?: string;
+
+  @IsOptional()
+  @IsIn(MODALIDADES)
+  modalidad?: string;
+
+  @IsOptional()
+  @IsIn(JORNADAS)
+  jornada?: string;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  costoMax?: number;
+
+  @IsOptional()
+  @Transform(({ value }) => {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return value;
+  })
+  @IsBoolean()
+  acreditada?: boolean;
 }
 
 export class FiltroCarreraDto {
@@ -127,6 +152,11 @@ export class FiltroUniversidadDto {
   @IsString()
   @IsNotEmpty()
   ciudad?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  nombre?: string;
 }
 
 export class CarreraDto {

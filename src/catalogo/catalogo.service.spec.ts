@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import { ILike, Repository } from 'typeorm';
+import { ILike, IsNull, LessThanOrEqual, Not, Repository } from 'typeorm';
 import { IDS_SEMILLA } from '../common/semilla';
 import { Carrera } from './carrera.entity';
 import { CatalogoService } from './catalogo.service';
@@ -136,6 +136,73 @@ describe('CatalogoService', () => {
     });
   });
 
+  it('filtra universidades por coincidencia parcial del nombre', async () => {
+    universidadRepository.find.mockResolvedValue([]);
+
+    await service.listarUniversidades(undefined, 'nac');
+
+    expect(universidadRepository.find).toHaveBeenCalledWith({
+      where: { nombre: ILike('%nac%') },
+      order: { nombre: 'ASC' },
+    });
+  });
+
+  it('lista las ciudades distintas y ordenadas', async () => {
+    universidadRepository.find.mockResolvedValue([
+      { ciudad: 'Bogota' },
+      { ciudad: 'Bogota' },
+      { ciudad: 'Medellin' },
+    ]);
+
+    const ciudades = await service.listarCiudades();
+
+    expect(universidadRepository.find).toHaveBeenCalledWith({
+      select: { ciudad: true },
+      order: { ciudad: 'ASC' },
+    });
+    expect(ciudades).toEqual(['Bogota', 'Medellin']);
+  });
+
+  it('lista las ofertas de una carrera existente', async () => {
+    carreraRepository.findOneBy.mockResolvedValue({ id: 'c1' });
+    ofertaRepository.find.mockResolvedValue([]);
+
+    await service.listarOfertasDeCarrera('c1');
+
+    expect(ofertaRepository.find).toHaveBeenCalledWith({
+      where: { carrera: { id: 'c1' } },
+      relations: { universidad: true, carrera: true },
+      order: { snies: 'ASC' },
+    });
+  });
+
+  it('lanza 404 si la carrera no existe al listar sus ofertas', async () => {
+    carreraRepository.findOneBy.mockResolvedValue(null);
+
+    await expect(service.listarOfertasDeCarrera('x')).rejects.toThrow(
+      NotFoundException,
+    );
+    expect(ofertaRepository.find).not.toHaveBeenCalled();
+  });
+
+  it('lista las areas distintas, ordenadas y sin nulos', async () => {
+    carreraRepository.find.mockResolvedValue([
+      { area: 'Ciencias' },
+      { area: 'Salud' },
+      { area: 'Salud' },
+      { area: null },
+    ]);
+
+    const areas = await service.listarAreas();
+
+    expect(carreraRepository.find).toHaveBeenCalledWith({
+      select: { area: true },
+      where: { area: Not(IsNull()) },
+      order: { area: 'ASC' },
+    });
+    expect(areas).toEqual(['Ciencias', 'Salud']);
+  });
+
   it('lista todas las carreras sin filtro de nombre', async () => {
     carreraRepository.find.mockResolvedValue([]);
 
@@ -254,6 +321,54 @@ describe('CatalogoService', () => {
         universidad: { id: 'u1' },
         ciudad: ILike('bogota'),
       },
+      relations: { universidad: true, carrera: true },
+      order: { snies: 'ASC' },
+    });
+  });
+
+  it('filtra ofertas por modalidad', async () => {
+    ofertaRepository.find.mockResolvedValue([]);
+
+    await service.listarOfertas({ modalidad: 'virtual' });
+
+    expect(ofertaRepository.find).toHaveBeenCalledWith({
+      where: { modalidad: 'virtual' },
+      relations: { universidad: true, carrera: true },
+      order: { snies: 'ASC' },
+    });
+  });
+
+  it('filtra ofertas por jornada', async () => {
+    ofertaRepository.find.mockResolvedValue([]);
+
+    await service.listarOfertas({ jornada: 'nocturna' });
+
+    expect(ofertaRepository.find).toHaveBeenCalledWith({
+      where: { jornada: 'nocturna' },
+      relations: { universidad: true, carrera: true },
+      order: { snies: 'ASC' },
+    });
+  });
+
+  it('filtra ofertas con costo igual o menor al maximo', async () => {
+    ofertaRepository.find.mockResolvedValue([]);
+
+    await service.listarOfertas({ costoMax: 3000000 });
+
+    expect(ofertaRepository.find).toHaveBeenCalledWith({
+      where: { costo: LessThanOrEqual(3000000) },
+      relations: { universidad: true, carrera: true },
+      order: { snies: 'ASC' },
+    });
+  });
+
+  it('filtra ofertas acreditadas, incluyendo las no acreditadas con false', async () => {
+    ofertaRepository.find.mockResolvedValue([]);
+
+    await service.listarOfertas({ acreditada: false });
+
+    expect(ofertaRepository.find).toHaveBeenCalledWith({
+      where: { acreditacion: false },
       relations: { universidad: true, carrera: true },
       order: { snies: 'ASC' },
     });

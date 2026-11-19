@@ -49,18 +49,21 @@ La documentacion interactiva (Swagger UI) esta en http://localhost:3000/docs y e
 | Comparaciones | GET | `/comparaciones/{id}` | Consulta una comparacion |
 | Comparaciones | DELETE | `/comparaciones/{id}` | Elimina una comparacion |
 | Catalogo | GET | `/carreras` | Lista carreras (filtro `?nombre=`) |
+| Catalogo | GET | `/carreras/areas` | Lista las areas distintas de las carreras, ordenadas y sin nulos |
 | Catalogo | GET | `/carreras/{id}` | Consulta una carrera |
+| Catalogo | GET | `/carreras/{id}/ofertas` | Lista las ofertas de una carrera (404 si la carrera no existe) |
 | Catalogo | POST | `/carreras` | Crea una carrera |
 | Catalogo | PUT | `/carreras/{id}` | Actualiza una carrera |
 | Catalogo | PATCH | `/carreras/{id}` | Actualiza parcialmente una carrera |
 | Catalogo | DELETE | `/carreras/{id}` | Elimina una carrera y sus ofertas |
-| Catalogo | GET | `/universidades` | Lista universidades (filtro `?ciudad=`) |
+| Catalogo | GET | `/universidades` | Lista universidades (filtros `?ciudad=`, `?nombre=`) |
+| Catalogo | GET | `/universidades/ciudades` | Lista las ciudades distintas de las universidades, ordenadas |
 | Catalogo | GET | `/universidades/{id}` | Consulta una universidad con sus ofertas |
 | Catalogo | POST | `/universidades` | Crea una universidad |
 | Catalogo | PUT | `/universidades/{id}` | Actualiza una universidad |
 | Catalogo | PATCH | `/universidades/{id}` | Actualiza parcialmente una universidad |
 | Catalogo | DELETE | `/universidades/{id}` | Elimina una universidad y sus ofertas |
-| Catalogo | GET | `/ofertas` | Lista ofertas (filtros `?carreraId=`, `?universidadId=`, `?ciudad=`) |
+| Catalogo | GET | `/ofertas` | Lista ofertas (filtros `?carreraId=`, `?universidadId=`, `?ciudad=`, `?modalidad=`, `?jornada=`, `?costoMax=`, `?acreditada=`) |
 | Catalogo | GET | `/ofertas/{id}` | Consulta una oferta academica |
 | Catalogo | POST | `/ofertas` | Crea una oferta academica |
 | Catalogo | PUT | `/ofertas/{id}` | Actualiza una oferta academica |
@@ -902,6 +905,7 @@ Lista las universidades ordenadas por nombre.
 | Parametro | Tipo | Reglas |
 |---|---|---|
 | `ciudad` | string | Opcional, no vacio. Coincidencia **exacta** sin distinguir mayusculas. Los nombres de ciudad del catalogo no llevan tilde (`Bogota`, `Medellin`) |
+| `nombre` | string | Opcional, no vacio. Devuelve las universidades cuyo nombre **contiene** el texto, sin distinguir mayusculas |
 
 **Respuesta 200** (`?ciudad=Medellin`)
 
@@ -1015,12 +1019,16 @@ Lista las ofertas ordenadas por SNIES. Devuelve un arreglo de objetos con la mis
 | `carreraId` | UUID | Solo ofertas de esa carrera |
 | `universidadId` | UUID | Solo ofertas de esa universidad |
 | `ciudad` | string | Coincidencia exacta sin distinguir mayusculas |
+| `modalidad` | string | Opcional. Uno de `presencial`, `virtual`, `hibrida` |
+| `jornada` | string | Opcional. Uno de `diurna`, `nocturna`, `mixta` |
+| `costoMax` | integer | Opcional, minimo 0. Solo ofertas con costo menor o igual a ese valor |
+| `acreditada` | boolean | Opcional. `true` o `false` (texto en la URL, por ejemplo `?acreditada=false`) |
 
 **Errores**
 
 | Codigo | Motivo |
 |---|---|
-| 400 | UUID invalido, `?ciudad=` vacio o parametro no declarado |
+| 400 | UUID invalido, `?ciudad=` vacio, `modalidad` o `jornada` fuera de los valores permitidos, `costoMax` no numerico o negativo, `acreditada` distinto de `true`/`false`, o parametro no declarado |
 
 **Ejemplo**
 

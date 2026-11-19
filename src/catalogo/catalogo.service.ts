@@ -4,7 +4,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, ILike, In, Repository } from 'typeorm';
+import {
+  FindOptionsWhere,
+  ILike,
+  In,
+  IsNull,
+  LessThanOrEqual,
+  Not,
+  Repository,
+} from 'typeorm';
 import {
   ActualizarCarreraDto,
   ActualizarOfertaDto,
@@ -47,6 +55,18 @@ export class CatalogoService {
     });
   }
 
+  async listarAreas(): Promise<string[]> {
+    const carreras = await this.carreraRepository.find({
+      select: { area: true },
+      where: { area: Not(IsNull()) },
+      order: { area: 'ASC' },
+    });
+    const areas = carreras
+      .map((carrera) => carrera.area)
+      .filter((area): area is string => area !== null);
+    return [...new Set(areas)];
+  }
+
   async obtenerCarrera(id: string) {
     const carrera = await this.carreraRepository.findOneBy({ id });
     if (carrera === null) {
@@ -81,11 +101,29 @@ export class CatalogoService {
     return { message: 'Carrera eliminada correctamente' };
   }
 
-  async listarUniversidades(ciudad?: string): Promise<UniversidadDto[]> {
+  async listarUniversidades(
+    ciudad?: string,
+    nombre?: string,
+  ): Promise<UniversidadDto[]> {
+    const where: FindOptionsWhere<Universidad> = {};
+    if (ciudad) {
+      where.ciudad = ILike(this.escaparLike(ciudad));
+    }
+    if (nombre) {
+      where.nombre = ILike(`%${this.escaparLike(nombre)}%`);
+    }
     return this.universidadRepository.find({
-      where: ciudad ? { ciudad: ILike(this.escaparLike(ciudad)) } : {},
+      where,
       order: { nombre: 'ASC' },
     });
+  }
+
+  async listarCiudades(): Promise<string[]> {
+    const universidades = await this.universidadRepository.find({
+      select: { ciudad: true },
+      order: { ciudad: 'ASC' },
+    });
+    return [...new Set(universidades.map((universidad) => universidad.ciudad))];
   }
 
   async obtenerUniversidad(id: string): Promise<UniversidadDetalleDto> {
@@ -150,6 +188,18 @@ export class CatalogoService {
     if (filtros.ciudad !== undefined) {
       where.ciudad = ILike(this.escaparLike(filtros.ciudad));
     }
+    if (filtros.modalidad !== undefined) {
+      where.modalidad = filtros.modalidad;
+    }
+    if (filtros.jornada !== undefined) {
+      where.jornada = filtros.jornada;
+    }
+    if (filtros.costoMax !== undefined) {
+      where.costo = LessThanOrEqual(filtros.costoMax);
+    }
+    if (filtros.acreditada !== undefined) {
+      where.acreditacion = filtros.acreditada;
+    }
     const ofertas = await this.ofertaRepository.find({
       where,
       relations: { universidad: true, carrera: true },
@@ -157,6 +207,13 @@ export class CatalogoService {
     });
 
     return ofertas.map((oferta) => this.aDto(oferta));
+  }
+
+  async listarOfertasDeCarrera(
+    carreraId: string,
+  ): Promise<OfertaAcademicaDto[]> {
+    await this.obtenerCarrera(carreraId);
+    return this.listarOfertas({ carreraId });
   }
 
   async obtenerOferta(id: string): Promise<OfertaAcademicaDto> {

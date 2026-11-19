@@ -97,6 +97,14 @@ export class CatalogoController {
     );
   }
 
+  @Get('universidades/ciudades')
+  @ApiOperation({
+    summary: 'Lista las ciudades distintas de las universidades',
+  })
+  listarCiudades() {
+    return this.catalogoService.listarCiudades();
+  }
+
   @Get('universidades/:id')
   obtenerUniversidad(@Param('id', ParseUUIDPipe) id: string) {
     return this.catalogoService.obtenerUniversidad(id);

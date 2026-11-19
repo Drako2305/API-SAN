@@ -118,6 +118,14 @@ export class CatalogoService {
     });
   }
 
+  async listarCiudades(): Promise<string[]> {
+    const universidades = await this.universidadRepository.find({
+      select: { ciudad: true },
+      order: { ciudad: 'ASC' },
+    });
+    return [...new Set(universidades.map((universidad) => universidad.ciudad))];
+  }
+
   async obtenerUniversidad(id: string): Promise<UniversidadDetalleDto> {
     const universidad = await this.universidadRepository.findOneBy({ id });
     if (universidad === null) {

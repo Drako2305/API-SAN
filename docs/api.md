@@ -56,6 +56,7 @@ La documentacion interactiva (Swagger UI) esta en http://localhost:3000/docs y e
 | Catalogo | PATCH | `/carreras/{id}` | Actualiza parcialmente una carrera |
 | Catalogo | DELETE | `/carreras/{id}` | Elimina una carrera y sus ofertas |
 | Catalogo | GET | `/universidades` | Lista universidades (filtros `?ciudad=`, `?nombre=`) |
+| Catalogo | GET | `/universidades/ciudades` | Lista las ciudades distintas de las universidades, ordenadas |
 | Catalogo | GET | `/universidades/{id}` | Consulta una universidad con sus ofertas |
 | Catalogo | POST | `/universidades` | Crea una universidad |
 | Catalogo | PUT | `/universidades/{id}` | Actualiza una universidad |

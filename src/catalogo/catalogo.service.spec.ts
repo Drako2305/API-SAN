@@ -147,6 +147,22 @@ describe('CatalogoService', () => {
     });
   });
 
+  it('lista las ciudades distintas y ordenadas', async () => {
+    universidadRepository.find.mockResolvedValue([
+      { ciudad: 'Bogota' },
+      { ciudad: 'Bogota' },
+      { ciudad: 'Medellin' },
+    ]);
+
+    const ciudades = await service.listarCiudades();
+
+    expect(universidadRepository.find).toHaveBeenCalledWith({
+      select: { ciudad: true },
+      order: { ciudad: 'ASC' },
+    });
+    expect(ciudades).toEqual(['Bogota', 'Medellin']);
+  });
+
   it('lista las areas distintas, ordenadas y sin nulos', async () => {
     carreraRepository.find.mockResolvedValue([
       { area: 'Ciencias' },

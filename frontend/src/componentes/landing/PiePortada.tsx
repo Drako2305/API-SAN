@@ -27,7 +27,7 @@ function Columna({ titulo, enlaces }: { titulo: string; enlaces: Enlace[] }) {
               <a href={e.a} target="_blank" rel="noopener noreferrer" className={ENLACE}>
                 <e.icono className="size-4 shrink-0" aria-hidden />
                 {e.t}
-                <span className="sr-only"> (se abre en otra pestaña)</span>
+                <span className="sr-only"> (se abre en una pestaña nueva)</span>
               </a>
             ) : (
               <Link to={e.a} viewTransition className={ENLACE}>

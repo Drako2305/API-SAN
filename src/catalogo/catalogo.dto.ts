@@ -152,6 +152,11 @@ export class FiltroUniversidadDto {
   @IsString()
   @IsNotEmpty()
   ciudad?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  nombre?: string;
 }
 
 export class CarreraDto {

@@ -87,9 +87,19 @@ export class CatalogoService {
     return { message: 'Carrera eliminada correctamente' };
   }
 
-  async listarUniversidades(ciudad?: string): Promise<UniversidadDto[]> {
+  async listarUniversidades(
+    ciudad?: string,
+    nombre?: string,
+  ): Promise<UniversidadDto[]> {
+    const where: FindOptionsWhere<Universidad> = {};
+    if (ciudad) {
+      where.ciudad = ILike(this.escaparLike(ciudad));
+    }
+    if (nombre) {
+      where.nombre = ILike(`%${this.escaparLike(nombre)}%`);
+    }
     return this.universidadRepository.find({
-      where: ciudad ? { ciudad: ILike(this.escaparLike(ciudad)) } : {},
+      where,
       order: { nombre: 'ASC' },
     });
   }

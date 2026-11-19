@@ -3,7 +3,7 @@ import { jest } from '@jest/globals';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { IDS_SEMILLA } from '../common/semilla';
-import { FiltroOfertaDto } from './catalogo.dto';
+import { FiltroOfertaDto, FiltroUniversidadDto } from './catalogo.dto';
 import { CatalogoController } from './catalogo.controller';
 import { CatalogoService } from './catalogo.service';
 
@@ -64,6 +64,15 @@ describe('CatalogoController (PATCH)', () => {
       IDS_SEMILLA.ofertas.nacionalSistemas,
       cambios,
     );
+  });
+});
+
+describe('FiltroUniversidadDto', () => {
+  it('rechaza un nombre vacio', async () => {
+    const errores = await validate(
+      plainToInstance(FiltroUniversidadDto, { nombre: '' }),
+    );
+    expect(errores.map((error) => error.property)).toEqual(['nombre']);
   });
 });
 

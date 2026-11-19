@@ -85,7 +85,10 @@ export class CatalogoController {
 
   @Get('universidades')
   listarUniversidades(@Query() filtros: FiltroUniversidadDto) {
-    return this.catalogoService.listarUniversidades(filtros.ciudad);
+    return this.catalogoService.listarUniversidades(
+      filtros.ciudad,
+      filtros.nombre,
+    );
   }
 
   @Get('universidades/:id')

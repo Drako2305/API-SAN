@@ -54,7 +54,7 @@ La documentacion interactiva (Swagger UI) esta en http://localhost:3000/docs y e
 | Catalogo | PUT | `/carreras/{id}` | Actualiza una carrera |
 | Catalogo | PATCH | `/carreras/{id}` | Actualiza parcialmente una carrera |
 | Catalogo | DELETE | `/carreras/{id}` | Elimina una carrera y sus ofertas |
-| Catalogo | GET | `/universidades` | Lista universidades (filtro `?ciudad=`) |
+| Catalogo | GET | `/universidades` | Lista universidades (filtros `?ciudad=`, `?nombre=`) |
 | Catalogo | GET | `/universidades/{id}` | Consulta una universidad con sus ofertas |
 | Catalogo | POST | `/universidades` | Crea una universidad |
 | Catalogo | PUT | `/universidades/{id}` | Actualiza una universidad |
@@ -902,6 +902,7 @@ Lista las universidades ordenadas por nombre.
 | Parametro | Tipo | Reglas |
 |---|---|---|
 | `ciudad` | string | Opcional, no vacio. Coincidencia **exacta** sin distinguir mayusculas. Los nombres de ciudad del catalogo no llevan tilde (`Bogota`, `Medellin`) |
+| `nombre` | string | Opcional, no vacio. Devuelve las universidades cuyo nombre **contiene** el texto, sin distinguir mayusculas |
 
 **Respuesta 200** (`?ciudad=Medellin`)
 

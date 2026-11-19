@@ -136,6 +136,17 @@ describe('CatalogoService', () => {
     });
   });
 
+  it('filtra universidades por coincidencia parcial del nombre', async () => {
+    universidadRepository.find.mockResolvedValue([]);
+
+    await service.listarUniversidades(undefined, 'nac');
+
+    expect(universidadRepository.find).toHaveBeenCalledWith({
+      where: { nombre: ILike('%nac%') },
+      order: { nombre: 'ASC' },
+    });
+  });
+
   it('lista todas las carreras sin filtro de nombre', async () => {
     carreraRepository.find.mockResolvedValue([]);
 

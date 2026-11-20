@@ -108,7 +108,7 @@ Si la API corre en otro puerto, cambiar el valor de `--env-var` (por ejemplo `ht
 
 ## Sustentacion
 
-El guion, el reparto por integrante y las preguntas probables estan en [docs/guion-sustentacion.md](docs/guion-sustentacion.md). El video se enlaza aqui cuando este publicado.
+El video se enlaza aqui cuando este publicado.
 
 ## Referencias
 
